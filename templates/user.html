@@ -1,0 +1,63 @@
+{% extends 'main.html' %}
+{% block content %}
+
+{%  include 'status.html' %}
+
+<br>
+<div class="row">
+	<div class="col-md-5">
+		<h5>Clients:</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'ajout_client' %}">Créer Un Client</a>
+			<table class="table table-sm">
+				<tr>
+					<th>ID</th>
+					<th>Client</th>
+					<th>Telephone</th>
+                    <th>Détail</th>
+				</tr>
+                {% for client in clients %}
+                <tr>
+                    <th><a href="{% url 'client' client.id %}"}>{{client.id}}</a></th>
+                    <th>{{client.nom}}</th>
+                    <th>{{client.telephone}}</th>
+                    <th><a class="btn btn-success  btn-sm btn-block" href="{% url 'client' client.id %}">Detail</a></th>
+                </tr>
+                 {% endfor %}
+			</table>
+		</div>
+	</div>
+
+	<div class="col-md-7">
+		<h5>Toutes les commandes de biens</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'ajout_commande' %}">Ajouter une Commande</a>
+			<table class="table table-sm">
+				<tr>
+                    <th>ID</th>
+					<th>Client</th>
+                    <th>Produit</th>
+					<th>Date de la commande</th>
+					<th>Status</th>
+				</tr>
+                {% for commande in commandes %}
+                    <tr>
+                        <th>{{commande.id}}</th>
+				    	<th>{{commande.client}}</th>
+                        <th>{{commande.produit}}</th>
+				    	<th>{{commande.date_creation}}</th>
+				    	<th>{{commande.status}}</th>
+                        <th><a class="btn btn-danger  btn-sm btn-block" href="{% url 'modifie_commande' commande.id %}">Modifier</a></th>
+                        <th><a class="btn btn-info  btn-sm btn-block" href="{% url 'supprime_commande' commande.id %}">Supprimer</a></th>
+                    </tr>
+                {% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock content%}

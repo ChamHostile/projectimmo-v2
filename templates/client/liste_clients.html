@@ -1,0 +1,78 @@
+{% extends 'main.html'  %}
+{% block content %}
+
+    <br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Client:</h5>
+			<hr>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="">Modifier le Client</a>
+			<a class="btn btn-outline-danger  btn-sm btn-block" href="">Supprimer le Client</a>
+
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Informations</h5>
+			<hr>
+			<p>nom : {{ client.nom }} </p>
+			<p>Telephone: {{ client.telephone}} </p>
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Total des Commandes</h5>
+			<hr>
+			<h1 style="text-align: center;padding: 10px">{{commande_total}}</h1>
+		</div>
+	</div>
+</div>
+
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+
+		    <button class="btn btn-primary" type="submit">Search</button>
+                {{myFilter.form}}
+		  </form>
+		</div>
+	</div>
+
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Produit</th>
+					<th>Categorie</th>
+					<th>Date de Commande</th>
+					<th>Status</th>
+					<th>Mise à Jour</th>
+					<th>Supprimer</th>
+				</tr>
+                 {% for commande in commande %}
+                <tr>
+					<th>{{commande.produit}}</th>
+					<th>Categorie</th>
+					<th>{{commande.date_creation}}</th>
+					<th>{{commande.status}}</th>
+                    <th><a href="">Mise a jour</a></th>
+                    <th><a href="">Supprimer</a></th>
+				</tr>
+                 {% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock content%}
