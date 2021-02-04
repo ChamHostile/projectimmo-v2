@@ -2,7 +2,6 @@ from .models import *
 from django.forms import ModelForm
 from django import forms
 
-
 class ClientForm(ModelForm):
     class Meta:
         model = ClientCli

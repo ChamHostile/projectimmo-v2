@@ -35,3 +35,16 @@ def ajouter_client(request):
     context = {'form': form}
 
     return render(request,'client/ajouter_client.html',context)
+def update_client(request, pk):
+
+    client = Client.objects.get(id=pk)
+    form = ClientForm(instance=client)
+    if request.method=='POST':
+        form = ClientForm(request.POST, instance=client)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = ClientForm(instance=client)
+    context = {'form': form}
+    return render(request,'client/ajouter_client.html',context)
