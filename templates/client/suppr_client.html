@@ -1,0 +1,11 @@
+{% extends 'main.html'  %}
+
+{% block content %}
+  <div class="row">
+      <form action="{% url 'delete_client' client.id %}" method="POST">
+          {% csrf_token %}
+          <p>Voulez vous vraiment supprimer l'utilisateur {{ client.nom }} {{ client.prenom }} ? </p>
+          <input type="submit" name="Confirmer">
+      </form>
+  </div>
+{% endblock %}

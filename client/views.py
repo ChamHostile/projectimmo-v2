@@ -48,3 +48,11 @@ def update_client(request, pk):
         form = ClientForm(instance=client)
     context = {'form': form}
     return render(request,'client/ajouter_client.html',context)
+
+def delete_client(request, pk):
+    client = Client.objects.get(id=pk)
+    if request.method == "POST":
+        client.delete()
+        return redirect('/')
+    context = {'client': client}
+    return render(request, 'client/suppr_client.html', context)

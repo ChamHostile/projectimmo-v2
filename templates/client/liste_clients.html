@@ -9,7 +9,7 @@
 			<h5>Client:</h5>
 			<hr>
 			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'update_client' client.id%}">Modifier le Client</a>
-			<a class="btn btn-outline-danger  btn-sm btn-block" href="">Supprimer le Client</a>
+			<a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_client' client.id%}">Supprimer le Client</a>
 
 		</div>
 	</div>
