@@ -43,6 +43,7 @@ urlpatterns = [
     url('^soumission/validation/', include('soumission.urls')),
     # url('^soumission/request-meeting/<int:id>/', include('soumission.urls')),
     url('^soumission/client/', include('soumission.urls')),
+    url(r'fp/', include('django_drf_filepond.urls')),
  #   path('reset_password/', auth_views.PasswordResetView.as_view(),name="reset_password"),
   #  path('reset_password_sent/', auth_views.PasswordResetDone.as_view(),name="password_reset_done"),
   #  path('reset/<uidb64>/<token>/', auth_views.PasswordConfirmView.as_view(),name="password_reset_confirm"),

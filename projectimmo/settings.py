@@ -48,9 +48,11 @@ INSTALLED_APPS = [
     'compte',
     'django_filters',
     'address',
+    'django_drf_filepond',
 ]
 
 GOOGLE_API_KEY = 'AIzaSyD--your-google-maps-key-SjQBE'
+DJANGO_DRF_FILEPOND_FILE_STORAGE_PATH = os.path.join(BASE_DIR, 'static/documents')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

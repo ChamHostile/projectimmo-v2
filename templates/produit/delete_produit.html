@@ -1,0 +1,11 @@
+{% extends 'main.html'  %}
+
+{% block content %}
+  <div class="row">
+      <form action="{% url 'delete_produit' product.id %}" method="POST">
+          {% csrf_token %}
+          <p>Voulez vous vraiment supprimer l'utilisateur {{ product.nom }} ? </p>
+          <input type="submit" name="Confirmer">
+      </form>
+  </div>
+{% endblock %}

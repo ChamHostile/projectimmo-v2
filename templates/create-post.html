@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'main.html' %}
 
 {% block content %}
 <input type="file" multiple>
@@ -48,7 +48,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '{% url "create-post" %}',
+                url: '{% url 'create_post' %}',
                 data: formData,
                 cache: false,
                 processData: false,
