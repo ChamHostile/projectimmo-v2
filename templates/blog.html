@@ -14,7 +14,9 @@
         <div class="card-body">
           <h4 class="card-title">{{post.title}}</h4>
           <p class="card-text">{{post.description}}</p>
-          <a href="{% url 'detail' post.id %}" class="btn btn-primary btn-md">Read more</a>
+          <a href="{% url 'detail_view' post.id %}" class="btn btn-primary btn-md">Read more</a>
+            <a href="{% url 'post_update' post.id %}" class="btn btn-outline-info">Modifier</a>
+            <a href="{% url 'post_delete' post.id %}" class="btn btn-outline-danger">Supprimer</a>
         </div>
       </div>
     </div>
