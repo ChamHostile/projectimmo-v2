@@ -21,11 +21,6 @@ def update_post(request, id):
         description = request.POST.get('description')
 
         post = get_object_or_404(Post, id=id)
-        post(
-            length = length,
-            title = title,
-            description = description
-        )
 
         for file_num in range(0, int(length)):
             PostImage.objects.create(

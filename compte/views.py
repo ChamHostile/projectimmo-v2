@@ -58,6 +58,10 @@ def accesPage(request):
 
     return render(request,'compte/acces.html',context)
 
+@unauthenticated_user
+def home_page(request):
+    return render(request, 'index.html')
+
 def logoutUser(request):
     logout(request)
     return redirect('acces')
