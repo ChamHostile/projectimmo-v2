@@ -1,14 +1,14 @@
 from django.db import models
 import datetime
 # debut code pour User= Client
-from django.contrib.auth.models import User
+from django.conf import settings
 # fin code pour User= Client
 from django.utils.translation import gettext_lazy as _
 from address.models import AddressField, Country, State
 
 # Create your models here.
 class Client(models.Model):
-    user=models.OneToOneField(User,null=True, on_delete=models.CASCADE)
+    user=models.OneToOneField(settings.AUTH_USER_MODEL,null=True, on_delete=models.CASCADE)
     nom=models.CharField(max_length=200, null=True)
     prenom = models.CharField(max_length=200, null=True)
     telephone=models.CharField(max_length=200, null=True)

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'produit',
     'client',
+    'annonce',
     'commande',
 #    'accounts',
 #    'Mydiary',
@@ -49,9 +50,15 @@ INSTALLED_APPS = [
     'django_filters',
     'address',
     'django_drf_filepond',
+    'places',
+    'account',
 ]
 
 GOOGLE_API_KEY = 'AIzaSyD--your-google-maps-key-SjQBE'
+PLACES_MAPS_API_KEY='AIzaSyD1lHVWM1UP-2-F2RPwgBCcRKjYjXAqm5A'
+PLACES_MAP_WIDGET_HEIGHT=480
+PLACES_MAP_OPTIONS='{"center": { "lat": 38.971584, "lng": -95.235072 }, "zoom": 10}'
+PLACES_MARKER_OPTIONS='{"draggable": true}'
 DJANGO_DRF_FILEPOND_FILE_STORE_PATH = os.path.join(BASE_DIR, 'static/documents')
 
 MIDDLEWARE = [
@@ -81,6 +88,8 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTH_USER_MODEL = 'account.Account'
 
 WSGI_APPLICATION = 'projectimmo.wsgi.application'
 
