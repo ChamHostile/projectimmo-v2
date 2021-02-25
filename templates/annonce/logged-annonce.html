@@ -6,8 +6,6 @@
             <form action="" method="POST">
              {% csrf_token %}
                 {{annonceForm}}
-                {{userForm}}
-                <a href="{% url 'login-annonce' %}" > Se connecter </a>
               <input type="submit" name="Envoyer">
              </form>
         </div>
