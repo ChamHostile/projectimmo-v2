@@ -3,10 +3,11 @@
   <div class="row">
     <div class="col-md-6">
         <div class="card card-body">
+             {% load crispy_forms_tags %}
             <form action="" method="POST">
              {% csrf_token %}
-                {{annonceForm}}
-                {{userForm}}
+                {% crispy annonceForm %}
+                {% crispy userForm %}
                 <a href="{% url 'login-annonce' %}" > Se connecter </a>
               <input type="submit" name="Envoyer">
              </form>

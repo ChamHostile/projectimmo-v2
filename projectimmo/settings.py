@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'produit',
     'client',
     'annonce',
+    'crispy_forms',
     'commande',
 #    'accounts',
 #    'Mydiary',
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     'account',
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 GOOGLE_API_KEY = 'AIzaSyD--your-google-maps-key-SjQBE'
 PLACES_MAPS_API_KEY='AIzaSyD1lHVWM1UP-2-F2RPwgBCcRKjYjXAqm5A'
 PLACES_MAP_WIDGET_HEIGHT=480
