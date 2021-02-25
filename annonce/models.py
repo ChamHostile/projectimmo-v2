@@ -6,7 +6,7 @@ from django.conf import settings
 
 class Annonce(models.Model):
     address = models.CharField(max_length=200)
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         null=True,
         on_delete=models.CASCADE

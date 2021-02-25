@@ -17,26 +17,22 @@ def create_annonce(request):
 
 
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            cleanedEmail = form.cleaned_data['email']
-            emailUser = Account.objects.include(email=cleanedEmail)
-            if emailUser:
+        userForm = CreateUserForm(request.POST)
+        annonceForm = AnnonceForm(request.POST)
 
+        if userForm.is_valid() or annonceForm.is_valid():
 
-            form.save()
+            user = userForm.save()
+            annonceForm.save()
+            Annonce.objects.create(
+                user=user,
+            )
+            userForm.save()
             return redirect('/')
     else:
-        form = CreateUserForm()
+        userForm = CreateUserForm()
+        annonceForm = AnnonceForm()
 
-    if request.method == 'POST':
-        form = AnnonceForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    else:
-        form = AnnonceForm()
-
-    context = {'form': form, 'userForm': userForm}
+    context = {'annonceForm': annonceForm, 'userForm': userForm}
 
     return render(request,'annonce/creer-annonce.html',context)
