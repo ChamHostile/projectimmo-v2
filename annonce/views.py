@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 
 from .decorators import unauthenticated_user
-from .forms import AnnonceForm, CreateUserForm
+from .forms import *
 from account.models import Account
 from .models import Annonce
 from django.contrib.auth.decorators import login_required
@@ -25,8 +25,7 @@ def create_annonce(request):
         userForm = CreateUserForm(request.POST)
         annonceForm = AnnonceForm(request.POST)
 
-        if userForm.is_valid() or annonceForm.is_valid():
-
+        if userForm.is_valid() and annonceForm.is_valid():
             user = userForm.save()
             annonceForm.save()
             Annonce.objects.create(
@@ -82,3 +81,23 @@ def logged_annonce(request):
 
     return render(request, 'annonce/logged-annonce.html', context)
 
+def dashboard_view(request):
+    context = {}
+    return render(request, 'annonce/dashboard/dashboard.html', context)
+
+def description_view(request):
+    form = DescriptionForm()
+    myObject = Annonce.objects.get(
+        user=request.user,
+    )
+    if request.method=='POST':
+        form = DescriptionForm(request.POST, instance=myObject)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = DescriptionForm(instance=myObject)
+    context = {'form': form}
+    return render(request,'annonce/dashboard/description.html',context)
+
+    context = {'descriptionForm': DescriptionForm}

@@ -2,7 +2,15 @@ from django.utils.translation import gettext_lazy as _
 
 from django.db import models
 from django.conf import settings
+from django.db.models import IntegerField, Model
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
+
+class Equipements(models.Model):
+    nom = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.nom
 
 class Annonce(models.Model):
     address = models.CharField(max_length=200)
@@ -36,4 +44,25 @@ class Annonce(models.Model):
         verbose_name="Location partielle ou totale"
     )
 
-    categorie_logement = models.CharField(max_length=50)
+    categorie_logement = models.CharField(max_length=50, blank=True)
+    titre_logement = models.CharField(max_length=50, blank=True)
+    description = models.TextField(blank=True)
+    nombre_personne = IntegerField(
+        default=1,
+        validators=[
+            MaxValueValidator(20),
+            MinValueValidator(1)
+        ],
+        blank=True
+    )
+    pieces_couchage = IntegerField(
+        default=1,
+        validators=[
+            MaxValueValidator(10),
+            MinValueValidator(1)
+        ],
+        blank=True
+    )
+    equipements = models.ManyToManyField(Equipements)
+
+
