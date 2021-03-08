@@ -13,11 +13,13 @@ class Equipements(models.Model):
         return self.nom
 
 class Annonce(models.Model):
+
     address = models.CharField(max_length=200)
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        unique=False
     )
     class TypeHebergement(models.TextChoices):
         Appartemment = 'APPT', _('Appartemment')
@@ -63,6 +65,6 @@ class Annonce(models.Model):
         ],
         blank=True
     )
-    equipements = models.ManyToManyField(Equipements)
+    equipements = models.ManyToManyField(Equipements, blank=True)
 
 

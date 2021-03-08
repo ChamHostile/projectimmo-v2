@@ -15,6 +15,15 @@ class AnnonceForm(ModelForm):
             self.helper = FormHelper()
             self.helper.form_method = 'POST'
 
+class LoggedForm(ModelForm):
+    class Meta:
+        model = Annonce
+        fields = '__all__'
+        def __init__(self, *args, **kwargs):
+            super(AnnonceForm, self).__init__(*args,**kwargs)
+            self.helper = FormHelper()
+            self.helper.form_method = 'POST'
+
 class CreateUserForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Account
@@ -27,7 +36,7 @@ class CreateUserForm(UserCreationForm):
 class DescriptionForm(ModelForm):
     class Meta:
         model = Annonce
-        fields = ['titre_logement','categorie_logement','nombre_personne', 'description']
+        fields = ['titre_logement','categorie_logement','nombre_personne', 'description', 'pieces_couchage']
         def __init__(self, *args, **kwargs):
             super(DescriptionForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()

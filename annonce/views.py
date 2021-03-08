@@ -14,6 +14,12 @@ from .models import Annonce
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+def user_created(model, request):
+    obj = model.objects.latest('id')
+    if obj.user is None:
+        obj.user = request.user
+    obj.save()
+
 @unauthenticated_user
 def create_annonce(request):
 
@@ -62,20 +68,20 @@ def logout_annonce(request):
 
 @login_required(login_url='login-annonce')
 def logged_annonce(request):
-    form = AnnonceForm()
+    annonceForm = LoggedForm()
+
 
     if request.method == 'POST':
         annonceForm = AnnonceForm(request.POST)
 
         if annonceForm.is_valid():
             annonceForm.save()
-            Annonce.objects.create(
-                user=request.user,
-            )
-            return redirect('/')
+            user_created(Annonce, request)
+            return redirect('dashboard-annonce')
+
     else:
-        userForm = CreateUserForm()
         annonceForm = AnnonceForm()
+
 
     context = {'annonceForm': annonceForm}
 
@@ -87,17 +93,16 @@ def dashboard_view(request):
 
 def description_view(request):
     form = DescriptionForm()
-    myObject = Annonce.objects.get(
-        user=request.user,
-    )
-    if request.method=='POST':
+    requete = request.user
+    myObject = Annonce.objects.filter(user=request.user).latest('id')
+    if request.method =='POST':
         form = DescriptionForm(request.POST, instance=myObject)
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            return redirect('dashboard-annonce')
     else:
         form = DescriptionForm(instance=myObject)
-    context = {'form': form}
+    context = {'form': form, 'obj': myObject, 'requete': requete}
     return render(request,'annonce/dashboard/description.html',context)
 
     context = {'descriptionForm': DescriptionForm}
