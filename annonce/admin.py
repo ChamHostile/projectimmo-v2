@@ -1,4 +1,5 @@
 from django.contrib import admin
-from .models import Annonce
+from .models import *
 # Register your models here.
 admin.site.register(Annonce)
+admin.site.register(Equipements)

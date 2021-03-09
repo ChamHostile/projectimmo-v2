@@ -66,5 +66,6 @@ class Annonce(models.Model):
         blank=True
     )
     equipements = models.ManyToManyField(Equipements, blank=True)
-
+    dureeLocationMini = models.CharField(blank=True, max_length=50)
+    dureeLocationMaxi = models.CharField(blank=True, max_length=50)
 

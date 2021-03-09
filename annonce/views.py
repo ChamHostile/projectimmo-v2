@@ -106,3 +106,36 @@ def description_view(request):
     return render(request,'annonce/dashboard/description.html',context)
 
     context = {'descriptionForm': DescriptionForm}
+
+def equipment_view(request):
+    form = EquipmentForm()
+    requete = request.user
+    myObject = Annonce.objects.filter(user=request.user).latest('id')
+    if request.method =='POST':
+        form = EquipmentForm(request.POST, instance=myObject)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard-annonce')
+    else:
+        form = EquipmentForm(instance=myObject)
+    context = {'form': form, 'requete': requete, 'obj': myObject}
+    return render(request,'annonce/dashboard/equipements.html',context)
+
+    context = {'descriptionForm': DescriptionForm}
+
+def dureeLocation_view(request):
+    dureeMaxi = request.POST.get('selectMax')
+    dureeMini = request.POST.get('minSelect')
+    requete = request.user
+    myObject = Annonce.objects.filter(user=requete).latest('id')
+    if request.method =='POST':
+        myObject.dureeLocationMini = dureeMini
+        myObject.save()
+        myObject.dureeLocationMaxi = dureeMaxi
+        myObject.save()
+        return redirect('dashboard-annonce')
+
+    context = {'requete': requete}
+    return render(request,'annonce/dashboard/dureeLocation.html',context)
+
+    context = {'descriptionForm': DescriptionForm}

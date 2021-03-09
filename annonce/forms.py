@@ -36,8 +36,26 @@ class CreateUserForm(UserCreationForm):
 class DescriptionForm(ModelForm):
     class Meta:
         model = Annonce
-        fields = ['titre_logement','categorie_logement','nombre_personne', 'description', 'pieces_couchage']
+        fields = ['titre_logement','address','description','categorie_logement','nombre_personne', 'pieces_couchage']
         def __init__(self, *args, **kwargs):
             super(DescriptionForm, self).__init__(*args,**kwargs)
+            self.helper = FormHelper()
+            self.helper.form_method = 'POST'
+
+class EquipmentForm(ModelForm):
+    class Meta:
+        model = Annonce
+        fields = ['equipements']
+        def __init__(self, *args, **kwargs):
+            super(EquipmentForm, self).__init__(*args,**kwargs)
+            self.helper = FormHelper()
+            self.helper.form_method = 'POST'
+
+class EquipmentForm(ModelForm):
+    class Meta:
+        model = Annonce
+        fields = ['equipements']
+        def __init__(self, *args, **kwargs):
+            super(EquipmentForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
             self.helper.form_method = 'POST'
