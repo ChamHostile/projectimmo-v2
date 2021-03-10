@@ -9,7 +9,7 @@ from crispy_forms.helper import FormHelper
 class AnnonceForm(ModelForm):
     class Meta:
         model = Annonce
-        exclude = ['user']
+        fields = ['address','categorie_logement', 'type_location_choices']
         def __init__(self, *args, **kwargs):
             super(AnnonceForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
@@ -18,7 +18,7 @@ class AnnonceForm(ModelForm):
 class LoggedForm(ModelForm):
     class Meta:
         model = Annonce
-        fields = '__all__'
+        fields = ['address','categorie_logement', 'type_location_choices']
         def __init__(self, *args, **kwargs):
             super(AnnonceForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()

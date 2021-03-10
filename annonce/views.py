@@ -1,8 +1,11 @@
+from pyexpat.errors import messages
+
 from django.shortcuts import render, redirect
 from .models import Annonce
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.http import HttpResponse
+from django.urls import reverse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -47,6 +50,18 @@ def create_annonce(request):
 
     return render(request,'annonce/creer-annonce.html',context)
 
+@unauthenticated_user
+def inscriptionPage(request):
+    form=CreateUserForm()
+    if request.method=='POST':
+        form=CreateUserForm(request.POST)
+        if form.is_valid():
+                user=form.save()
+                return redirect('acces')
+    context={'form':form}
+    return render(request,'compte/inscription.html',context)
+
+@unauthenticated_user
 def login_user(request):
 
     if request.method == 'POST':
@@ -77,7 +92,9 @@ def logged_annonce(request):
         if annonceForm.is_valid():
             annonceForm.save()
             user_created(Annonce, request)
-            return redirect('dashboard-annonce')
+            annonceForm.save()
+            newAnnonce = annonceForm.save()
+            return redirect(reverse('dashboard-annonce', kwargs={'pk':newAnnonce.id}))
 
     else:
         annonceForm = AnnonceForm()
@@ -87,19 +104,29 @@ def logged_annonce(request):
 
     return render(request, 'annonce/logged-annonce.html', context)
 
-def dashboard_view(request):
-    context = {}
+@login_required
+def dashboard_view(request, pk):
+    myObject = Annonce.objects.get(id=pk)
+    context = {'obj': myObject}
     return render(request, 'annonce/dashboard/dashboard.html', context)
 
-def description_view(request):
+@login_required
+def gerer_annonce(request):
+    requete = request.user
+    myObject = Annonce.objects.filter(user=request.user)
+    context = {'obj': myObject}
+    return render(request, 'annonce/dashboard/gerer-annonce.html', context)
+
+@login_required
+def description_view(request, pk):
     form = DescriptionForm()
     requete = request.user
-    myObject = Annonce.objects.filter(user=request.user).latest('id')
+    myObject = Annonce.objects.get(id=pk)
     if request.method =='POST':
         form = DescriptionForm(request.POST, instance=myObject)
         if form.is_valid():
             form.save()
-            return redirect('dashboard-annonce')
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         form = DescriptionForm(instance=myObject)
     context = {'form': form, 'obj': myObject, 'requete': requete}
@@ -107,15 +134,16 @@ def description_view(request):
 
     context = {'descriptionForm': DescriptionForm}
 
-def equipment_view(request):
+@login_required
+def equipment_view(request, pk):
     form = EquipmentForm()
     requete = request.user
-    myObject = Annonce.objects.filter(user=request.user).latest('id')
+    myObject = Annonce.objects.get(id=pk)
     if request.method =='POST':
         form = EquipmentForm(request.POST, instance=myObject)
         if form.is_valid():
             form.save()
-            return redirect('dashboard-annonce')
+            return redirect('/')
     else:
         form = EquipmentForm(instance=myObject)
     context = {'form': form, 'requete': requete, 'obj': myObject}
@@ -123,11 +151,12 @@ def equipment_view(request):
 
     context = {'descriptionForm': DescriptionForm}
 
-def dureeLocation_view(request):
+@login_required
+def dureeLocation_view(request, pk):
     dureeMaxi = request.POST.get('selectMax')
     dureeMini = request.POST.get('minSelect')
     requete = request.user
-    myObject = Annonce.objects.filter(user=requete).latest('id')
+    myObject = Annonce.objects.get(id=pk)
     if request.method =='POST':
         myObject.dureeLocationMini = dureeMini
         myObject.save()
@@ -135,7 +164,7 @@ def dureeLocation_view(request):
         myObject.save()
         return redirect('dashboard-annonce')
 
-    context = {'requete': requete}
+    context = {'requete': requete, 'obj': myObject}
     return render(request,'annonce/dashboard/dureeLocation.html',context)
 
     context = {'descriptionForm': DescriptionForm}

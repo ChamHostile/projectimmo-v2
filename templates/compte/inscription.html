@@ -81,13 +81,31 @@
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
-							{{form.username}}
+							{{form.first_name}}
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+							</div>
+							{{form.last_name}}
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
 							</div>
 							{{form.email}}
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-phone"></i></span>
+							</div>
+							{{form.telephone}}
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-orange-square"></i></span>
+							</div>
+							{{form.typelocataire}}
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
@@ -110,7 +128,7 @@
 
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links">
-						Avez-vous deja un compte ? <a href="{% url 'acces' %}" class="ml-2">Accès</a>
+						Avez-vous deja un compte ? <a href="{% url 'login-annonce' %}" class="ml-2">Accès</a>
 					</div>
 				</div>
 			</div>
@@ -123,10 +141,12 @@
 
 		//Query All input fields
 		var form_fields = document.getElementsByTagName('input')
-		form_fields[1].placeholder="Nom d'utilisateur..";
-		form_fields[2].placeholder='Email..';
-		form_fields[3].placeholder='Mot de passe...';
-		form_fields[4].placeholder='Confirmer Mot de Password...';
+		form_fields[1].placeholder="Prenom..";
+		form_fields[2].placeholder='Nom..';
+		form_fields[3].placeholder='Email...';
+		form_fields[4].placeholder='Telephone...';
+		form_fields[5].placeholder='Mot de passe...';
+		form_fields[6].placeholder='Confirmer Mot de passe...';
 
 
 		for (var field in form_fields){
