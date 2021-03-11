@@ -37,29 +37,6 @@ def inscriptionPage(request):
 
 @unauthenticated_user
 def accesPage(request):
-    context={}
-    if request.method == 'POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        user=authenticate(request,username=username,password=password)
-        group = request.user.groups.all()
-        if user is not None:
-                if group == 'admin':
-                    login(request,user)
-                    return redirect('acceuil')
-                    print(group)
-                else:
-                    login(request,user)
-                    return redirect('user-page')
-                    print(user)
-            #return render(request, 'compte/acces.html', context)
-        else:
-            messages.info(request, "il y a une erreur dans le nom d'utilisateur et/ou le mot de passe")
-
-    return render(request,'compte/acces.html',context)
-
-@unauthenticated_user
-def home_page(request):
     return render(request, 'index.html')
 
 def logoutUser(request):

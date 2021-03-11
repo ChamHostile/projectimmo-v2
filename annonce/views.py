@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from .decorators import unauthenticated_user
 from .forms import *
 from account.models import Account
-from .models import Annonce
+from .models import *
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -91,9 +91,9 @@ def logged_annonce(request):
 
         if annonceForm.is_valid():
             annonceForm.save()
-            user_created(Annonce, request)
             annonceForm.save()
             newAnnonce = annonceForm.save()
+            user_created(Annonce, request)
             return redirect(reverse('dashboard-annonce', kwargs={'pk':newAnnonce.id}))
 
     else:
@@ -143,7 +143,7 @@ def equipment_view(request, pk):
         form = EquipmentForm(request.POST, instance=myObject)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         form = EquipmentForm(instance=myObject)
     context = {'form': form, 'requete': requete, 'obj': myObject}
@@ -162,9 +162,33 @@ def dureeLocation_view(request, pk):
         myObject.save()
         myObject.dureeLocationMaxi = dureeMaxi
         myObject.save()
-        return redirect('dashboard-annonce')
 
     context = {'requete': requete, 'obj': myObject}
     return render(request,'annonce/dashboard/dureeLocation.html',context)
+
+    context = {'descriptionForm': DescriptionForm}
+
+@login_required
+def loyer_view(request, pk):
+    allCharges = Charges.objects.all()
+    form = FormFeature()
+    valueCharges = request.POST.getlist('myRadio')
+
+    requete = request.user
+    myObject = Annonce.objects.get(id=pk)
+    if request.method =='POST':
+        form = FormFeature(request.POST, instance=myObject)
+        for thisCharge in allCharges:
+            for value in valueCharges:
+                if thisCharge.nom == value:
+                    myObject.charges.add(thisCharge)
+        if form.is_valid():
+            form.save()
+        else:
+            form = FormFeature(instance=myObject)
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+    context = {'requete': requete, 'obj': myObject, 'charges': allCharges, 'form': form}
+    return render(request,'annonce/dashboard/loyer.html',context)
 
     context = {'descriptionForm': DescriptionForm}

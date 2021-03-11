@@ -12,6 +12,12 @@ class Equipements(models.Model):
     def __str__(self):
         return self.nom
 
+class Charges(models.Model):
+    nom = models.CharField(max_length=200, null=True, unique=True)
+
+    def __str__(self):
+        return self.nom
+
 class Annonce(models.Model):
 
     address = models.CharField(max_length=200)
@@ -66,6 +72,8 @@ class Annonce(models.Model):
         blank=True
     )
     equipements = models.ManyToManyField(Equipements, blank=True)
+    charges = models.ManyToManyField(Charges, blank=True)
     dureeLocationMini = models.CharField(blank=True, max_length=50)
     dureeLocationMaxi = models.CharField(blank=True, max_length=50)
-
+    loyer_tc = models.FloatField(max_length=50, blank=True, null=True)
+    charges_loyer = models.FloatField(max_length=50, blank=True, null=True)

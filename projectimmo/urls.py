@@ -28,7 +28,6 @@ from compte import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('compte/inscription/', views.inscriptionPage, name='inscription'),
-    path('home', views.home_page, name='home'),
     path('compte/acces/', views.accesPage, name='acces'),
     path('compte/quitter/', views.logoutUser, name='quitter'),
     path('user/', views.userPage, name='user-page'),

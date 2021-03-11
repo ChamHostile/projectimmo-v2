@@ -59,3 +59,12 @@ class EquipmentForm(ModelForm):
             super(EquipmentForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
             self.helper.form_method = 'POST'
+
+class FormFeature(ModelForm):
+    class Meta:
+        model = Annonce
+        fields = '__all__'
+        def __init__(self, *args, **kwargs):
+            super(EquipmentForm, self).__init__(*args,**kwargs)
+            self.helper = FormHelper()
+            self.helper.form_method = 'POST'

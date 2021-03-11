@@ -43,17 +43,24 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 </nav>
-{% for object in obj %}
-    <div class="col-md-5">
-        <div class="jumbotron">
-          <h1 class="display-4">{{object.titre_logement}}</h1>
-          <p class="lead">{{object.description}}</p>
-          <hr class="my-4">
-          <p class="lead">
-            <a class="btn btn-primary btn-lg" href="{% url 'dashboard-annonce' object.id %}">Modifier</a>
-          </p>
-        </div>
-    </div>
-{% endfor %}
+    {% if obj.count == 0 %}
+        <p class="lead">Aucune Annonce ?  <a class="text-primary" href="{% url 'logged-annonce' %}">Créez en une nouvelle ! </a> </p>
+    {% else %}
+        {% for object in obj %}
+            <div class="col-md-5">
+                <div class="jumbotron">
+                  <h1 class="display-4">{{object.titre_logement}}</h1>
+                  <p class="lead">{{object.description}}</p>
+                  <hr class="my-4">
+                  <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="{% url 'dashboard-annonce' object.id %}">Modifier</a>
+                  </p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+<div class="col-md-5">
+<a class="p-3 mb-2 bg-info text-white" href="{% url 'logged-annonce' %}">Ajouter annonce </a>
+</div>
 
 </html>
