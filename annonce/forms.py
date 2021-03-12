@@ -60,11 +60,11 @@ class EquipmentForm(ModelForm):
             self.helper = FormHelper()
             self.helper.form_method = 'POST'
 
-class FormFeature(ModelForm):
+class FormLoyer(ModelForm):
     class Meta:
         model = Annonce
-        fields = '__all__'
+        fields = ['loyer_tc', 'charges_loyer']
         def __init__(self, *args, **kwargs):
-            super(EquipmentForm, self).__init__(*args,**kwargs)
+            super(FormLoyer, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
             self.helper.form_method = 'POST'

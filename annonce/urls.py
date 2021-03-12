@@ -14,5 +14,7 @@ urlpatterns = [
     path('annonce/dashboard/dureeLocation/<str:pk>/', views.dureeLocation_view, name='dashboard-dureelocation'),
     path('annonce/dashboard/equipment/<str:pk>/', views.equipment_view, name='dashboard-equipment'),
     path('annonce/dashboard/loyer/<str:pk>/', views.loyer_view, name='dashboard-loyer'),
+    path('annonce/dashboard/photos/<str:pk>/', views.image_view, name='dashboard-image'),
+    path('annonce/dashboard/photos/delete/<str:pk>/', views.delete_image, name='delete-image'),
 
 ]

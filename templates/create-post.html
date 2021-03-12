@@ -40,8 +40,6 @@
         var formData = new FormData();
         $(document).on('click', '#saveBtn', function(e) {
             formData.append('length', files.length)
-            formData.append('title', $('#title').val())
-            formData.append('description', $('#description').val())
             for (var i = 0; i < files.length; i++) {
                 formData.append('images' + i, files[i])
             }

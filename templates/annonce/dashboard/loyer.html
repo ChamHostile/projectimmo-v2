@@ -13,13 +13,13 @@
     {% for charge in charges %}
         <p class="col-md-3">{{charge.nom}}</p>
             <div class="form-check form-check-inline offset-2 col-md-2">
-              <input class="form-check-input" type="radio" name="myRadio" value={{charge.nom}}>
+              <input class="form-check-input" type="radio" name="{{charge.nom}}" value="{{charge.nom}}">
               <label class="form-check-label" for="">
                   Inclus
               </label>
             </div>
             <div class="form-check form-check-inline offset-2 col-md-2">
-              <input class="form-check-input" type="radio" name="myRadio" value="">
+              <input class="form-check-input" type="radio" name="{{charge.nom}}" value="">
               <label class="form-check-label" for="">
                   Non Inclus
               </label>

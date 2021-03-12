@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from .models import Annonce
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
@@ -149,8 +149,6 @@ def equipment_view(request, pk):
     context = {'form': form, 'requete': requete, 'obj': myObject}
     return render(request,'annonce/dashboard/equipements.html',context)
 
-    context = {'descriptionForm': DescriptionForm}
-
 @login_required
 def dureeLocation_view(request, pk):
     dureeMaxi = request.POST.get('selectMax')
@@ -166,29 +164,49 @@ def dureeLocation_view(request, pk):
     context = {'requete': requete, 'obj': myObject}
     return render(request,'annonce/dashboard/dureeLocation.html',context)
 
-    context = {'descriptionForm': DescriptionForm}
-
 @login_required
 def loyer_view(request, pk):
     allCharges = Charges.objects.all()
-    form = FormFeature()
-    valueCharges = request.POST.getlist('myRadio')
+    form = FormLoyer()
 
     requete = request.user
     myObject = Annonce.objects.get(id=pk)
     if request.method =='POST':
-        form = FormFeature(request.POST, instance=myObject)
-        for thisCharge in allCharges:
-            for value in valueCharges:
-                if thisCharge.nom == value:
-                    myObject.charges.add(thisCharge)
+        form = FormLoyer(request.POST, instance=myObject)
         if form.is_valid():
+            for thisCharge in allCharges:
+                valueCharges = request.POST.get('' + thisCharge.nom)
+                if thisCharge.nom == valueCharges:
+                    myObject.charges.add(thisCharge)
+                else:
+                    myObject.charges.remove(thisCharge)
             form.save()
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
-            form = FormFeature(instance=myObject)
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+            form = FormLoyer(instance=myObject)
+
 
     context = {'requete': requete, 'obj': myObject, 'charges': allCharges, 'form': form}
     return render(request,'annonce/dashboard/loyer.html',context)
 
-    context = {'descriptionForm': DescriptionForm}
+@login_required
+def image_view(request, pk):
+    myObject = Annonce.objects.get(id=pk)
+    myImages = ImageLogement.objects.filter(annonce=myObject)
+    if request.method == 'POST':
+        length = request.POST.get('length')
+        for file_num in range(0, int(length)):
+            ImageLogement.objects.create(
+                annonce=myObject,
+                images=request.FILES.get(f'images{file_num}')
+             )
+
+    context = {'obj': myObject, 'images': myImages}
+    return render(request,'annonce/dashboard/photos.html',context)
+
+
+def delete_image(request, pk):
+    deletedImage = ImageLogement.objects.get(id=pk)
+    thisId = deletedImage.annonce.id
+    deletedImage.delete()
+    return HttpResponseRedirect(reverse("dashboard-image", args=[thisId]))

@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 from django.db.models import IntegerField, Model
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.forms import CheckboxSelectMultiple
 # Create your models here.
 
 class Equipements(models.Model):
@@ -77,3 +78,10 @@ class Annonce(models.Model):
     dureeLocationMaxi = models.CharField(blank=True, max_length=50)
     loyer_tc = models.FloatField(max_length=50, blank=True, null=True)
     charges_loyer = models.FloatField(max_length=50, blank=True, null=True)
+
+class ImageLogement(models.Model):
+    annonce = models.ForeignKey(Annonce, on_delete=models.CASCADE)
+    images = models.FileField(upload_to='images/')
+
+    def __str__(self):
+        return self.annonce.titre_logement
