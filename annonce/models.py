@@ -85,3 +85,18 @@ class ImageLogement(models.Model):
 
     def __str__(self):
         return self.annonce.titre_logement
+
+class Calendrier(models.Model):
+    annonce = models.ForeignKey(Annonce, on_delete=models.CASCADE)
+    calendrier_debut = models.DateField(blank=True, null=True)
+    calendrier_fin = models.DateField(blank=True, null=True)
+    class Disponibilité(models.TextChoices):
+        disponible = 'disp', _('Disponible')
+        indisponible = 'indp', _('Indisponible')
+
+    disponibilite = models.CharField(
+        max_length=4,
+        choices=Disponibilité.choices,
+        default=Disponibilité.disponible,
+        verbose_name="Disponibilité"
+    )

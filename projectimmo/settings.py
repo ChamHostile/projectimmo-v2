@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_drf_filepond',
     'places',
     'account',
+    'widget_tweaks'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

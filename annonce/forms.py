@@ -1,5 +1,6 @@
 from django.forms import ModelForm
-from .models import Annonce
+from django import forms
+from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from address.forms import AddressField
@@ -66,5 +67,21 @@ class FormLoyer(ModelForm):
         fields = ['loyer_tc', 'charges_loyer']
         def __init__(self, *args, **kwargs):
             super(FormLoyer, self).__init__(*args,**kwargs)
+            self.helper = FormHelper()
+            self.helper.form_method = 'POST'
+
+class FormCalendrier(forms.Form):
+    calendrier_debut =forms.DateField(
+        input_formats=['%d/%m/%Y'],
+        widget=forms.DateTimeInput(attrs={
+            'class': 'form-control datetimepicker-input',
+            'data-target': '#datetimepicker1'
+        })
+    )
+    class Meta:
+        model = Calendrier
+        fields = '__all__'
+        def __init__(self, *args, **kwargs):
+            super(FormCalendrier, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
             self.helper.form_method = 'POST'

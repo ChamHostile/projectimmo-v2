@@ -16,5 +16,8 @@ urlpatterns = [
     path('annonce/dashboard/loyer/<str:pk>/', views.loyer_view, name='dashboard-loyer'),
     path('annonce/dashboard/photos/<str:pk>/', views.image_view, name='dashboard-image'),
     path('annonce/dashboard/photos/delete/<str:pk>/', views.delete_image, name='delete-image'),
+    path('annonce/dashboard/calendrier/<str:pk>/', views.calendrier, name='dashboard-calendrier'),
+    path('annonce/dashboard/calendrier/create', views.create_calendrier, name='create-calendrier'),
+    path('annonce/dashboard/calendrier/edit/<str:pk>/', views.edit_calendrier, name='calendrier-edit'),
 
 ]

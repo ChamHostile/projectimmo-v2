@@ -1,0 +1,37 @@
+{% load i18n widget_tweaks %}
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.38.0/js/tempusdominus-bootstrap-4.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.38.0/css/tempusdominus-bootstrap-4.min.css" crossorigin="anonymous" />
+</head>
+<div class="modal-dialog modal-lg" role="document">
+    <form action="" method="post" id="create-calendrier" class="form">{% csrf_token %}
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Add News</h4>
+            </div>
+            <div class="modal-body">
+                {{ form.media }}
+                {% for field in form.visible_fields %}
+                    <fieldset class="form-group">
+                        {{ field.label_tag }}
+                    </label>
+                    {{ field|attr:"class:form-control" }}
+                </fieldset>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value="Save changes" />
+            </div>
+        </div><!-- /.modal-content -->
+    </form>
+</div><!-- /.modal-dialog -->
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>
+    var form_options = { target: '#modal', success: function(response) {} };
+    $('#create-calendrier').ajaxForm(form_options);
+</script>

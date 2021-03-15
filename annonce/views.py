@@ -210,3 +210,35 @@ def delete_image(request, pk):
     thisId = deletedImage.annonce.id
     deletedImage.delete()
     return HttpResponseRedirect(reverse("dashboard-image", args=[thisId]))
+
+def calendrier(request, pk):
+    myObject = Annonce.objects.get(id=pk)
+    calendriers = Calendrier.objects.filter(annonce=myObject)
+    context={'obj':myObject, 'calendrier': calendriers}
+    return render(request,'annonce/dashboard/calendrier.html',context)
+
+
+def create_calendrier(request):
+    form=FormCalendrier()
+    if request.method=='POST':
+        form=FormCalendrier(request.POST)
+        if form.is_valid():
+                thisForm = form.save()
+                form.save()
+                return HttpResponseRedirect(reverse("dashboard-calendrier", args=[thisForm.annonce.id]))
+        else:
+            form=FormCalendrier()
+    context={'form':form}
+    return render(request,'annonce/dashboard/create-calendrier.html',context)
+
+def edit_calendrier(request, pk):
+    form=FormCalendrier()
+    thisCalendrier = Calendrier.objects.get(id=pk)
+    annonceId = thisCalendrier.annonce.id
+    if request.method=='POST':
+        form=FormCalendrier(request.POST, instance=thisCalendrier)
+        if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse("dashboard-calendrier", args=[annonceId]))
+    context={'form':form}
+    return render(request,'annonce/dashboard/create-calendrier.html',context)
