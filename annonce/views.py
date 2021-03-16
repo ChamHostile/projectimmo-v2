@@ -217,7 +217,6 @@ def calendrier(request, pk):
     context={'obj':myObject, 'calendrier': calendriers}
     return render(request,'annonce/dashboard/calendrier.html',context)
 
-
 def create_calendrier(request):
     form=FormCalendrier()
     if request.method=='POST':
@@ -240,5 +239,7 @@ def edit_calendrier(request, pk):
         if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse("dashboard-calendrier", args=[annonceId]))
+        else:
+            form=FormCalendrier(request.POST, instance=thisCalendrier)
     context={'form':form}
     return render(request,'annonce/dashboard/create-calendrier.html',context)

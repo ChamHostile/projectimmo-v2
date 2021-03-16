@@ -1,3 +1,4 @@
+from crispy_forms.layout import Layout, Field
 from django.forms import ModelForm
 from django import forms
 from .models import *
@@ -6,6 +7,9 @@ from django.conf import settings
 from address.forms import AddressField
 from account.models import Account
 from crispy_forms.helper import FormHelper
+from functools import partial
+
+DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
 class AnnonceForm(ModelForm):
     class Meta:
@@ -70,17 +74,11 @@ class FormLoyer(ModelForm):
             self.helper = FormHelper()
             self.helper.form_method = 'POST'
 
-class FormCalendrier(forms.Form):
-    calendrier_debut =forms.DateField(
-        input_formats=['%d/%m/%Y'],
-        widget=forms.DateTimeInput(attrs={
-            'class': 'form-control datetimepicker-input',
-            'data-target': '#datetimepicker1'
-        })
-    )
+class FormCalendrier(ModelForm):
     class Meta:
         model = Calendrier
         fields = '__all__'
+
         def __init__(self, *args, **kwargs):
             super(FormCalendrier, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
