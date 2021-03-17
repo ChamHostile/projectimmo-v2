@@ -100,3 +100,115 @@ class Calendrier(models.Model):
         default=Disponibilité.disponible,
         verbose_name="Disponibilité"
     )
+
+class Condition(models.Model):
+    annonce = models.OneToOneField(
+        Annonce,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    CHOICES_APRES = (
+        ('1', '12h00'),
+        ('2', '12h30'),
+        ('3', '13h00'),
+        ('4', '13h30'),
+        ('5', '14h00'),
+        ('6', '14h30'),
+        ('7', '15h00'),
+        ('8', '15h30'),
+        ('9', '16h00'),
+        ('10', '16h30'),
+        ('11', '17h00'),
+        ('12', '17h30'),
+        ('13', '18h00'),
+        ('14', '18h30'),
+        ('15', '19h00'),
+        ('16', '19h30'),
+        ('17', '20h00'),
+        ('18', '20h30'),
+        ('19', '21h00'),
+        ('19', '21h30'),
+        ('19', '22h00'),
+    )
+
+    heure_arrivee_apres = models.CharField(
+        max_length=10,
+        choices=CHOICES_APRES,
+        default="flexible",
+        verbose_name="Heure d'arrivée(après)"
+    )
+    CHOICES_AVANT = (
+        ('1', '14h00'),
+        ('2', '14h30'),
+        ('3', '15h00'),
+        ('4', '15h30'),
+        ('5', '16h00'),
+        ('6', '16h30'),
+        ('7', '17h00'),
+        ('8', '17h30'),
+        ('9', '18h00'),
+        ('10', '18h30'),
+        ('11', '19h00'),
+        ('12', '19h30'),
+        ('13', '20h00'),
+        ('14', '20h30'),
+        ('15', '21h00'),
+        ('16', '21h30'),
+        ('17', '22h00'),
+    )
+    heure_arrivee_avant = models.CharField(
+        max_length=10,
+        choices=CHOICES_AVANT,
+        default="flexible",
+        verbose_name="Heure d'arrivée(avant)"
+    )
+
+    CHOICES_DEPART = (
+        ('1','9h00'),
+        ('2','9h30'),
+        ('3','10h00'),
+        ('4','10h30'),
+        ('5','11h00'),
+        ('6','11h30'),
+        ('7','12h00'),
+        ('8','12h30'),
+        ('9', '13h00'),
+        ('10', '13h30'),
+        ('11', '14h00'),
+        ('12', '14h30'),
+        ('13', '15h00'),
+        ('14', '15h30'),
+        ('15', '16h00'),
+        ('16', '16h30'),
+        ('17', '17h00'),
+        ('18', '17h30'),
+        ('19', '18h00'),
+    )
+
+    heure_depart = models.CharField(
+        max_length=10,
+        choices=CHOICES_DEPART,
+        default="flexible",
+        verbose_name="Heure de départ(avant)"
+    )
+
+    choice_bool = [(True, 'Oui'), (False, 'Non')]
+    accessible_handicape = models.BooleanField(choices=choice_bool, default=1)
+    fumeur_accepte = models.BooleanField(choices=choice_bool, default=1)
+    animaux_accepte = models.BooleanField(choices=choice_bool, default=1)
+
+class Diagnostic(models.Model):
+    annonce = models.OneToOneField(
+        Annonce,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        default='',
+    )
+    choice_bool = [(True, 'Oui'), (False, 'Non')]
+    gaz = models.BooleanField(choices=choice_bool, default=1)
+    fumee = models.BooleanField('Détecteur de fumée', default=False)
+    carbone = models.BooleanField('Détecteur de monoxyde de carbone', default=False)
+    extincteur = models.BooleanField('Extincteur', default=False)
+    consommationNrj = models.IntegerField(default=1, blank=True)
+    emissionGaz = models.IntegerField(default=1, blank=True)
+    docPerformance = models.FileField(blank=True)

@@ -36,10 +36,14 @@ def create_annonce(request):
 
         if userForm.is_valid() and annonceForm.is_valid():
             user = userForm.save()
-            annonceForm.save()
+            annonce = annonceForm.save()
             Annonce.objects.create(
                 user=user,
             )
+            Condition.objects.create(
+                annonce=annonce,
+            )
+            annonceForm.save()
             userForm.save()
             return redirect('/')
     else:
@@ -211,12 +215,14 @@ def delete_image(request, pk):
     deletedImage.delete()
     return HttpResponseRedirect(reverse("dashboard-image", args=[thisId]))
 
+@login_required
 def calendrier(request, pk):
     myObject = Annonce.objects.get(id=pk)
     calendriers = Calendrier.objects.filter(annonce=myObject)
     context={'obj':myObject, 'calendrier': calendriers}
     return render(request,'annonce/dashboard/calendrier.html',context)
 
+@login_required
 def create_calendrier(request):
     form=FormCalendrier()
     if request.method=='POST':
@@ -230,6 +236,7 @@ def create_calendrier(request):
     context={'form':form}
     return render(request,'annonce/dashboard/create-calendrier.html',context)
 
+@login_required
 def edit_calendrier(request, pk):
     form=FormCalendrier()
     thisCalendrier = Calendrier.objects.get(id=pk)
@@ -243,3 +250,34 @@ def edit_calendrier(request, pk):
             form=FormCalendrier(request.POST, instance=thisCalendrier)
     context={'form':form}
     return render(request,'annonce/dashboard/create-calendrier.html',context)
+
+@login_required
+def condition_view(request, pk):
+    form = FormCondition()
+    requete = request.user
+    myObject = Annonce.objects.get(id=pk)
+    myCondition = Condition.objects.get(annonce=myObject)
+    if request.method =='POST':
+        form = FormCondition(request.POST, instance=myCondition)
+        if form.is_valid():
+            form.save()
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        form = FormCondition(instance=myCondition)
+    context = {'form': form, 'obj': myObject, 'requete': requete}
+    return render(request,'annonce/dashboard/conditions.html',context)
+
+def diagnsotic_view(request, pk):
+    form = FormDiagnostic()
+    requete = request.user
+    myObject = Annonce.objects.get(id=pk)
+    myDiagnostic = Diagnostic.objects.get(annonce=myObject)
+    if request.method =='POST':
+        form = FormDiagnostic(request.POST, instance=myDiagnostic)
+        if form.is_valid():
+            form.save()
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        form = FormDiagnostic(instance=myDiagnostic)
+    context = {'form': form, 'obj': myObject, 'requete': requete}
+    return render(request,'annonce/dashboard/diagnostic.html',context)

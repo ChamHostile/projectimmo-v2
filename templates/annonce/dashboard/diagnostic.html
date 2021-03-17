@@ -1,0 +1,63 @@
+{% extends "annonce/dashboard/dashboard.html" %}
+
+{% block content %}
+    <div class="col-md-8">
+      {% load crispy_forms_tags %}
+        <form action="" method="POST">
+          {% csrf_token %}
+            <h3 class="border-bottom bg-light p-3">Sécurité</h3>
+            <p>Installation au Gaz</p>
+            {{ form.gaz|as_crispy_field }}
+            <p>Ces équipments sont-ils disponibles dans le logement :</p>
+            {{ form.fumee|as_crispy_field }}
+            {{ form.carbone|as_crispy_field }}
+            {{ form.extincteur|as_crispy_field }}
+            <h3 class="border-bottom bg-light p-3">Diagnostic de Performance Énergétique</h3>
+            {{ form.consommationNrj|as_crispy_field }} <span>Classement : </span> <span id="nrj"></span>
+            {{ form.emissionGaz|as_crispy_field }}
+          <input type="submit" value="Modifier">
+        </form>
+    </div>
+<script>
+$(document).ready(function() {
+    let energie = $("input[name='consommationNrj']").val();
+    $("input[name='consommationNrj']").change(function(){
+    console.log('changing');
+        switch (true){
+          case energie <= 50:
+            $("#nrj").text('A');
+            $("#nrj").addClass('text-success');
+            break;
+          case energie >= 51 && energie <= 90:
+            $("#nrj").text('B');
+            $("#nrj").addClass('text-primary');
+            break;
+          case energie >= 91 && energie <= 150:
+            $("#nrj").text('C');
+            $("#nrj").addClass('text-secondary');
+            break;
+          case energie >= 151 && energie <= 230:
+            $("#nrj").text('D');
+            $("#nrj").addClass('text-dark');
+            break;
+          case energie >= 231 && energie <= 330:
+            $("#nrj").text('E');
+            $("#nrj").addClass('text-warning');
+            break;
+          case energie >= 151 && energie <= 230:
+            $("#nrj").text('F');
+            $("#nrj").addClass('text-danger');
+            break;
+          case energie >= 151 && energie <= 230:
+            $("#nrj").text('G');
+            $("#nrj").addClass('text-white bg-danger');
+            break;
+        }
+      });
+    });
+</script>
+{% endblock %}
+
+{% block title %}
+  <h2>Diagnostic</h2>
+{% endblock %}

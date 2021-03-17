@@ -83,3 +83,25 @@ class FormCalendrier(ModelForm):
             super(FormCalendrier, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
             self.helper.form_method = 'POST'
+
+class FormCondition(ModelForm):
+    class Meta:
+        model = Condition
+        exclude = ['annonce']
+        def __init__(self, *args, **kwargs):
+            super(FormCondition, self).__init__(*args,**kwargs)
+            self.helper = FormHelper()
+            self.helper.form_method = 'POST'
+
+class FormDiagnostic(ModelForm):
+    class Meta:
+        model = Diagnostic
+        exclude = ['annonce']
+        labels = {
+            'consommationNrj' : 'Consommations énergétiques en kWhEP/m²/an',
+            'emissionGaz' : 'Émissions de gaz à effet de serre (GES) en kgéqCO2/m²/an',
+        }
+        def __init__(self, *args, **kwargs):
+            super(FormDiagnostic, self).__init__(*args,**kwargs)
+            self.helper = FormHelper()
+            self.helper.form_method = 'POST'

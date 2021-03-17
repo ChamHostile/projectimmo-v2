@@ -19,5 +19,6 @@ urlpatterns = [
     path('annonce/dashboard/calendrier/<str:pk>/', views.calendrier, name='dashboard-calendrier'),
     path('annonce/dashboard/calendrier/create', views.create_calendrier, name='create-calendrier'),
     path('annonce/dashboard/calendrier/edit/<str:pk>/', views.edit_calendrier, name='calendrier-edit'),
-
+    path('annonce/dashboard/conditions/<str:pk>/', views.condition_view, name='dashboard-condition'),
+    path('annonce/dashboard/diagnostic/<str:pk>/', views.diagnsotic_view, name='dashboard-diagnostic'),
 ]
