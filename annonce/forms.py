@@ -100,8 +100,23 @@ class FormDiagnostic(ModelForm):
         labels = {
             'consommationNrj' : 'Consommations énergétiques en kWhEP/m²/an',
             'emissionGaz' : 'Émissions de gaz à effet de serre (GES) en kgéqCO2/m²/an',
+            'risqueNaturel' : 'Risques naturels et technologiques',
+            'risquePlomb' : "Risques d'exposition au plomb",
+            'interieurElecGaz' : 'Installation intérieure électricité et gaz',
+            'amianteDoc' : "État mentionnant l'absence de matériaux contenant de l'amiante",
+            'copopriete' : 'Extrait du règlement de copropriété',
+            'docPerformance': 'Diagnostic de Performance Énergétique',
         }
         def __init__(self, *args, **kwargs):
             super(FormDiagnostic, self).__init__(*args,**kwargs)
+            self.helper = FormHelper()
+            self.helper.form_method = 'POST'
+
+class UserModif(ModelForm):
+    class Meta:
+        model = Account
+        fields = ('email','first_name','last_name','telephone','typelocataire')
+        def __init__(self, *args, **kwargs):
+            super(EquipmentForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
             self.helper.form_method = 'POST'

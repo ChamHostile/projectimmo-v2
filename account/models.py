@@ -79,3 +79,17 @@ class Account(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
+class Address(models.Model):
+    account = models.OneToOneField(
+        Account,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        default='',
+    )
+    rue = models.CharField(blank=True, max_length=20)
+    voie = models.CharField(blank=True, max_length=35)
+    ville = models.CharField(blank=True, max_length=20)
+    region = models.CharField(blank=True, max_length=20)
+    zipCode = models.CharField(blank=True, max_length=5)
+    pays = models.CharField(blank=True, max_length=20)
+

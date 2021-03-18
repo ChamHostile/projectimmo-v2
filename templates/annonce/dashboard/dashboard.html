@@ -84,7 +84,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'dashboard-dureelocation' pk=obj.id %}">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
               Durée
             </a>
           </li>
@@ -96,15 +96,26 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'dashboard-image' obj.id %}">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M20.4 14.5L16 10 4 20"/></svg>
               Images
             </a>
           </li>
-        </ul>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'dashboard-calendrier' obj.id %}">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               Calendrier
+            </a>
+          </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard-condition' obj.id %}">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              Condition
+            </a>
+          </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard-diagnostic' obj.id %}">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+              Diagnostic
             </a>
           </li>
         </ul>
@@ -114,9 +125,9 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-            <a class="nav-link" href="https://getbootstrap.com/docs/4.6/examples/dashboard/#">
+            <a class="nav-link" href="{% url 'dashboard-usercoord' obj.id %}">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              Current month
+              Coordonnées
             </a>
           </li>
           <li class="nav-item">
@@ -148,12 +159,41 @@
 
         <div class="row">
           {% block content %}
-            <div class="offset-2 col-md-5">
-                <a href="{% url 'dashboard-description' obj.id %}">Description et titre</a>
+           <div class="col-12">
+            <!-- method 1 - sizing classes -->
+            <div class="list-group d-flex flex-row flex-wrap text-center">
+                <a href="{% url 'dashboard-description' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Titre et description
+              </a>
+                <a href="{% url 'dashboard-description' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Nombre de pièces
+              </a>
+                <a href="{% url 'dashboard-equipment' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Equipements
+              </a>
+                <a href="{% url 'dashboard-loyer' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Loyer
+              </a>
+                <a href="{% url 'dashboard-loyer' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Charges
+              </a>
+                <a href="{% url 'dashboard-image' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Photos
+              </a>
+                <a href="{% url 'dashboard-dureelocation' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Durée de location
+              </a>
+                <a href="{% url 'dashboard-condition' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Conditions et Accessibilité
+              </a>
+              <a href="{% url 'dashboard-diagnostic' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Indiquer la présence d'un détecteur de fumée
+              </a>
+              <a href="{% url 'dashboard-calendrier' obj.id %}" class="list-group-item w-50 list-group-item-action">
+                Indiquer vos disponibilités
+              </a>
             </div>
-            <div class="col-md-5">
-                <a>Photos</a>
-            </div>
+        </div>
            {% endblock %}
         </div>
 

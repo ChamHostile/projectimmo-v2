@@ -14,43 +14,100 @@
             {{ form.extincteur|as_crispy_field }}
             <h3 class="border-bottom bg-light p-3">Diagnostic de Performance Énergétique</h3>
             {{ form.consommationNrj|as_crispy_field }} <span>Classement : </span> <span id="nrj"></span>
-            {{ form.emissionGaz|as_crispy_field }}
+            {{ form.emissionGaz|as_crispy_field }}  <span>Classement : </span> <span id="gaz"></span>
+             {{ form.docPerformance|as_crispy_field }}
+          <h3 class="border-bottom bg-light p-3">Autre diagnostics</h3>
+            {{ form.risqueNaturel|as_crispy_field }}
+          {{ form.risquePlomb|as_crispy_field }}
+          {{ form.interieurElecGaz|as_crispy_field }}
+          {{ form.amianteDoc|as_crispy_field }}
+          {{ form.copopriete|as_crispy_field }}
           <input type="submit" value="Modifier">
         </form>
     </div>
 <script>
 $(document).ready(function() {
     let energie = $("input[name='consommationNrj']").val();
-    $("input[name='consommationNrj']").change(function(){
-    console.log('changing');
+    $("input[name='consommationNrj']").on("keyup change", function(){
+    energie = $("input[name='consommationNrj']").val();
+    console.log(energie);
         switch (true){
           case energie <= 50:
+            $("#nrj").removeClass();
             $("#nrj").text('A');
             $("#nrj").addClass('text-success');
             break;
           case energie >= 51 && energie <= 90:
+            $("#nrj").removeClass();
             $("#nrj").text('B');
             $("#nrj").addClass('text-primary');
             break;
           case energie >= 91 && energie <= 150:
+            $("#nrj").removeClass();
             $("#nrj").text('C');
             $("#nrj").addClass('text-secondary');
             break;
           case energie >= 151 && energie <= 230:
+            $("#nrj").removeClass();
             $("#nrj").text('D');
             $("#nrj").addClass('text-dark');
             break;
           case energie >= 231 && energie <= 330:
+            $("#nrj").removeClass();
             $("#nrj").text('E');
             $("#nrj").addClass('text-warning');
             break;
-          case energie >= 151 && energie <= 230:
+          case energie >= 330 && energie <= 450:
+            $("#nrj").removeClass();
             $("#nrj").text('F');
             $("#nrj").addClass('text-danger');
             break;
-          case energie >= 151 && energie <= 230:
+          case energie >= 450:
+            $("#nrj").removeClass();
             $("#nrj").text('G');
             $("#nrj").addClass('text-white bg-danger');
+            break;
+        }
+      });
+      gazEmission = $("input[name='emissionGaz']").val();
+      $("input[name='emissionGaz']").on("keyup change", function(){
+    gazEmission = $("input[name='emissionGaz']").val();
+    console.log(gaz);
+        switch (true){
+          case gazEmission <= 50:
+            $("#gaz").removeClass();
+            $("#gaz").text('A');
+            $("#gaz").addClass('text-success');
+            break;
+          case gazEmission >= 51 && gazEmission <= 90:
+            $("#gaz").removeClass();
+            $("#gaz").text('B');
+            $("#gaz").addClass('text-primary');
+            break;
+          case gazEmission >= 91 && gazEmission <= 150:
+            $("#gaz").removeClass();
+            $("#gaz").text('C');
+            $("#gaz").addClass('text-secondary');
+            break;
+          case gazEmission >= 151 && gazEmission <= 230:
+            $("#gaz").removeClass();
+            $("#gaz").text('D');
+            $("#gaz").addClass('text-dark');
+            break;
+          case gazEmission >= 231 && gazEmission <= 330:
+            $("#gaz").removeClass();
+            $("#gaz").text('E');
+            $("#gaz").addClass('text-warning');
+            break;
+          case gazEmission >= 330 && gazEmission <= 450:
+            $("#gaz").removeClass();
+            $("#gaz").text('F');
+            $("#gaz").addClass('text-danger');
+            break;
+          case gazEmission >= 450:
+            $("#gaz").removeClass();
+            $("#gaz").text('G');
+            $("#gaz").addClass('text-white bg-danger');
             break;
         }
       });

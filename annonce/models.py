@@ -212,3 +212,8 @@ class Diagnostic(models.Model):
     consommationNrj = models.IntegerField(default=1, blank=True)
     emissionGaz = models.IntegerField(default=1, blank=True)
     docPerformance = models.FileField(blank=True)
+    risqueNaturel = models.FileField(blank=True)
+    risquePlomb = models.FileField(blank=True)
+    interieurElecGaz = models.FileField(blank=True)
+    amianteDoc = models.FileField(blank=True)
+    copopriete = models.FileField(blank=True)

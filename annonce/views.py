@@ -12,8 +12,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from .decorators import unauthenticated_user
 from .forms import *
-from account.models import Account
-from .models import *
+from account.models import Address
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -42,6 +41,9 @@ def create_annonce(request):
             )
             Condition.objects.create(
                 annonce=annonce,
+            )
+            Address.objects.create(
+                account=user,
             )
             annonceForm.save()
             userForm.save()
@@ -281,3 +283,37 @@ def diagnsotic_view(request, pk):
         form = FormDiagnostic(instance=myDiagnostic)
     context = {'form': form, 'obj': myObject, 'requete': requete}
     return render(request,'annonce/dashboard/diagnostic.html',context)
+
+@login_required()
+def user_view_dashboard(request, pk):
+
+    myObject = Annonce.objects.get(id=pk)
+    user = request.user
+    form = UserModif(instance=user)
+    rue = request.POST.get('rue')
+    voie = request.POST.get('voie')
+    ville = request.POST.get('ville')
+    region = request.POST.get('region')
+    zip = request.POST.get('zip')
+    pays = request.POST.get('pays')
+    myAdress = Address.objects.get(account=user)
+
+    if request.method == 'POST':
+        form = UserModif(request.POST, instance=user)
+        if form.is_valid():
+            myAdress.rue = rue
+            myAdress.voie = voie
+            myAdress.ville = ville
+            myAdress.region = region
+            myAdress.zipCode = zip
+            myAdress.pays = pays
+            myAdress.save()
+            user = form.save()
+            form.save()
+            return redirect('/')
+    else:
+        form = UserModif(instance=user)
+
+    context = {'form': form, 'obj': myObject, 'address': myAdress}
+
+    return render(request,'annonce/dashboard/userDashboard.html',context)
