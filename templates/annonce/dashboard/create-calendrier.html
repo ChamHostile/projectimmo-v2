@@ -1,14 +1,7 @@
 {% load i18n widget_tweaks %}
 
-<script>
-    $(document).ready(function() {
-        $("input[name=calendrier_debut").addClass("datepicker");
-        $("input[name=calendrier_fin").addClass("datepicker");
-        $('.datepicker').datepicker();
-    });
-</script>
-<div class="modal-dialog modal-lg" role="document">
-    <form action="" autocomplete="off" method="post" id="create-calendrier" class="form">{% csrf_token %}
+<div class="modal-dialog modal-lg" id="myModal" role="document">
+    <form action="{% url 'create-calendrier' annonce.id %}" autocomplete="off" method="post" id="create-calendrier" class="form">{% csrf_token %}
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -18,14 +11,17 @@
                 <h4 class="modal-title">Add News</h4>
             </div>
             <div class="modal-body">
-                {{ form.media }}
-                {% for field in form.visible_fields %}
                     <fieldset class="form-group">
-                        {{ field.label_tag }}
-                        </label>
-                        {{ field|attr:"class:form-control" }}
+                        <label>Date de début</label>
+                        <input name="calendrier_debut" type="date" />
+                        <label>Date de fin</label>
+                        <input name="calendrier_fin" type="date" />
+                        <label>Disponibilité</label>
+                        <select name="disponibilite">
+                            <option value="disp">Disponible</option>
+                            <option value="indp">Indisponible</option>
+                        </select>
                     </fieldset>
-                    {% endfor %}
                 </div>
                 <div class="modal-footer">
                     {% if form.errors %}
@@ -48,7 +44,3 @@
         </div><!-- /.modal-content -->
     </form>
 </div><!-- /.modal-dialog -->
-<script>
-    var form_options = { target: '#modal', success: function(response) {} };
-    $('#create-calendrier').ajaxForm(form_options);
-</script>

@@ -225,17 +225,21 @@ def calendrier(request, pk):
     return render(request,'annonce/dashboard/calendrier.html',context)
 
 @login_required
-def create_calendrier(request):
-    form=FormCalendrier()
+def create_calendrier(request,pk):
+    annonce = Annonce.objects.get(id=pk)
+    debut = request.POST.get('calendrier_debut')
+    fin = request.POST.get('calendrier_fin')
+    disponibilite = request.POST.get('disponibilite')
     if request.method=='POST':
-        form=FormCalendrier(request.POST)
-        if form.is_valid():
-                thisForm = form.save()
-                form.save()
-                return HttpResponseRedirect(reverse("dashboard-calendrier", args=[thisForm.annonce.id]))
-        else:
-            form=FormCalendrier()
-    context={'form':form}
+        calendrier = Calendrier.objects.create(
+            annonce=annonce,
+            calendrier_debut=debut,
+            calendrier_fin=fin,
+            disponibilite=disponibilite,
+        )
+        calendrier.save()
+        return HttpResponseRedirect(reverse("dashboard-calendrier", args=[annonce.id]))
+    context = {'annonce' : annonce}
     return render(request,'annonce/dashboard/create-calendrier.html',context)
 
 @login_required
