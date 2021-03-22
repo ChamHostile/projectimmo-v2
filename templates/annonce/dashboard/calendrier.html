@@ -8,15 +8,27 @@
             <p class="">{{thisCalendrier.calendrier_debut}}</p>
             <p class="col-md-4">{{thisCalendrier.calendrier_fin}}</p>
             <p class="col-md-4">{{thisCalendrier.disponibilite}}</p>
-            <a data-toggle="modal" data-target="#modal" href="{% url 'calendrier-edit' thisCalendrier.id %}">Modifier</a>
+            <a data-toggle="modal" data-target="#modalEdit" href="{% url 'calendrier-edit' thisCalendrier.id %}">Modifier</a>
             <a class="col-2">Supprimer</a>
         </div>
+        <script>
+            $('#modalEdit').on('show.bs.modal', function (event) {
+                var modal = $(this)
+                $.ajax({
+                    url: "{% url 'calendrier-edit' thisCalendrier.id %}",
+                    context: document.body
+                }).done(function(response) {
+                    modal.html(response);
+             });
+})
+        </script>
         {% endfor %}
 {% comment %}2 - The button which shows the modal, notice the href attribute{% endcomment %}
 <p>Cliquez <a data-toggle="modal" data-target="#modal" href="{% url 'create-calendrier' obj.id %}">içi</a> Pour ajouter une disponibilité</p>
 
 {% comment %}3 - The modal container{% endcomment %}
 <div class="modal" id="modal"></div>
+<div class="modal" id="modalEdit"></div>
 
 {% comment %}4 - This js code will load the response from the href url of the showing button inside the modal{% endcomment %}
 <script>

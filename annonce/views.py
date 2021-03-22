@@ -1,6 +1,9 @@
 from pyexpat.errors import messages
 
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_text
+
 from .models import Annonce
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -9,10 +12,15 @@ from django.urls import reverse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import get_user_model
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from account.tokens import account_activation_token
 
+from django.core.mail import send_mail
 from .decorators import unauthenticated_user
 from .forms import *
-from account.models import Address
+from account.models import Address, Account
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -34,19 +42,34 @@ def create_annonce(request):
         annonceForm = AnnonceForm(request.POST)
 
         if userForm.is_valid() and annonceForm.is_valid():
-            user = userForm.save()
-            annonce = annonceForm.save()
-            Annonce.objects.create(
-                user=user,
-            )
-            Condition.objects.create(
-                annonce=annonce,
-            )
-            Address.objects.create(
-                account=user,
-            )
-            annonceForm.save()
-            userForm.save()
+            email = userForm.cleaned_data.get('email')
+            if Account.objects.filter(email__iexact=email).count() == 1:
+                user = userForm.save(commit=False)
+                user.is_active = False
+                user.save()
+                current_site = get_current_site(request)
+                mail_subject = 'Activate your account.'
+                message = render_to_string('email_template.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                })
+                to_email = userForm.cleaned_data.get('email')
+                send_mail(mail_subject, message, 'youremail', [to_email])
+                annonce = annonceForm.save()
+                Annonce.objects.create(
+                    user=user,
+                )
+                Condition.objects.create(
+                    annonce=annonce,
+                )
+                Address.objects.create(
+                    account=user,
+                )
+                annonceForm.save()
+                return HttpResponse('Please confirm your email address to complete the registration')
+
             return redirect('/')
     else:
         userForm = CreateUserForm()
@@ -55,6 +78,22 @@ def create_annonce(request):
     context = {'annonceForm': annonceForm, 'userForm': userForm}
 
     return render(request,'annonce/creer-annonce.html',context)
+
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')
+
+
 
 @unauthenticated_user
 def inscriptionPage(request):
@@ -244,18 +283,20 @@ def create_calendrier(request,pk):
 
 @login_required
 def edit_calendrier(request, pk):
-    form=FormCalendrier()
-    thisCalendrier = Calendrier.objects.get(id=pk)
-    annonceId = thisCalendrier.annonce.id
-    if request.method=='POST':
-        form=FormCalendrier(request.POST, instance=thisCalendrier)
-        if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(reverse("dashboard-calendrier", args=[annonceId]))
-        else:
-            form=FormCalendrier(request.POST, instance=thisCalendrier)
-    context={'form':form}
-    return render(request,'annonce/dashboard/create-calendrier.html',context)
+    calendrier = Calendrier.objects.get(id=pk)
+    annonce = calendrier.annonce
+    debut = request.POST.get('calendrier_debut')
+    fin = request.POST.get('calendrier_fin')
+    disponibilite = request.POST.get('disponibilite')
+    if request.method == 'POST':
+        calendrier.calendrier_debut = debut
+        calendrier.calendrier_fin = fin
+        calendrier.disponibilite = disponibilite
+        calendrier.annonce = annonce
+        calendrier.save()
+        return HttpResponseRedirect(reverse("dashboard-calendrier", args=[annonce.id]))
+    context = {'annonce': annonce, 'calendrier': calendrier}
+    return render(request, 'annonce/dashboard/edit-calendrier.html', context)
 
 @login_required
 def condition_view(request, pk):

@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'django_drf_filepond',
     'places',
     'account',
-    'widget_tweaks'
+    'widget_tweaks',
+    "verify_email",
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -63,6 +64,14 @@ PLACES_MAP_WIDGET_HEIGHT=480
 PLACES_MAP_OPTIONS='{"center": { "lat": 38.971584, "lng": -95.235072 }, "zoom": 10}'
 PLACES_MARKER_OPTIONS='{"draggable": true}'
 DJANGO_DRF_FILEPOND_FILE_STORE_PATH = os.path.join(BASE_DIR, 'static/documents')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_ID')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
+
+DEFAULT_FROM_EMAIL = 'noreply<no_reply@domain.com>'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
