@@ -120,3 +120,12 @@ class UserModif(ModelForm):
             super(EquipmentForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
             self.helper.form_method = 'POST'
+
+class VerifImage(ModelForm):
+    class Meta:
+        model = Account
+        fields = ('photo_profil', 'photo_identite')
+        def __init__(self, *args, **kwargs):
+            super(VerifImage, self).__init__(*args,**kwargs)
+            self.helper = FormHelper()
+            self.helper.form_method = 'POST'

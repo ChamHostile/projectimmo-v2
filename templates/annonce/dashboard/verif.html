@@ -1,0 +1,43 @@
+{% extends "annonce/dashboard/dashboard.html" %}
+
+ {% block content %}
+    <div class="col-md-5">
+      {% load crispy_forms_tags %}
+        <form action="" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+            {% if user.is_active %}
+                <h4 class="text-success">Adresse mail</h4>
+                <p class="border-bottom bg-light p-3">Votre adresse mail a été vérfiée</p>
+            {% else %}
+                <h4 class="text-danger">Adresse mail</h4>
+                <p class="border-bottom bg-light p-3">Activez votre adresse mail</p>
+            {% endif %}
+            {% if user.photo_profil %}
+                <h4 class="text-success">Photo de profil</h4>
+                <p class="border-bottom bg-light p-3">Votre photo de profil :</p>
+            <img src="{{user.photo_profil.url}}" >
+                      {{ form.photo_profil|as_crispy_field }}
+            {% else %}
+                <h4 class="text-danger">Photo de profil</h4>
+                <p class="border-bottom bg-light p-3">Ajoutez une photo de profil</p>
+                      {{ form.photo_profil|as_crispy_field }}
+            {% endif %}
+             {% if user.photo_identite %}
+                <h4 class="text-success">Photo d'identité</h4>
+                <p class="border-bottom bg-light p-3">Votre photo de d'identité :</p>
+            <img src="{{user.photo_identite.url}}" >
+                                  {{ form.photo_identite|as_crispy_field }}
+
+            {% else %}
+                <h4 class="text-danger">Photo d'identité</h4>
+                <p class="border-bottom bg-light p-3">Ajoutez une photo d'identité</p>
+                      {{ form.photo_identite|as_crispy_field }}
+            {% endif %}
+          <input type="submit" value="Modifier">
+        </form>
+    </div>
+{% endblock %}
+
+{% block title %}
+  <h2>Vérifications</h2>
+{% endblock %}

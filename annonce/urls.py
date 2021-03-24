@@ -1,13 +1,14 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-
+from .views import VerificationView
 urlpatterns = [
     path('creer-annonce', views.create_annonce, name='creer-annonce'),
     path('register', views.inscriptionPage, name='register'),
     path('login-annonce', views.login_user, name='login-annonce'),
     path('logout-annonce', views.logout_annonce, name='logout-annonce'),
     path('logged-annonce', views.logged_annonce, name='logged-annonce'),
+    path('activate/<uidb64>/<token>', VerificationView.as_view(), name='activate'),
     path('annonce/gerer-annonce', views.gerer_annonce, name='gerer-annonce'),
     path('annonce/dashboard/<str:pk>', views.dashboard_view, name='dashboard-annonce'),
     path('annonce/dashboard/description/<str:pk>/', views.description_view, name='dashboard-description'),
@@ -22,5 +23,6 @@ urlpatterns = [
     path('annonce/dashboard/conditions/<str:pk>/', views.condition_view, name='dashboard-condition'),
     path('annonce/dashboard/diagnostic/<str:pk>/', views.diagnsotic_view, name='dashboard-diagnostic'),
     path('annonce/dashboard/coordonnee_user/<str:pk>/', views.user_view_dashboard, name='dashboard-usercoord'),
+    path('annonce/dashboard/verif/<str:pk>/', views.verification_view, name='dashboard-verif'),
 
 ]

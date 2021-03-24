@@ -1,8 +1,7 @@
 from pyexpat.errors import messages
 
 from django.shortcuts import render, redirect
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes, force_text
+from django.views import View
 
 from .models import Annonce
 from django.contrib.auth.decorators import login_required
@@ -12,15 +11,16 @@ from django.urls import reverse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth import get_user_model
+from django.core.mail import EmailMessage
+
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-from account.tokens import account_activation_token
+from .utils import token_generator
 
-from django.core.mail import send_mail
 from .decorators import unauthenticated_user
 from .forms import *
-from account.models import Address, Account
+from account.models import Address
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -41,35 +41,47 @@ def create_annonce(request):
         userForm = CreateUserForm(request.POST)
         annonceForm = AnnonceForm(request.POST)
 
+        # - validate both forms
         if userForm.is_valid() and annonceForm.is_valid():
-            email = userForm.cleaned_data.get('email')
-            if Account.objects.filter(email__iexact=email).count() == 1:
-                user = userForm.save(commit=False)
-                user.is_active = False
-                user.save()
-                current_site = get_current_site(request)
-                mail_subject = 'Activate your account.'
-                message = render_to_string('email_template.html', {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': account_activation_token.make_token(user),
-                })
-                to_email = userForm.cleaned_data.get('email')
-                send_mail(mail_subject, message, 'youremail', [to_email])
-                annonce = annonceForm.save()
-                Annonce.objects.create(
-                    user=user,
-                )
-                Condition.objects.create(
-                    annonce=annonce,
-                )
-                Address.objects.create(
-                    account=user,
-                )
-                annonceForm.save()
-                return HttpResponse('Please confirm your email address to complete the registration')
+            user = userForm.save()
+            email = userForm.cleaned_data['email']
+            annonce = annonceForm.save()
 
+            # - associate new objects with newly created user to use in dashboard
+            Annonce.objects.create(
+                user=user,
+            )
+            Condition.objects.create(
+                annonce=annonce,
+            )
+            Address.objects.create(
+                account=user,
+            )
+            annonceForm.save()
+            userForm.save()
+            # path to view
+                # - getting domain
+                # - relative url to verif
+                # - encode uid for security
+                # - token
+            uidb64=urlsafe_base64_encode(force_bytes(user.id))
+
+            domain = get_current_site(request).domain
+            link = reverse('activate', kwargs={
+                            'uidb64':uidb64, 'token':token_generator.make_token(user)})
+
+            activate_url = 'http://'+domain+link
+            email_subject = 'Activez votre compte'
+            email_body = 'Hi '+user.first_name + ' Cliquez sur ce lien pour vérifier votre compte\n' \
+                         + activate_url
+
+            email = EmailMessage(
+                email_subject,
+                email_body,
+                'noreply@lhoman.com',
+                [email],
+            )
+            email.send(fail_silently=False)
             return redirect('/')
     else:
         userForm = CreateUserForm()
@@ -79,21 +91,14 @@ def create_annonce(request):
 
     return render(request,'annonce/creer-annonce.html',context)
 
-def activate(request, uidb64, token):
-    User = get_user_model()
-    try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-    if user is not None and account_activation_token.check_token(user, token):
+class VerificationView(View):
+    def get(self, request, uidb64, token):
+        userId = urlsafe_base64_decode(uidb64)
+        user = Account.objects.get(id=userId)
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
-    else:
-        return HttpResponse('Activation link is invalid!')
-
-
+        context = {'user': user}
+        return redirect('creer-annonce')
 
 @unauthenticated_user
 def inscriptionPage(request):
@@ -196,6 +201,7 @@ def equipment_view(request, pk):
 
 @login_required
 def dureeLocation_view(request, pk):
+    # - getting value from the displayed select in template to update object
     dureeMaxi = request.POST.get('selectMax')
     dureeMini = request.POST.get('minSelect')
     requete = request.user
@@ -219,6 +225,8 @@ def loyer_view(request, pk):
     if request.method =='POST':
         form = FormLoyer(request.POST, instance=myObject)
         if form.is_valid():
+            # veryfing if selected charges are in created charges objects, if so adding these charges
+            # to the annonce
             for thisCharge in allCharges:
                 valueCharges = request.POST.get('' + thisCharge.nom)
                 if thisCharge.nom == valueCharges:
@@ -240,6 +248,7 @@ def image_view(request, pk):
     myImages = ImageLogement.objects.filter(annonce=myObject)
     if request.method == 'POST':
         length = request.POST.get('length')
+        # managing multi image selection with filepond
         for file_num in range(0, int(length)):
             ImageLogement.objects.create(
                 annonce=myObject,
@@ -296,7 +305,7 @@ def edit_calendrier(request, pk):
         calendrier.save()
         return HttpResponseRedirect(reverse("dashboard-calendrier", args=[annonce.id]))
     context = {'annonce': annonce, 'calendrier': calendrier}
-    return render(request, 'annonce/dashboard/edit-calendrier.html', context)
+    return render(request, 'annonce/dashboard/create-calendrier.html', context)
 
 @login_required
 def condition_view(request, pk):
@@ -362,3 +371,18 @@ def user_view_dashboard(request, pk):
     context = {'form': form, 'obj': myObject, 'address': myAdress}
 
     return render(request,'annonce/dashboard/userDashboard.html',context)
+
+def verification_view(request, pk):
+    myObject = Annonce.objects.get(id=pk)
+    user = request.user
+    form = VerifImage(instance=user)
+    if request.method =='POST':
+        form = VerifImage(request.POST,request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        form = VerifImage(instance=user)
+    context = {'form': form, 'obj': myObject, 'user': user,}
+
+    return render(request,'annonce/dashboard/verif.html',context)
