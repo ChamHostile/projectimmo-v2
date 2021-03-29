@@ -1,6 +1,7 @@
 from pyexpat.errors import messages
 
 from django.shortcuts import render, redirect
+from django.utils.baseconv import base64
 from django.views import View
 
 from .models import Annonce
@@ -23,6 +24,8 @@ from .forms import *
 from account.models import Address
 from django.contrib.auth.decorators import login_required
 # Create your views here.
+from projectimmo.settings import CLIENT_AUTH_ID, CLIENT_SECRET_KEY
+
 
 def user_created(model, request):
     obj = model.objects.latest('id')
@@ -182,8 +185,6 @@ def description_view(request, pk):
     context = {'form': form, 'obj': myObject, 'requete': requete}
     return render(request,'annonce/dashboard/description.html',context)
 
-    context = {'descriptionForm': DescriptionForm}
-
 @login_required
 def equipment_view(request, pk):
     form = EquipmentForm()
@@ -305,7 +306,20 @@ def edit_calendrier(request, pk):
         calendrier.save()
         return HttpResponseRedirect(reverse("dashboard-calendrier", args=[annonce.id]))
     context = {'annonce': annonce, 'calendrier': calendrier}
-    return render(request, 'annonce/dashboard/create-calendrier.html', context)
+    return render(request, 'annonce/dashboard/edit-calendrier.html', context)
+
+@login_required
+def delete_calendrier(request, pk):
+    calendrier = Calendrier.objects.get(id=pk)
+    annonce = calendrier.annonce
+    context = {'annonce': annonce, 'calendrier': calendrier}
+    return render(request, 'annonce/dashboard/delete-calendrier.html', context)
+
+def delete_calendrier_confirm(request, pk):
+    calendrier = Calendrier.objects.get(id=pk)
+    calendrier.delete()
+    context = {'calendrier': calendrier}
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 @login_required
 def condition_view(request, pk):
@@ -386,3 +400,33 @@ def verification_view(request, pk):
     context = {'form': form, 'obj': myObject, 'user': user,}
 
     return render(request,'annonce/dashboard/verif.html',context)
+
+def get_access_code(request):
+
+    base_url = "https://account-d.docusign.com/oauth/auth"
+    auth_url = "{0}response_type=code&scope=signature&client_id={1}&redirect_uri={2}".format(base_url,
+                CLIENT_AUTH_ID, request.build_absolute_uri(reverse('auth_login')))
+
+    return HttpResponseRedirect(auth_url)
+
+def auth_login(request):
+
+    base_url = 'https://account-d.docusign.com/oauth/token'
+    auth_code_string = '{0}:{1}'.format(CLIENT_AUTH_ID, CLIENT_SECRET_KEY)
+    auth_token = base64.b64encode(auth_code_string.encode())
+
+    req_headers = {"Authorization": "Basic {0}".format(auth_token.decode('utf-8'))}
+    post_data = {'grant_type': 'authorization_code', 'code': request.GET.get('code')}
+
+    r = request.post(base_url, data=post_data, headers=req_headers)
+
+    response = r.json()
+    return HttpResponse(response['access_token'])
+
+    if not 'error' in response:
+        return HttpResponseRedirect("{0}?token={1}".format(reverse('get_signing_url'), reponse['access_token']))
+    return HttpResponse(response['error'])
+
+def embeded_signing_ceremony(request):
+    signer_email = 'hamza.aboudou@gmail.com'
+    signer_name = 'Aboudou Hamza'

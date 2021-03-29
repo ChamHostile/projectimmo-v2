@@ -70,6 +70,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'hamza.aboudou@gmail.com'
 EMAIL_HOST_PASSWORD = 'hmizizou59'
+CLIENT_AUTH_ID = '589f0450-92fa-467a-8215-608f808bb114'
+CLIENT_SECRET_KEY = 'c44217a9-247a-4ca3-9611-81d6e208a03b'
+
 
 DEFAULT_FROM_EMAIL = 'noreply<no_reply@domain.com>'
 
