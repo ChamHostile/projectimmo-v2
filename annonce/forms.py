@@ -14,7 +14,7 @@ DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 class AnnonceForm(ModelForm):
     class Meta:
         model = Annonce
-        fields = ['address','categorie_logement', 'type_location_choices']
+        fields = ['categorie_logement', 'type_location_choices']
         def __init__(self, *args, **kwargs):
             super(AnnonceForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
@@ -23,7 +23,7 @@ class AnnonceForm(ModelForm):
 class LoggedForm(ModelForm):
     class Meta:
         model = Annonce
-        fields = ['address','categorie_logement', 'type_location_choices']
+        fields = ['categorie_logement', 'type_location_choices']
         def __init__(self, *args, **kwargs):
             super(AnnonceForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()
@@ -41,7 +41,7 @@ class CreateUserForm(UserCreationForm):
 class DescriptionForm(ModelForm):
     class Meta:
         model = Annonce
-        fields = ['titre_logement','address','description','categorie_logement','nombre_personne', 'pieces_couchage']
+        fields = ['titre_logement','description','categorie_logement','nombre_personne', 'pieces_couchage']
         def __init__(self, *args, **kwargs):
             super(DescriptionForm, self).__init__(*args,**kwargs)
             self.helper = FormHelper()

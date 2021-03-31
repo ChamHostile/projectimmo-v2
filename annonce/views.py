@@ -38,7 +38,12 @@ def create_annonce(request):
 
     form = AnnonceForm()
     userForm = CreateUserForm()
-
+    rue = request.POST.get('rue')
+    voie = request.POST.get('voie')
+    ville = request.POST.get('ville')
+    region = request.POST.get('region')
+    zip = request.POST.get('zip')
+    pays = request.POST.get('pays')
 
     if request.method == 'POST':
         userForm = CreateUserForm(request.POST)
@@ -49,18 +54,18 @@ def create_annonce(request):
             user = userForm.save()
             email = userForm.cleaned_data['email']
             annonce = annonceForm.save()
-
+            myAdress = AddressAnnonce.objects.create(annonce=annonce,rue=rue,voie=voie,ville=ville,region=region,zipCode=zip,pays=pays)
+            myAdress.save()
             # - associate new objects with newly created user to use in dashboard
-            Annonce.objects.create(
-                user=user,
-            )
+            lastAnnonce = Annonce.objects.latest('id')
+            lastAnnonce.user = user
+            lastAnnonce.save()
             Condition.objects.create(
                 annonce=annonce,
             )
             Address.objects.create(
                 account=user,
             )
-            annonceForm.save()
             userForm.save()
             # path to view
                 # - getting domain
@@ -85,7 +90,7 @@ def create_annonce(request):
                 [email],
             )
             email.send(fail_silently=False)
-            return redirect('/')
+            return HttpResponse('Activez votre compte avec le lien envoyé à votre adresse mail')
     else:
         userForm = CreateUserForm()
         annonceForm = AnnonceForm()
@@ -137,13 +142,19 @@ def logout_annonce(request):
 @login_required(login_url='login-annonce')
 def logged_annonce(request):
     annonceForm = LoggedForm()
-
+    rue = request.POST.get('rue')
+    voie = request.POST.get('voie')
+    ville = request.POST.get('ville')
+    region = request.POST.get('region')
+    zip = request.POST.get('zip')
+    pays = request.POST.get('pays')
 
     if request.method == 'POST':
         annonceForm = AnnonceForm(request.POST)
 
         if annonceForm.is_valid():
-            annonceForm.save()
+            myAdress = AddressAnnonce.objects.create(annonce=annonceForm,rue=rue,voie=voie,ville=ville,region=region,zipCode=zip,pays=pays)
+            myAdress.save()
             annonceForm.save()
             newAnnonce = annonceForm.save()
             user_created(Annonce, request)
@@ -173,8 +184,33 @@ def gerer_annonce(request):
 @login_required
 def description_view(request, pk):
     form = DescriptionForm()
-    requete = request.user
     myObject = Annonce.objects.get(id=pk)
+    requete = request.user
+    rue = request.POST.get('rue')
+    voie = request.POST.get('voie')
+    ville = request.POST.get('ville')
+    region = request.POST.get('region')
+    zip = request.POST.get('zip')
+    pays = request.POST.get('pays')
+    address = request.POST.get('adressComplete')
+    myAdress = AddressAnnonce.objects.get(annonce=myObject)
+    if request.method == 'POST':
+        form = DescriptionForm(request.POST, instance=myObject)
+        if form.is_valid():
+            if address == '':
+                form.save()
+                return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+            else:
+                myAdress.rue = rue
+                myAdress.voie = voie
+                myAdress.ville = ville
+                myAdress.region = region
+                myAdress.zipCode = zip
+                myAdress.pays = pays
+                myAdress.save()
+                user = form.save()
+                form.save()
+                return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     if request.method =='POST':
         form = DescriptionForm(request.POST, instance=myObject)
         if form.is_valid():
@@ -182,7 +218,7 @@ def description_view(request, pk):
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         form = DescriptionForm(instance=myObject)
-    context = {'form': form, 'obj': myObject, 'requete': requete}
+    context = {'form': form, 'obj': myObject, 'requete': requete, 'address': myAdress}
     return render(request,'annonce/dashboard/description.html',context)
 
 @login_required
@@ -365,20 +401,25 @@ def user_view_dashboard(request, pk):
     zip = request.POST.get('zip')
     pays = request.POST.get('pays')
     myAdress = Address.objects.get(account=user)
+    address = request.POST.get('adressComplete')
 
     if request.method == 'POST':
         form = UserModif(request.POST, instance=user)
         if form.is_valid():
-            myAdress.rue = rue
-            myAdress.voie = voie
-            myAdress.ville = ville
-            myAdress.region = region
-            myAdress.zipCode = zip
-            myAdress.pays = pays
-            myAdress.save()
-            user = form.save()
-            form.save()
-            return redirect('/')
+            if address == '':
+                form.save()
+                return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+            else:
+                myAdress.rue = rue
+                myAdress.voie = voie
+                myAdress.ville = ville
+                myAdress.region = region
+                myAdress.zipCode = zip
+                myAdress.pays = pays
+                myAdress.save()
+                user = form.save()
+                form.save()
+                return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         form = UserModif(instance=user)
 
