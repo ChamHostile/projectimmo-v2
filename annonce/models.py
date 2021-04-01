@@ -73,8 +73,8 @@ class Annonce(models.Model):
     )
     equipements = models.ManyToManyField(Equipements, blank=True)
     charges = models.ManyToManyField(Charges, blank=True)
-    dureeLocationMini = models.CharField(blank=True, max_length=50)
-    dureeLocationMaxi = models.CharField(blank=True, max_length=50)
+    dureeLocationMini = models.CharField(blank=True,null=True, max_length=50)
+    dureeLocationMaxi = models.CharField(blank=True,null=True, max_length=50)
     loyer_tc = models.FloatField(max_length=50, blank=True, null=True)
     charges_loyer = models.FloatField(max_length=50, blank=True, null=True)
 

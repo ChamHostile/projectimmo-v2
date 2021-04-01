@@ -18,12 +18,36 @@ from itertools import chain
 
 # Create your views here.
 def searchPage(request):
-    query = request.GET.get('q')
-    annonce_address = AddressAnnonce.objects.filter(ville=query)
-    annonces = annonce_address.order_set.all()
-    myFilter = OrderFilter(request.GET, queryset=annonces)
-    annonces = myFilter.qs
+    query_ville = request.GET.get('ville')
+    query_location = request.GET.get('location')
+    query_locataires = request.GET.get('locataires')
+    ville_annonce = []
+    myFilter = []
+    list_annonce = []
+    if query_ville == "":
+        ville_annonce = AddressAnnonce.objects.all()
+        for obj in ville_annonce:
+            list_annonce.append(obj.annonce)
+            print(list_annonce)
+    else:
+        ville_annonce = AddressAnnonce.objects.filter(ville=query_ville)
+        for obj in ville_annonce:
+            list_annonce.append(obj.annonce)
+            print(list_annonce)
 
-    context={'annonces': annonces, 'myFilter': myFilter}
-    return render(request,'annonce/search/search_page.html',context)
+    if query_locataires == '' :
+        myFilter = list_annonce.filter(dureeLocationMini=query_location)
+    elif query_location == '':
+        myFilter = list_annonce.filter(dureeLocationMini=query_locataires)
+    elif query_location == '' and query_locataires == '':
+        myFilter = list_annonce.objects.all()
+    else:
+        myFilter = list_annonce.filter(dureeLocationMini=query_location, nombre_personne=query_locataires)
+
+    context = {'annonces': list_annonce}
+    return render(request, 'annonce/search/search_page.html', context)
+
+
+
+
 

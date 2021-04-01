@@ -5,12 +5,30 @@
 
 </head>
 <body>
-    <form action="{% url 'search_annonce' %}" method="get">
-        {{myFilter.form}}
+    <form action="" method="get">
+        <input type="text" name="query_ville">
+        <select name="query_location">
+            <option selected value="">...</option>
+            <option value="3mois">3 mois</option>
+            <option value="4mois">4 mois</option>
+            <option value="6mois">6 mois</option>
+            <option value="1an">1 an</option>
+        </select>
+        <select name="query_locataires">
+            <option selected value="">...</option>
+            <option value="1">1 locataire</option>
+            <option value="2">2 locataires</option>
+            <option value="3">3 locataires</option>
+            <option value="4">4 locataires</option>
+            <option value="5">5 locataires</option>
+            <option value="6">6 locataires</option>
+            <option value="7">7 locataires</option>
+            <option value="8">8 locataires</option>
+            <option value="9">9 locataires</option>
+            <option value="10">10 locataires</option>
+        </select>
         <button class="btn btn-primary" type="submit">Search</button>
     </form>
-    {% for list in annonces %}
-    {{ list.annonce.titre }}
-    {% endfor %}
+    {{list_annonce}}
 </body>
 </html>
