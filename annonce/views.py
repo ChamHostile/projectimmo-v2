@@ -54,11 +54,13 @@ def create_annonce(request):
             user = userForm.save()
             email = userForm.cleaned_data['email']
             annonce = annonceForm.save()
-            myAdress = AddressAnnonce.objects.create(annonce=annonce,rue=rue,voie=voie,ville=ville,region=region,zipCode=zip,pays=pays)
+            myAdress = AdressAnnonce.objects.create(rue=rue,voie=voie,ville=ville,region=region,zipCode=zip,pays=pays)
             myAdress.save()
+
             # - associate new objects with newly created user to use in dashboard
             lastAnnonce = Annonce.objects.latest('id')
             lastAnnonce.user = user
+            lastAnnonce.address = myAdress
             lastAnnonce.save()
             Condition.objects.create(
                 annonce=annonce,
@@ -153,9 +155,11 @@ def logged_annonce(request):
         annonceForm = AnnonceForm(request.POST)
 
         if annonceForm.is_valid():
-            myAdress = AddressAnnonce.objects.create(annonce=annonceForm,rue=rue,voie=voie,ville=ville,region=region,zipCode=zip,pays=pays)
+            myAdress = AdressAnnonce.objects.create(rue=rue,voie=voie,ville=ville,region=region,zipCode=zip,pays=pays)
             myAdress.save()
-            annonceForm.save()
+            obj = annonceForm.save(commit=False)
+            obj.address = myAdress
+            obj.save()
             newAnnonce = annonceForm.save()
             user_created(Annonce, request)
             return redirect(reverse('dashboard-annonce', kwargs={'pk':newAnnonce.id}))
@@ -193,7 +197,7 @@ def description_view(request, pk):
     zip = request.POST.get('zip')
     pays = request.POST.get('pays')
     address = request.POST.get('adressComplete')
-    myAdress = AddressAnnonce.objects.get(annonce=myObject)
+    myAdress = myObject.address
     if request.method == 'POST':
         form = DescriptionForm(request.POST, instance=myObject)
         if form.is_valid():

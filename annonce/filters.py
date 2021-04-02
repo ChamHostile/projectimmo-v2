@@ -4,5 +4,5 @@ from .models import *
 
 class OrderFilter(django_filters.FilterSet):
     class Meta:
-        model = AddressAnnonce
+        model = AdressAnnonce
         fields = ['ville']

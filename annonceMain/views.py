@@ -18,36 +18,29 @@ from itertools import chain
 
 # Create your views here.
 def searchPage(request):
-    query_ville = request.GET.get('ville')
-    query_location = request.GET.get('location')
-    query_locataires = request.GET.get('locataires')
-    ville_annonce = []
-    myFilter = []
-    list_annonce = []
-    if query_ville == "":
-        ville_annonce = AddressAnnonce.objects.all()
-        for obj in ville_annonce:
-            list_annonce.append(obj.annonce)
-            print(list_annonce)
-    else:
-        ville_annonce = AddressAnnonce.objects.filter(ville=query_ville)
-        for obj in ville_annonce:
-            list_annonce.append(obj.annonce)
-            print(list_annonce)
+    myFilter = Annonce.objects.all()
+    query_ville = request.GET.get('query_ville')
+    query_location = request.GET.get('query_location')
+    query_locataires = request.GET.get('query_locataires')
 
-    if query_locataires == '' :
-        myFilter = list_annonce.filter(dureeLocationMini=query_location)
-    elif query_location == '':
-        myFilter = list_annonce.filter(dureeLocationMini=query_locataires)
-    elif query_location == '' and query_locataires == '':
-        myFilter = list_annonce.objects.all()
-    else:
-        myFilter = list_annonce.filter(dureeLocationMini=query_location, nombre_personne=query_locataires)
+    if query_ville != '' and query_ville is not None:
+        myFilter = myFilter.filter(address__ville__icontains=query_ville)
 
-    context = {'annonces': list_annonce}
+    if query_locataires != '' and query_locataires is not None:
+        myFilter = myFilter.filter(nombre_personne=query_locataires)
+
+    if query_location != '' and query_location is not None:
+        myFilter = myFilter.filter(dureeLocationMaxi=query_location)
+
+    if query_ville != '' and query_ville is not None and query_locataires != '' and query_locataires is not None:
+        myFilter = myFilter.filter(address__ville__icontains=query_ville, nombre_personne=query_locataires)
+
+    if query_ville != '' and query_ville is not None and query_locataires != '' and query_locataires is not None and \
+            query_location != '' and query_location is not None:
+        myFilter = myFilter.filter(address__ville__icontains=query_ville, nombre_personne=query_locataires,
+                                   dureeLocationMaxi = query_location)
+
+
+    context = {'annonces': myFilter}
     return render(request, 'annonce/search/search_page.html', context)
-
-
-
-
 

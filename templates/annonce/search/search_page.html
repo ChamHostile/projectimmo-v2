@@ -5,8 +5,8 @@
 
 </head>
 <body>
-    <form action="" method="get">
-        <input type="text" name="query_ville">
+    <form action="." method="get">
+        <input type="search" name="query_ville">
         <select name="query_location">
             <option selected value="">...</option>
             <option value="3mois">3 mois</option>
@@ -29,6 +29,8 @@
         </select>
         <button class="btn btn-primary" type="submit">Search</button>
     </form>
-    {{list_annonce}}
+    {% for annonce in annonces %}
+    <p>{{ annonce.titre}}, {{annonce.nombre_personne}}, {{annonce.dureeLocationMini}}, {{annonce.address.ville}}</p>
+    {% endfor %}
 </body>
 </html>

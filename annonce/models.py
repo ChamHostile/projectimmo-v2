@@ -7,6 +7,15 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms import CheckboxSelectMultiple
 # Create your models here.
 
+class AdressAnnonce(models.Model):
+
+    rue = models.CharField(blank=True, max_length=20)
+    voie = models.CharField(blank=True, max_length=35)
+    ville = models.CharField(blank=True, max_length=20)
+    region = models.CharField(blank=True, max_length=20)
+    zipCode = models.CharField(blank=True, max_length=5)
+    pays = models.CharField(blank=True, max_length=20)
+
 class Equipements(models.Model):
     nom = models.CharField(max_length=200, null=True)
 
@@ -77,6 +86,11 @@ class Annonce(models.Model):
     dureeLocationMaxi = models.CharField(blank=True,null=True, max_length=50)
     loyer_tc = models.FloatField(max_length=50, blank=True, null=True)
     charges_loyer = models.FloatField(max_length=50, blank=True, null=True)
+    address = models.OneToOneField(
+        AdressAnnonce,
+        on_delete=models.CASCADE,
+        null=True,
+    )
 
 class ImageLogement(models.Model):
     annonce = models.ForeignKey(Annonce, on_delete=models.CASCADE)
@@ -217,16 +231,4 @@ class Diagnostic(models.Model):
     amianteDoc = models.FileField(blank=True)
     copopriete = models.FileField(blank=True)
 
-class AddressAnnonce(models.Model):
-    annonce = models.OneToOneField(
-        Annonce,
-        on_delete=models.CASCADE,
-        primary_key=True,
-        default='',
-    )
-    rue = models.CharField(blank=True, max_length=20)
-    voie = models.CharField(blank=True, max_length=35)
-    ville = models.CharField(blank=True, max_length=20)
-    region = models.CharField(blank=True, max_length=20)
-    zipCode = models.CharField(blank=True, max_length=5)
-    pays = models.CharField(blank=True, max_length=20)
+
