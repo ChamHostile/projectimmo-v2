@@ -18,7 +18,9 @@ from itertools import chain
 
 # Create your views here.
 def searchPage(request):
+
     myFilter = Annonce.objects.all()
+    image = ImageLogement.objects.all()
     query_ville = request.GET.get('query_ville')
     query_location = request.GET.get('query_location')
     query_locataires = request.GET.get('query_locataires')
@@ -40,7 +42,6 @@ def searchPage(request):
         myFilter = myFilter.filter(address__ville__icontains=query_ville, nombre_personne=query_locataires,
                                    dureeLocationMaxi = query_location)
 
-
-    context = {'annonces': myFilter}
+    context = {'annonces': myFilter, 'image':image}
     return render(request, 'annonce/search/search_page.html', context)
 

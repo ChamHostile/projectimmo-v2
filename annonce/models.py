@@ -7,6 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms import CheckboxSelectMultiple
 # Create your models here.
 
+
 class AdressAnnonce(models.Model):
 
     rue = models.CharField(blank=True, max_length=20)
@@ -95,9 +96,6 @@ class Annonce(models.Model):
 class ImageLogement(models.Model):
     annonce = models.ForeignKey(Annonce, on_delete=models.CASCADE)
     images = models.FileField(upload_to='images/')
-
-    def __str__(self):
-        return self.annonce.titre_logement
 
 class Calendrier(models.Model):
     annonce = models.ForeignKey(Annonce, on_delete=models.CASCADE)

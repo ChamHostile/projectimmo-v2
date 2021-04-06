@@ -56,11 +56,9 @@ def create_annonce(request):
             annonce = annonceForm.save()
             myAdress = AdressAnnonce.objects.create(rue=rue,voie=voie,ville=ville,region=region,zipCode=zip,pays=pays)
             myAdress.save()
-
             # - associate new objects with newly created user to use in dashboard
             lastAnnonce = Annonce.objects.latest('id')
             lastAnnonce.user = user
-            lastAnnonce.address = myAdress
             lastAnnonce.save()
             Condition.objects.create(
                 annonce=annonce,

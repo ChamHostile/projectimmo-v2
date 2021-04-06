@@ -1,36 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'main.html' %}
+{% block content %}
+<div class="container">
+    <form action="." method="get" class="mt-5 row">
+        <div class="input-group col-4">
+          <div class="form-outline">
+              <label class="form-label" for="form1">Chercher une annonce</label>
+            <input type="search" id="form1" name="query_ville" class="form-control" />
+        </div>
+          </div>
 
-</head>
-<body>
-    <form action="." method="get">
-        <input type="search" name="query_ville">
-        <select name="query_location">
+      <div class="form-group col-4">
+        <label for="select_location">Durée de location</label>
+        <select class="form-control" id="select_location" name="query_location">
             <option selected value="">...</option>
-            <option value="3mois">3 mois</option>
-            <option value="4mois">4 mois</option>
-            <option value="6mois">6 mois</option>
-            <option value="1an">1 an</option>
+          <option value="3mois">3 mois</option>
+          <option value="4mois">4 mois</option>
+          <option value="6mois">6 mois</option>
+          <option value="1an">1 an</option>
         </select>
-        <select name="query_locataires">
-            <option selected value="">...</option>
-            <option value="1">1 locataire</option>
-            <option value="2">2 locataires</option>
-            <option value="3">3 locataires</option>
-            <option value="4">4 locataires</option>
-            <option value="5">5 locataires</option>
-            <option value="6">6 locataires</option>
-            <option value="7">7 locataires</option>
-            <option value="8">8 locataires</option>
-            <option value="9">9 locataires</option>
-            <option value="10">10 locataires</option>
-        </select>
-        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+        <div class="form-group col-4">
+            <label for="select_locataires">Nombre de locataire</label>
+            <select class="form-control" id="select_locataires" name="query_locataires">
+                <option selected value="">...</option>
+                <option value="1">1 locataire</option>
+                <option value="2">2 locataires</option>
+                <option value="3">3 locataires</option>
+                <option value="4">4 locataires</option>
+                <option value="5">5 locataires</option>
+                <option value="6">6 locataires</option>
+                <option value="7">7 locataires</option>
+                <option value="8">8 locataires</option>
+                <option value="9">9 locataires</option>
+                <option value="10">10 locataires</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Chercher</button>
     </form>
+    <div class="row">
     {% for annonce in annonces %}
-    <p>{{ annonce.titre}}, {{annonce.nombre_personne}}, {{annonce.dureeLocationMini}}, {{annonce.address.ville}}</p>
+    <div class="col-4 mt-2">
+        <div class="card" style="width: 18rem;">
+            {% for myImage in image %}
+                {% if annonce.id == myImage.annonce.id%}
+                    {% if forloop.counter == 1  %}
+                        <img class="card-img-top" src="{{myImage.images.url}}" alt="logement{{annonce.id}}">
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+          <div class="card-body">
+            <h5 class="card-title">{{annonce.titre_logement}}</h5>
+              <small id="emailHelp" class="form-text text-muted">{{ annonce.address.rue }} {{annonce.address.voie}}, {{annonce.address.ville}} - {{annonce.address.zipCode}}</small>
+            <p class="card-text">{{annonce.description}}</p>
+            <a href="#" class="btn btn-primary">Voir plus</a>
+          </div>
+        </div>
+        </div>
+
     {% endfor %}
-</body>
-</html>
+
+   </div>
+{% endblock %}
