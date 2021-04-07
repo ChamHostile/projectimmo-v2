@@ -45,3 +45,8 @@ def searchPage(request):
     context = {'annonces': myFilter, 'image':image}
     return render(request, 'annonce/search/search_page.html', context)
 
+def detail_annonce(request, pk):
+    myObject = Annonce.objects.get(id=pk)
+    image = ImageLogement.objects.all()
+    context = {'annonce': myObject, 'myImages': image}
+    return render(request, 'annonce/search/annonce_result.html', context)
