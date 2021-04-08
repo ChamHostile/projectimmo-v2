@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'account',
     'widget_tweaks',
     "verify_email",
+    'workflow',
+    'annonceMain',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -69,7 +71,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'hamza.aboudou@gmail.com'
-EMAIL_HOST_PASSWORD = 'hmizizou59'
+EMAIL_HOST_PASSWORD = 'Lulumonlapin23'
 CLIENT_AUTH_ID = '589f0450-92fa-467a-8215-608f808bb114'
 CLIENT_SECRET_KEY = 'c44217a9-247a-4ca3-9611-81d6e208a03b'
 

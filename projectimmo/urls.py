@@ -41,6 +41,7 @@ urlpatterns = [
    # path('compte/', include('compte.urls')),
     path('posts/', include('posts.urls')),
     path('verification/', include('verify_email.urls')),
+    path('', include('workflow.urls')),
   # path('create-post/', views.create_post_view, name='create-post'),
    # path('<int:id>/', views.detail_view, name='detail'),
     url('^soumission/', include('soumission.urls')),
