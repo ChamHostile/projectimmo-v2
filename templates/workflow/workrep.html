@@ -4,20 +4,20 @@
 <html>
 
 <head>
-	<title>treatment</title>
+	<title>Send your folder</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 
 	<style>
         body{
-            background-color: black;  
+            background-color: #69948A;
+            color : white;
         }
         .contenue{
             margin-top: 10vh;
             height: 85vh;
             width: 50%;
-            background-color: #e3e0e000;
         }
         .contenue h1{
             text-align: center;
@@ -27,18 +27,19 @@
             text-transform: uppercase;
         }
         #form{
-            width: 70%;
+            width: 50%;
             display: flex;
             justify-content: center;
             align-content: center;
             text-align: center;
             margin: 10px;
+            margin-left: 155px;
             border-radius: 7px;
-            margin-left: 90px;
         }
         .formulaire{
             background-color: orange;
             width: 70%;
+            padding-bottom: 5vh;
         }
         .text{
             display: flex;
@@ -47,22 +48,16 @@
             font-size: 1.3em;
             margin: 20px 0px 0px 150px;
             font-weight: 700;
-            margin: 30px 0px 30px 30px;
-        }
-        .text1{
-            display: flex;
-            font-family: 'Roboto Slab', serif;
-            font-size: 1.3em;
-            margin: 30px 0px 30px 30px;
-            color: rgb(114, 114, 114);
         }
         .submit{
             display: flex;
-            margin: 30px 30px 50px 200px;
+            justify-content: center;
+            align-content: center;
+            margin: 20px;
+            width: 50%;
+            margin-left: 160px;
             border-radius: 15px;
             padding: 5px;
-            color: orange;
-            background-color: black;
         }
         #file{
             display: flex;
@@ -79,50 +74,69 @@
             text-align: center;
             margin: 30px;
         }
-        #choix{
-            padding: 0;
-            margin: 25px;
-        }
 
     </style>
 
-    <form enctype="multipart/form-data" action="" method="post">
+    <form enctype="multipart/form-data" action="" method="POST">
 
         {% csrf_token %}
+        {{files}}
         <div class="container contenue">
-            <h1>His folder</h1>
-                <div class="container-fluid formulaire">
-                    <div class="row">
-                        <label name="f_name" class="text" for="fname">First name :</label>
-                        <p class="text1">{{ Files.f_name }}</p> 
-                    </div>
-                    <div class="row">
-                        <label name="s_name" class="text" for="sname">Seconde name :</label>
-                        <p class="text1">{{ Files.s_name }}</p>
-                    </div>
-                    <div class="row">
-                        <label name="mail" class="text" for="mail">E-mail :</label>
-                        <p class="text1">{{ Files.mail }}</p>
-                    </div>
-                    <div class="row">
-                        <label name="files" class="text" for="files">Files:</label>
-                        <a class="text1" href={{Files.my_file.url}} target="_blank">{{ Files.my_file }}</a>
-                    </div>
-                    <div class="row">
-                        <label name="files" class="text" for="files">Your verdict</label>
-                        <select name="verdict" id="form">
-                            <option value="Dossier accepté">Dossier accepté</option>
-                            <option value="Dossier refusé">Dossier refusé</option>
-                            <option value="Dossier en attente">Dossier en attente</option>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <input type="submit" value="Send your verdict" class="submit">
-                        </div>
-                    </div>
+            <div class="row">
+            <h1>Send Your Folder</h1>
+                <div class="row">
+                    {% load crispy_forms_tags %}
+                    {% for field in form %}
+                    <div class="col-8">{{ field|as_crispy_field }}</div>
+                    {% endfor %}
+                    <div class="panel panel-primary mb-4">
+                <div class="panel-heading">
+                  <h4 class="panel-title">Ajoutez votre adresse</h4>
                 </div>
+                <div class="panel-body" >
+                  <input id="autocomplete" required placeholder="Entrez votre adresse" type="text" class="form-control">
+                  <div id="address">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="control-label">Rue</label>
+                        <input class="form-control" id="street_number" name="rue" disabled="true">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="control-label">Voie</label>
+                        <input class="form-control" id="route" name="voie" disabled="true">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="control-label">Ville</label>
+                        <input class="form-control field" id="locality" disabled="true" name="ville">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="control-label">Region</label>
+                        <input class="form-control" id="administrative_area_level_1" disabled="true" name="region">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="control-label">Code Postal</label>
+                        <input class="form-control" id="postal_code" disabled="true" name="zip">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="control-label">Pays</label>
+                        <input class="form-control" id="country" disabled="true" name="pays">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                </div>
+                <input type="submit" name="Envoyer" class="btn btn-primary mb-5">
+            </div>
+
         </div>
+
     </form>
 </body>
 </html>
+
+

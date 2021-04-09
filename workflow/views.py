@@ -12,41 +12,43 @@ from .models import File
 
 def workflow(request):
     global contentFile
-    form = NewFile(request.POST or None)
+    form = NewFile()
     # if request.method == 'POST':
     #     form.save()
     if request.method == 'POST':
-        f_name = request.POST.get('f_name')
-        s_name = request.POST.get('s_name')
-        mail = request.POST.get('mail')
-        my_file = request.FILES['my_file']
-        contentFile = my_file.read()
+        form = NewFile(request.POST)
+        f_name = request.POST.get('nom')
+        s_name = request.POST.get('prenom')
+        mail = request.POST.get('email')
+        my_file_avis = request.FILES['document_avis']
+        my_file_quittance = request.FILES['document_quittance']
+        my_file_paye = request.FILES['document_paye']
+        if form.is_valid():
+            form.save()
+            data = {
+                'f_name': f_name,
+                's_name': s_name,
+                'mail': mail,
+                'my_file_avis': my_file_avis,
+                'my_file_quittance': my_file_quittance,
+                'my_file_paye': my_file_paye,
+            }
 
-        saluttoi = File(f_name=f_name, s_name=s_name, mail=mail, my_file=my_file)
-        saluttoi.save()
-
-        data = {
-            'f_name': f_name,
-            's_name': s_name,
-            'mail': mail,
-            'my_file': my_file,
-        }
-
-        message = '''
-            New customer: {} {}
-
-            Hello,
-            Here the message with a folder of our customer.
-            Thank you for taking care of it.
-            Click on the link for send your verdict:
-            http://127.0.0.1:8000/workflow/workrep
-            Have nice day
-
-            His folder: {}
-
-            From: {}
-            '''.format(data['f_name'],data['s_name'], data['my_file'], data['mail'])
-        send_mail(data['f_name'], message, '', [mail])
+            message = '''
+                New customer: {} {}
+    
+                Hello,
+                Here the message with a folder of our customer.
+                Thank you for taking care of it.
+                Click on the link for send your verdict:
+                http://127.0.0.1:8000/workflow/workrep
+                Have nice day
+    
+                His folder: {}, {}, {}
+    
+                From: {}
+                '''.format(data['f_name'],data['s_name'], data['my_file_avis'],data['my_file_quittance'],data['my_file_paye'], data['mail'])
+            send_mail(data['f_name'], message, '', [mail])
 
     context = {'form': form}
 

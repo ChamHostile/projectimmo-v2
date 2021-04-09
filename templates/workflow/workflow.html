@@ -11,7 +11,8 @@
 
 	<style>
         body{
-            background-color: black;  
+            background-color: #69948A;
+            color : white;
         }
         .contenue{
             margin-top: 10vh;
@@ -81,33 +82,63 @@
         {% csrf_token %}
         {{files}}
         <div class="container contenue">
+            <div class="row">
             <h1>Send Your Folder</h1>
-                <div class="container-fluid formulaire">
-                    <div class="row">
-                        <label name="f_name" class="text" for="fname">First name :</label>
-                        <input name="f_name" type="text" id="form">
-                    </div>
-                    <div class="row">
-                        <label name="s_name" class="text" for="sname">Seconde name :</label>
-                        <input name="s_name" type="text" id="form">
-                    </div>
-                    <div class="row">
-                        <label name="mail" class="text" for="mail">E-mail :</label>
-                        <input name="mail" type="email" id="form">
-                    </div>
-                    <div class="row">
-                        <label class="text" id="file" for="file">Your Folder :</label>
-                    </div>
-                    <div class="row">
-                        <input name="my_file" type="file" id="form1">
-                    </div>
-                    <div class="row">
-                        <input type="submit" value="Send it to US" class="submit">
-                    </div>
+                <div class="row">
+                    {% load crispy_forms_tags %}
+                    {% for field in form %}
+                    <div class="col-8">{{ field|as_crispy_field }}</div>
+                    {% endfor %}
+                    <div class="panel panel-primary mb-4">
+                <div class="panel-heading">
+                  <h4 class="panel-title">Ajoutez votre adresse</h4>
                 </div>
+                <div class="panel-body" >
+                  <input id="autocomplete" required placeholder="Entrez votre adresse" type="text" class="form-control">
+                  <div id="address">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="control-label">Rue</label>
+                        <input class="form-control" id="street_number" name="rue" disabled="true">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="control-label">Voie</label>
+                        <input class="form-control" id="route" name="voie" disabled="true">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="control-label">Ville</label>
+                        <input class="form-control field" id="locality" disabled="true" name="ville">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="control-label">Region</label>
+                        <input class="form-control" id="administrative_area_level_1" disabled="true" name="region">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="control-label">Code Postal</label>
+                        <input class="form-control" id="postal_code" disabled="true" name="zip">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="control-label">Pays</label>
+                        <input class="form-control" id="country" disabled="true" name="pays">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                </div>
+                <input type="submit" name="Envoyer" class="btn btn-primary mb-5">
+            </div>
+
         </div>
+
     </form>
 </body>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1lHVWM1UP-2-F2RPwgBCcRKjYjXAqm5A&libraries=places&callback=initAutocomplete" async defer></script>
+    <script src="{% static 'js/autocomplete.js' %}"></script>
 </html>
 
 
