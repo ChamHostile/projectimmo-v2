@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)https://getbootstrap.com/docs/4.5/examples/blog/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/blog/">
+
+    <!-- Bootstrap core CSS -->
+<link href="./Blog Template · Bootstrap_files/bootstrap.min.css" rel="stylesheet" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <!-- Favicons -->
+<link rel="manifest" href="https://getbootstrap.com/docs/4.5/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="https://getbootstrap.com/docs/4.5/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
+<meta name="msapplication-config" content="/docs/4.5/assets/img/favicons/browserconfig.xml">
+<meta name="theme-color" content="#563d7c">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="./Blog Template · Bootstrap_files/css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="./Blog Template · Bootstrap_files/blog.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+  <header class="blog-header py-3">
+    <div class="row flex-nowrap justify-content-between align-items-center">
+      <div class="col-4 pt-1">
+        <a class="text-muted" href="https://getbootstrap.com/docs/4.5/examples/blog/#">NEK</a>
+      </div>
+      <div class="col-4 text-center">
+        <h3><a class="blog-header-logo text-dark" href="https://getbootstrap.com/docs/4.5/examples/blog/#">Annonces</a></h3>
+      </div>
+      <div class="col-4 d-flex justify-content-end align-items-center">
+          {% if request.user.is_authenticated %}
+            <p class="text-muted">Bienvenue {{request.user.first_name}} {{request.user.last_name}}</p>
+          {% else %}
+        <a class="btn btn-sm btn-outline-secondary" href="https://getbootstrap.com/docs/4.5/examples/blog/#">Sign up</a>
+          {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-scroller py-1 mb-2">
+    <nav class="nav d-flex justify-content-between">
+        {% if not request.user.is_authenticated %}
+      <a class="p-2 text-muted" href="{% url 'acces' %}">Home</a>
+        {% endif %}
+      <a class="p-2 text-muted" href="{% url 'gerer-annonce' %}">Dashboard</a>
+        {% if not request.user.is_authenticated %}
+        <a class="p-2 text-muted" href="{% url 'creer-annonce' %}">Publier Annonce</a>
+        {% else %}
+        <a class="p-2 text-muted" href="{% url 'logged-annonce' %}">Publier Annonce</a>
+        {% endif %}
+        <a class="p-2 text-muted" href="{% url 'conciergerie' %}">Conciergerie</a>
+
+    </nav>
+  </div>
+
+  <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4 font-italic">Chercher une annonce</h1>
+    <form action="{% url 'search_annonce' %}" method="get" class="mt-4">
+        <p class="lead my-3">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae dui metus. Aliquam nisl dolor, vulputate non varius mattis, luctus at dui. Ut nec vestibulum nunc, ut volutpat tortor.
+            quis id lorem.
+        </p>
+        <div class="input-group">
+          <div class="form-outline">
+              <label class="form-label" for="form1">Chercher une annonce</label>
+            <input type="search" id="form1" name="query_ville" class="form-control" />
+        </div>
+          </div>
+
+      <div class="form-group">
+        <label for="select_location">Durée de location</label>
+        <select class="form-control col-6" id="select_location" name="query_location">
+            <option selected value="">...</option>
+          <option value="3mois">3 mois</option>
+          <option value="4mois">4 mois</option>
+          <option value="6mois">6 mois</option>
+          <option value="1an">1 an</option>
+        </select>
+      </div>
+        <div class="form-group">
+            <label for="select_locataires">Nombre de locataire</label>
+            <select class="form-control col-6" id="select_locataires" name="query_locataires">
+                <option selected value="">...</option>
+                <option value="1">1 locataire</option>
+                <option value="2">2 locataires</option>
+                <option value="3">3 locataires</option>
+                <option value="4">4 locataires</option>
+                <option value="5">5 locataires</option>
+                <option value="6">6 locataires</option>
+                <option value="7">7 locataires</option>
+                <option value="8">8 locataires</option>
+                <option value="9">9 locataires</option>
+                <option value="10">10 locataires</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Chercher</button>
+    </form>
+    </div>
+  </div>
+<h1>Dernières annonces</h1>
+  <div class="row mb-2">
+      {% for myAnnonce in annonce %}
+    <div class="col-md-6">
+      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary">{{myAnnonce.categorie_logement}}</strong>
+          <h3 class="mb-0">{{myAnnonce.titre_logement}}</h3>
+          <div class="mb-1 text-muted">{{ myAnnonce.address.rue }} {{myAnnonce.address.voie}}, {{myAnnonce.address.ville}} - {{myAnnonce.address.zipCode}}</div>
+          <p class="card-text mb-auto">{{myAnnonce.description}}</p>
+          <a href="{% url 'detail_annonce' myAnnonce.id %}" class="stretched-link">Continue reading</a>
+        </div>
+        <div class="col-auto d-none d-lg-block">
+            {% for myImage in image %}
+                    {% if myAnnonce.id == myImage.annonce.id %}
+                        {% if forloop.counter == 1  %}
+                            {% if myImage.id %}
+                            <img class="card-img-top" src="{{myImage.images.url}}" alt="logement{{myAnnonce.id}}" width="175" height="275">
+                            {% elif myImage.images.url == "" %}
+                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+      {% endfor %}
+  </div>
+</div>
+
+
+<footer class="blog-footer">
+<hr>
+<h1>Footer</h1>
+</footer>
+
+
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script></html>
