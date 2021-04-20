@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "verify_email",
     'workflow',
     'annonceMain',
+    'datapackage',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

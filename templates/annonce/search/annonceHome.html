@@ -53,7 +53,7 @@
           {% if request.user.is_authenticated %}
             <p class="text-muted">Bienvenue {{request.user.first_name}} {{request.user.last_name}}</p>
           {% else %}
-        <a class="btn btn-sm btn-outline-secondary" href="https://getbootstrap.com/docs/4.5/examples/blog/#">Sign up</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'register' %}">Sign up</a>
           {% endif %}
       </div>
     </div>
