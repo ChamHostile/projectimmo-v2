@@ -447,7 +447,7 @@
 					<div class="tab-posts-box">
 						<ul class="nav nav-tabs" id="myTab">
 							<li class="active">
-								<a href="#option1" data-toggle="tab">Hotels</a>
+								<a href="#option1" data-toggle="tab">Annonce</a>
 							</li>
 							<li>
 								<a href="#option2" data-toggle="tab">Rent a car</a>
@@ -462,23 +462,41 @@
 
 						<div class="tab-content">
 							<div class="tab-pane active" id="option1">
-								<form class="search-hotel">
+								<form class="search-hotel" method="get" action="{% url 'search_conciergerie' %}">
 									<div class="row">
 										<div class="col-md-3 col-sm-6">
 											<label for="place">Where do you want to go?</label>
-											<input type="text" name="place" id="place"/>
+											<input type="text" name="query_ville" id="place"/>
 										</div>
 										<div class="col-md-2 col-sm-3">
-											<label for="date-check-in">Check in date:</label>
-											<input type="text" name="date-check-in" id="date-check-in" placeholder="mm/dd/yy"/>
+											<label>Duree de location:</label>
+											<select name="query_location">
+												<option selected value="">...</option>
+											  <option value="3mois">3 mois</option>
+											  <option value="4mois">4 mois</option>
+											  <option value="6mois">6 mois</option>
+											  <option value="1an">1 an</option>
+											</select>
+										</div>
+										<div class="col-md-3 col-sm-3">
+											<label>Nombre de locataire:</label>
+											<select name="query_locataire">
+												<option selected value="">...</option>
+												<option value="1">1 locataire</option>
+												<option value="2">2 locataires</option>
+												<option value="3">3 locataires</option>
+												<option value="4">4 locataires</option>
+												<option value="5">5 locataires</option>
+												<option value="6">6 locataires</option>
+												<option value="7">7 locataires</option>
+												<option value="8">8 locataires</option>
+												<option value="9">9 locataires</option>
+												<option value="10">10 locataires</option>
+											</select>
 										</div>
 										<div class="col-md-2 col-sm-3">
-											<label for="date-check-out">Check out date:</label>
-											<input type="text" name="date-check-out" id="date-check-out" placeholder="mm/dd/yy"/>
-										</div>
-										<div class="col-md-1 col-sm-3">
-											<label>Rooms:</label>
-											<select>
+											<label>Nombre de place:</label>
+											<select name="query_place">
 												<option>1</option>
 												<option>2</option>
 												<option>3</option>
@@ -486,28 +504,9 @@
 												<option>5</option>
 											</select>
 										</div>
-										<div class="col-md-1 col-sm-3">
-											<label>Adults:</label>
-											<select>
-												<option>1</option>
-												<option>2</option>
-												<option>3</option>
-												<option>4</option>
-												<option>5</option>
-											</select>
-										</div>
-										<div class="col-md-1 col-sm-3">
-											<label>Kids:</label>
-											<select>
-												<option>1</option>
-												<option>2</option>
-												<option>3</option>
-												<option>4</option>
-												<option>5</option>
-											</select>
-										</div>
+
 										<div class="col-md-2 col-sm-3">
-											<input type="submit" value="Search"/>
+											<input type="submit" value="Chercher"/>
 										</div>
 									</div>
 								</form>
@@ -767,7 +766,7 @@
 
 								<h2><a href="#">{{myAnnonce.titre_logement}}</a></h2>
 								<div class="feature-offer-content">
-									<p>{{ myAnnonce.description }}</p>
+									<small id="emailHelp" class="form-text text-muted">{{ annonce.address.rue }} {{annonce.address.voie}}, {{annonce.address.ville}} - {{annonce.address.zipCode}}</small>
 									<span>Save up to 30%</span>
 								</div>
 								<a href="{% url 'detail_annonce' myAnnonce.id %}">View Details</a>
