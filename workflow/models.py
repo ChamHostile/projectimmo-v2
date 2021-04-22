@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from multiselectfield import MultiSelectField
 
 # Create your models here.
 class AdressWorkflow(models.Model):
@@ -12,10 +12,25 @@ class AdressWorkflow(models.Model):
     zipCode = models.CharField(blank=True, max_length=5)
     pays = models.CharField(blank=True, max_length=20)
 
+
 class File(models.Model):
     nom = models.CharField(max_length=200, null=True)
     prenom = models.CharField(max_length=200, null=True)
-
+    VISITE_SELECT = (
+        ('0', 'Visites substituées'),
+        ('1', 'Visites physiques'),
+    )
+    type_visite = models.CharField(max_length=30, null=True, choices=VISITE_SELECT)
+    JOURS = ((1,'Lundi'),
+             (2,'Mardi'),
+             (3,'Mercredi'),
+             (4, 'Jeudi'),
+             (5, 'Vendredi'),
+             (6, 'Samedi'),
+             (7, 'Dimanche'))
+    planificateur_visite = MultiSelectField(choices=JOURS, null=True)
+    heure_debut = models.TimeField(null=True)
+    heure_fin = models.TimeField(null=True)
     telephone = models.CharField(max_length=200, null=True)
     email = models.EmailField(max_length=200, null=True)
     date_creation = models.DateTimeField(auto_now_add=True, null=True)

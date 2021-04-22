@@ -13,6 +13,8 @@ from .models import File
 def workflow(request):
     global contentFile
     form = NewFile()
+    heure_debut = request.POST.get('heure_debut')
+    heure_fin = request.POST.get('heure_fin')
     # if request.method == 'POST':
     #     form.save()
     if request.method == 'POST':
@@ -24,6 +26,8 @@ def workflow(request):
         my_file_quittance = request.FILES['document_quittance']
         my_file_paye = request.FILES['document_paye']
         if form.is_valid():
+            form.heure_debut = heure_debut
+            form.heure_fin = heure_fin
             form.save()
             data = {
                 'f_name': f_name,

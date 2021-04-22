@@ -16,6 +16,9 @@ class NewFile(ModelForm):
     class Meta:
         model = File
         exclude = ['address', 'verdict']
+        widgets = {
+            'type_visite': forms.RadioSelect()
+        }
         def __init__(self, *args, **kwargs):
             super(NewFile, self).__init__(*args,**kwargs)
             self.helper = FormHelper()

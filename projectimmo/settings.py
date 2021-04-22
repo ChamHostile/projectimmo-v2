@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'workflow',
     'annonceMain',
     'datapackage',
+    'multiselectfield',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

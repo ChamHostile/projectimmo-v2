@@ -87,7 +87,17 @@
                 <div class="row">
                     {% load crispy_forms_tags %}
                     {% for field in form %}
-                    <div class="col-8">{{ field|as_crispy_field }}</div>
+                        {% if field == form.heure_debut %}
+                            <div class="col-8">
+                                <label for="heure_debut">Heure de début - Créneau horaire des visites *</label>
+                                <p><input name="heure_debut" type="time" required></p></div>
+                        {% elif field == form.heure_fin %}
+                            <div class="col-8">
+                                <label for="heure_fin">Heure de fin - Créneau horaire des visites *</label>
+                                <p><input name="heure_fin" type="time" required></p></div>
+                        {% else %}
+                            <div class="col-8">{{ field|as_crispy_field }}</div>
+                        {% endif %}
                     {% endfor %}
                     <div class="panel panel-primary mb-4">
                 <div class="panel-heading">
