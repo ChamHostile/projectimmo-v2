@@ -78,57 +78,30 @@
     </style>
 
     <form enctype="multipart/form-data" action="" method="POST">
-
+    {% load widget_tweaks %}
         {% csrf_token %}
         {{files}}
         <div class="container contenue">
             <div class="row">
             <h1>Send Your Folder</h1>
                 <div class="row">
+                    <div class="col-8"><p><small id="emailHelp" class="form-text text-muted">{{ Files.address.rue }} {{Files.address.voie}}, {{Files.address.ville}} - {{Files.address.zipCode}}</small></p>
+</div>
                     {% load crispy_forms_tags %}
                     {% for field in form %}
-                    <div class="col-8">{{ field|as_crispy_field }}</div>
+                        {% if field == form.planificateur_visite %}
+
+                            <div class="col-8">
+                            <p>Jours de visite : {{Files.planificateur_visite}}</p>
+                            </div>
+                        {% else %}
+                        <div class="col-8">
+
+                            {{ field|attr:"disabled"|as_crispy_field }}
+                        </div>
+                        {% endif %}
                     {% endfor %}
-                    <div class="panel panel-primary mb-4">
-                <div class="panel-heading">
-                  <h4 class="panel-title">Ajoutez votre adresse</h4>
-                </div>
-                <div class="panel-body" >
-                  <input id="autocomplete" required placeholder="Entrez votre adresse" type="text" class="form-control">
-                  <div id="address">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <label class="control-label">Rue</label>
-                        <input class="form-control" id="street_number" name="rue" disabled="true">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="control-label">Voie</label>
-                        <input class="form-control" id="route" name="voie" disabled="true">
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <label class="control-label">Ville</label>
-                        <input class="form-control field" id="locality" disabled="true" name="ville">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="control-label">Region</label>
-                        <input class="form-control" id="administrative_area_level_1" disabled="true" name="region">
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <label class="control-label">Code Postal</label>
-                        <input class="form-control" id="postal_code" disabled="true" name="zip">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="control-label">Pays</label>
-                        <input class="form-control" id="country" disabled="true" name="pays">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    <div class="col-8">{{ Files.document_avis }}</div>
                 </div>
                 <input type="submit" name="Envoyer" class="btn btn-primary mb-5">
             </div>

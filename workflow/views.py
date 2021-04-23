@@ -15,6 +15,12 @@ def workflow(request):
     form = NewFile()
     heure_debut = request.POST.get('heure_debut')
     heure_fin = request.POST.get('heure_fin')
+    rue = request.POST.get('rue')
+    voie = request.POST.get('voie')
+    ville = request.POST.get('ville')
+    region = request.POST.get('region')
+    zip = request.POST.get('zip')
+    pays = request.POST.get('pays')
     # if request.method == 'POST':
     #     form.save()
     if request.method == 'POST':
@@ -22,14 +28,22 @@ def workflow(request):
         f_name = request.POST.get('nom')
         s_name = request.POST.get('prenom')
         mail = request.POST.get('email')
-        my_file_avis = request.FILES['document_avis']
-        my_file_quittance = request.FILES['document_quittance']
-        my_file_paye = request.FILES['document_paye']
+        my_file_avis = request.POST.get('document_avis', False)
+        my_file_quittance = request.POST.get('document_quittance', False)
+        my_file_paye = request.POST.get('document_paye', False)
         if form.is_valid():
             form.heure_debut = heure_debut
             form.heure_fin = heure_fin
+            myAdress = AdressWorkflow.objects.create(rue=rue, voie=voie, ville=ville, region=region, zipCode=zip, pays=pays)
+            myAdress.save()
+            lastAdress = AdressWorkflow.objects.latest('id')
             form.save()
+            myId = File.objects.latest('id')
+            myId.address = lastAdress
+            myId.save()
+            myId = myId.id
             data = {
+                'id': myId,
                 'f_name': f_name,
                 's_name': s_name,
                 'mail': mail,
@@ -45,13 +59,13 @@ def workflow(request):
                 Here the message with a folder of our customer.
                 Thank you for taking care of it.
                 Click on the link for send your verdict:
-                http://127.0.0.1:8000/workflow/workrep
+                http://127.0.0.1:8000/workflow/workrep/{}
                 Have nice day
     
                 His folder: {}, {}, {}
     
                 From: {}
-                '''.format(data['f_name'],data['s_name'], data['my_file_avis'],data['my_file_quittance'],data['my_file_paye'], data['mail'])
+                '''.format(data['f_name'],data['s_name'],data['id'], data['my_file_avis'],data['my_file_quittance'],data['my_file_paye'], data['mail'])
             send_mail(data['f_name'], message, '', [mail])
 
     context = {'form': form}
@@ -61,9 +75,9 @@ def workflow(request):
 @login_required(login_url='login')
 
 
-def workrep(request):
-    Files=File.objects.latest('id')
-    context={'Files':Files}
+def workrep(request, pk):
+    Files=File.objects.get(id=pk)
+
     
     form = UpdateFile(request.POST or None, instance=Files)
     if request.method == 'POST':
@@ -90,13 +104,13 @@ def workrep(request):
         
         '''.format(data1['verdict'])
         send_mail(data1['verdict'], message, '', [settings.EMAIL_HOST_USER])
-
+    context = {'Files': Files, 'form': form}
     return render(request, 'workflow/workrep.html', context)
 
 
-def workfinal(request):
-    Files=File.objects.latest('id')
-    contextt={'Files':Files}
+def workfinal(request, pk):
+    Files = File.objects.get(id=pk)
+    context = {'Files': Files}
 
     if request.method == 'POST':
         comment = request.POST.get('comment')

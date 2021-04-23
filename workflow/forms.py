@@ -15,7 +15,7 @@ from functools import partial
 class NewFile(ModelForm):
     class Meta:
         model = File
-        exclude = ['address', 'verdict']
+        exclude = ['verdict', 'address']
         widgets = {
             'type_visite': forms.RadioSelect()
         }
@@ -27,7 +27,7 @@ class NewFile(ModelForm):
 class UpdateFile(ModelForm):
     class Meta:
         model = File
-        fields = ['verdict']
+        exclude = ['document_avis', 'document_paye', 'document_quittance']
 
 
 

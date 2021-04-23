@@ -95,6 +95,8 @@
                             <div class="col-8">
                                 <label for="heure_fin">Heure de fin - Créneau horaire des visites *</label>
                                 <p><input name="heure_fin" type="time" required></p></div>
+                        {% elif field == form.address %}
+                            <div></div>
                         {% else %}
                             <div class="col-8">{{ field|as_crispy_field }}</div>
                         {% endif %}
