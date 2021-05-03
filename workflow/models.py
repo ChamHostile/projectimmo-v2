@@ -12,6 +12,11 @@ class AdressWorkflow(models.Model):
     zipCode = models.CharField(blank=True, max_length=5)
     pays = models.CharField(blank=True, max_length=20)
 
+class Commentaire_nek(models.Model):
+    commentaire = models.TextField()
+
+class Commentaire_demeya(models.Model):
+    commentaire = models.TextField()
 
 class File(models.Model):
     nom = models.CharField(max_length=200, null=True)
@@ -86,6 +91,16 @@ class File(models.Model):
                                           upload_to='documents/',
                                           verbose_name="Pièce 3: 3 dernières quittance de loyers")
 
+    commentaire_nek = models.ForeignKey(
+        Commentaire_nek,
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    commentaire_demaya = models.ForeignKey(
+        Commentaire_demeya,
+        on_delete=models.CASCADE,
+        null=True,
+    )
     class Verdict_choice(models.TextChoices):
         accepte = 'acct', _('Accepté')
         attente = 'attn', _('Attente')

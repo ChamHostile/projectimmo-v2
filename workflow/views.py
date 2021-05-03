@@ -78,14 +78,17 @@ def workflow(request):
 def workrep(request, pk):
     Files=File.objects.get(id=pk)
 
-    
     form = UpdateFile(request.POST or None, instance=Files)
     if request.method == 'POST':
         form = UpdateFile(request.POST or None, instance=Files)
+        commentaire_value = request.POST.getlist('commentaire_nek')
+        length_com = len(commentaire_value)
+        for i in range(length_com):
+            com = Commentaire_nek.objects.create(commentaire=commentaire_value[i])
+            com.save()
+            Files.commentaire_nek = com
         if form.is_valid():
             form.save()
-
-    if request.method == 'POST':
         verdict = request.POST.get('verdict')
 
         data1 = {

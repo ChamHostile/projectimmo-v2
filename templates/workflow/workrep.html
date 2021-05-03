@@ -77,6 +77,8 @@
 
     </style>
 
+</head>
+<body>
     <form enctype="multipart/form-data" action="" method="POST">
     {% load widget_tweaks %}
         {% csrf_token %}
@@ -85,7 +87,7 @@
             <div class="row">
             <h1>Send Your Folder</h1>
                 <div class="row">
-                    <div class="col-8"><p><small id="emailHelp" class="form-text text-muted">{{ Files.address.rue }} {{Files.address.voie}}, {{Files.address.ville}} - {{Files.address.zipCode}}</small></p>
+                    <div class="col-8 "><p id="emailHelp" class="form-text">Adresse : {{ Files.address.rue }} {{Files.address.voie}}, {{Files.address.ville}} - {{Files.address.zipCode}}</p>
 </div>
                     {% load crispy_forms_tags %}
                     {% for field in form %}
@@ -94,6 +96,10 @@
                             <div class="col-8">
                             <p>Jours de visite : {{Files.planificateur_visite}}</p>
                             </div>
+                        {% elif field == form.address%}
+                            <div></div>
+                        {% elif field == form.verdict %}
+                            <div class="col-8">{{ field|as_crispy_field }}</div>
                         {% else %}
                         <div class="col-8">
 
@@ -102,14 +108,47 @@
                         {% endif %}
                     {% endfor %}
                     <div class="col-8">{{ Files.document_avis }}</div>
+                    <div class="col-12" id="nek_resp">
+                        <label for="commentaire_nek">Commentaire Nek</label>
+                        <div class="row">
+                            <div class="col-8">
+                                <textarea class="form-control" name="commentaire_nek" required></textarea>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-primary add"> + </button>
+                                <button type="button" class="btn btn-danger remove"> - </button>
+                            </div>
+                        </div>
+                        <input type="hidden" value="1" id="total_chq">
+                    </div>
                 </div>
-                <input type="submit" name="Envoyer" class="btn btn-primary mb-5">
+                <input type="submit" name="Envoyer" class="btn btn-primary mt-3 mb-5">
             </div>
 
         </div>
 
     </form>
+<script>
+    window.addEventListener('load', (event) => {
+    $('.add').on('click', add);
+    $('.remove').on('click', remove);
+        function add(){
+          var new_resp = parseInt($('#total_chq').val())+1;
+          var new_input="<textarea name='commentaire_nek' id='new_" + new_resp +  "' class='form-control mb-1 mt-1'></textarea>";
+          $('#nek_resp').append(new_input);
+          $('#total_chq').val(new_resp)
+        }
+        function remove(){
+          var resp = $('#total_chq').val();
+          if(resp>1){
+            $('#new_'+resp).remove();
+            $('#total_chq').val(resp-1);
+          }
+          }
+     })
+    </script>
 </body>
+
 </html>
 
 

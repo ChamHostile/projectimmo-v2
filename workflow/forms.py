@@ -27,7 +27,7 @@ class NewFile(ModelForm):
 class UpdateFile(ModelForm):
     class Meta:
         model = File
-        exclude = ['document_avis', 'document_paye', 'document_quittance']
+        exclude = ['document_avis', 'document_paye', 'document_quittance', 'commentaire_nek', 'commentaire_demaya']
 
 
 
