@@ -5,3 +5,4 @@ from .models import *
 
 admin.site.register(File)
 admin.site.register(AdressWorkflow)
+admin.site.register(Commentaire_nek)

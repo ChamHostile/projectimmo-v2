@@ -92,18 +92,21 @@
                     {% load crispy_forms_tags %}
                     {% for field in form %}
                         {% if field == form.planificateur_visite %}
-
                             <div class="col-8">
-                            <p>Jours de visite : {{Files.planificateur_visite}}</p>
+                                <p>Jours de visite : {{Files.planificateur_visite}}</p>
                             </div>
-                        {% elif field == form.address%}
+                        {% elif field == form.address %}
                             <div></div>
                         {% elif field == form.verdict %}
                             <div class="col-8">{{ field|as_crispy_field }}</div>
+                        {% elif field.field.widget.input_type == 'select' %}
+                            <div class="col-8">
+                                {{ field|attr:"disabled"|as_crispy_field }}
+                                <input type="hidden" name={{field.name}} value={{field.value}}>
+                            </div>
                         {% else %}
                         <div class="col-8">
-
-                            {{ field|attr:"disabled"|as_crispy_field }}
+                            {{ field|attr:"readonly"|as_crispy_field }}
                         </div>
                         {% endif %}
                     {% endfor %}

@@ -91,14 +91,12 @@ class File(models.Model):
                                           upload_to='documents/',
                                           verbose_name="Pièce 3: 3 dernières quittance de loyers")
 
-    commentaire_nek = models.ForeignKey(
+    commentaire_nek = models.ManyToManyField(
         Commentaire_nek,
-        on_delete=models.CASCADE,
         null=True,
     )
-    commentaire_demaya = models.ForeignKey(
+    commentaire_demaya = models.ManyToManyField(
         Commentaire_demeya,
-        on_delete=models.CASCADE,
         null=True,
     )
     class Verdict_choice(models.TextChoices):
