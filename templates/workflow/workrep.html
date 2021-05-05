@@ -85,28 +85,35 @@
         {{files}}
         <div class="container contenue">
             <div class="row">
-            <h1>Send Your Folder</h1>
+            <h1>Send Your Folder
+</h1>
                 <div class="row">
                     <div class="col-8 "><p id="emailHelp" class="form-text">Adresse : {{ Files.address.rue }} {{Files.address.voie}}, {{Files.address.ville}} - {{Files.address.zipCode}}</p>
 </div>
                     {% load crispy_forms_tags %}
+                    {% load verbose_names %}
                     {% for field in form %}
                         {% if field == form.planificateur_visite %}
                             <div class="col-8">
-                                <p>Jours de visite : {{Files.planificateur_visite}}</p>
+                                <p>Jours de visite : {{ Files.planificateur_visite }}</p>
                             </div>
-                        {% elif field == form.address %}
-                            <div></div>
                         {% elif field == form.verdict %}
                             <div class="col-8">{{ field|as_crispy_field }}</div>
+                            {{ field.errors }}
                         {% elif field.field.widget.input_type == 'select' %}
                             <div class="col-8">
-                                {{ field|attr:"disabled"|as_crispy_field }}
-                                <input type="hidden" name={{field.name}} value={{field.value}}>
+                                {{ field|attr:"hidden"|as_crispy_field }}
+                                {% with field.name as nom %}
+                                <select id="{{field.id_for_label}}" disabled class="form-control">
+                                    <option value="{{field.value}}">{% get_verbose_field_name Files nom %}</option>
+                                </select>
+                                {% endwith %}
+                                {{ field.errors }}
                             </div>
                         {% else %}
                         <div class="col-8">
                             {{ field|attr:"readonly"|as_crispy_field }}
+                            {{ field.errors }}
                         </div>
                         {% endif %}
                     {% endfor %}
@@ -129,7 +136,7 @@
             </div>
 
         </div>
-
+    {{ form.non_field_errors }}
     </form>
 <script>
     window.addEventListener('load', (event) => {

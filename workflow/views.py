@@ -5,6 +5,8 @@ from django.conf import settings
 from django.http import HttpResponse
 from .forms import *
 from .models import File
+from django import template
+register = template.Library()
 
 
 # Create your views here.
@@ -72,17 +74,22 @@ def workflow(request):
 
     return render(request, 'workflow/workflow.html', context)
 
-@login_required(login_url='login')
+@register.simple_tag
+def get_verbose_field_name(instance, field):
+    """
+    Returns verbose_name for a field.
+    """
+    return instance.get_field_display()
 
+@login_required(login_url='login')
 
 def workrep(request, pk):
     Files=File.objects.get(id=pk)
-
-
     form = UpdateFile(request.POST or None, instance=Files)
     if request.method == 'POST':
         form = UpdateFile(request.POST or None, instance=Files)
         commentaire_value = request.POST.getlist('commentaire_nek')
+
         if form.is_valid():
             for my_com in commentaire_value:
                 com = Commentaire_nek.objects.create(commentaire=my_com)
@@ -90,26 +97,27 @@ def workrep(request, pk):
                 com_save = Commentaire_nek.objects.latest('id')
                 Files.commentaire_nek.add(com_save)
                 Files.save()
-            form.save()
-        verdict = request.POST.get('verdict')
-        data1 = {
-            'verdict': verdict,
-        }
+                form.save()
 
-        message = '''
-        
-        Hello,
-        Here the answer about the folder of our customer.
-        His verdict : {}
-        if you want to return on site :
-        http://127.0.0.1:8000/workflow/final
-        
-        Have nice day
-        
-        '''.format(data1['verdict'])
-        send_mail(data1['verdict'], message, '', [settings.EMAIL_HOST_USER])
-    else:
-        form = UpdateFile(request.POST or None, instance=Files)
+                verdict = request.POST.get('verdict')
+                data1 = {
+                    'verdict': verdict,
+                }
+
+                message = '''
+
+                        Hello,
+                        Here the answer about the folder of our customer.
+                        His verdict : {}
+                        if you want to return on site :
+                        http://127.0.0.1:8000/workflow/final
+
+                        Have nice day
+
+                        '''.format(data1['verdict'])
+                send_mail(data1['verdict'], message, '', [settings.EMAIL_HOST_USER])
+
+
     context = {'Files': Files, 'form': form}
     return render(request, 'workflow/workrep.html', context)
 
