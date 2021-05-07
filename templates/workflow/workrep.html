@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 
 	<style>
+
         body{
             background-color: #69948A;
             color : white;
@@ -88,7 +89,7 @@
             <h1>Send Your Folder
 </h1>
                 <div class="row">
-                    <div class="col-8 "><p id="emailHelp" class="form-text">Adresse : {{ Files.address.rue }} {{Files.address.voie}}, {{Files.address.ville}} - {{Files.address.zipCode}}</p>
+                    <div class="col-8 ">{{request.method}}<p id="emailHelp" class="form-text">Adresse : {{ Files.address.rue }} {{Files.address.voie}}, {{Files.address.ville}} - {{Files.address.zipCode}}</p>
 </div>
                     {% load crispy_forms_tags %}
                     {% load verbose_names %}
@@ -132,6 +133,7 @@
                         <input type="hidden" value="1" id="total_chq">
                     </div>
                 </div>
+
                 <input type="submit" name="Envoyer" class="btn btn-primary mt-3 mb-5">
             </div>
 
@@ -140,6 +142,7 @@
     </form>
 <script>
     window.addEventListener('load', (event) => {
+
     $('.add').on('click', add);
     $('.remove').on('click', remove);
         function add(){

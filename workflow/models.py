@@ -39,6 +39,7 @@ class File(models.Model):
     telephone = models.CharField(max_length=200, null=True)
     email = models.EmailField(max_length=200, null=True)
     date_creation = models.DateTimeField(auto_now_add=True, null=True)
+    date_reunion = models.DateTimeField(null=True)
 
     class PackageChoices(models.TextChoices):
         PACK_DOSSIER = 'PDOS', _('Pack Dossier')

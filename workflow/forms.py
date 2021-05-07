@@ -30,7 +30,10 @@ class UpdateFile(ModelForm):
         exclude = ['document_avis', 'document_paye', 'document_quittance', 'commentaire_nek', 'commentaire_demaya', 'address']
 
 
-
+class FinalFile(ModelForm):
+    class Meta:
+        model = File
+        exclude = ['document_avis', 'document_paye', 'document_quittance', 'commentaire_nek', 'commentaire_demaya', 'address', 'verdict', 'date_reunion']
 
 
 

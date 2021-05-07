@@ -4,20 +4,20 @@
 <html>
 
 <head>
-	<title>treatment Final</title>
+	<title>Send your folder</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 
 	<style>
         body{
-            background-color: black;  
+            background-color: #69948A;
+            color : white;
         }
         .contenue{
             margin-top: 10vh;
             height: 85vh;
             width: 50%;
-            background-color: #e3e0e000;
         }
         .contenue h1{
             text-align: center;
@@ -27,18 +27,19 @@
             text-transform: uppercase;
         }
         #form{
-            width: 70%;
+            width: 50%;
             display: flex;
             justify-content: center;
             align-content: center;
             text-align: center;
             margin: 10px;
+            margin-left: 155px;
             border-radius: 7px;
-            margin-left: 90px;
         }
         .formulaire{
             background-color: orange;
             width: 70%;
+            padding-bottom: 5vh;
         }
         .text{
             display: flex;
@@ -47,22 +48,16 @@
             font-size: 1.3em;
             margin: 20px 0px 0px 150px;
             font-weight: 700;
-            margin: 30px 0px 30px 30px;
-        }
-        .text1{
-            display: flex;
-            font-family: 'Roboto Slab', serif;
-            font-size: 1.3em;
-            margin: 30px 0px 30px 30px;
-            color: rgb(114, 114, 114);
         }
         .submit{
             display: flex;
-            margin: 30px 30px 50px 200px;
+            justify-content: center;
+            align-content: center;
+            margin: 20px;
+            width: 50%;
+            margin-left: 160px;
             border-radius: 15px;
             padding: 5px;
-            color: orange;
-            background-color: black;
         }
         #file{
             display: flex;
@@ -79,50 +74,114 @@
             text-align: center;
             margin: 30px;
         }
-        #choix{
-            padding: 0;
-            margin: 25px;
+
+        .hidden {
+            display: none;
         }
 
     </style>
 
-    <form enctype="multipart/form-data" action="" method="post">
-
+</head>
+<body>
+    <form enctype="multipart/form-data" action="" method="POST">
+    {% load widget_tweaks %}
         {% csrf_token %}
+        {{files}}
         <div class="container contenue">
-            <h1>His folder</h1>
-                <div class="container-fluid formulaire">
-                    <div class="row">
-                        <label name="f_name" class="text" for="fname">First name :</label>
-                        <p class="text1">{{ Files.f_name }}</p>
-                    </div>
-                    <div class="row">
-                        <label name="s_name" class="text" for="sname">Seconde name :</label>
-                        <p class="text1">{{ Files.s_name }}</p>
-                    </div>
-                    <div class="row">
-                        <label name="mail" class="text" for="mail">E-mail :</label>
-                        <p class="text1">{{ Files.mail }}</p>
-                    </div>
-                    <div class="row">
-                        <label name="files" class="text" for="files">Files :</label>
-                        <p class="text1">{{ Files.my_file }}</p>
-                    </div>
-                    <div class="row">
-                        <label name="files" class="text" for="files">Your verdict :</label>
-                        <p class="text1">{{ Files.verdict }}</p>
-                    </div>
-                    <div class="row">
-                        <label name="comment" class="text" for="comment">Comment :</label>
-                        <input name="comment" type="text" id="form">
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <input type="submit" value="Send for close the folder" class="submit">
+            <div class="row">
+            <h1>Send Your Folder
+</h1>
+                <div class="row">
+                    <div class="col-8 ">{{request.method}}<p id="emailHelp" class="form-text">Adresse : {{ Files.address.rue }} {{Files.address.voie}}, {{Files.address.ville}} - {{Files.address.zipCode}}</p>
+</div>
+                    {% load crispy_forms_tags %}
+                    {% load verbose_names %}
+                    {% for field in form %}
+                        {% if field == form.planificateur_visite %}
+                            <div class="col-8">
+                                <p>Jours de visite : {{ Files.planificateur_visite }}</p>
+                            </div>
+                        {% elif field == form.verdict %}
+                            <div class="col-8">{{ field|as_crispy_field }}</div>
+                            {{ field.errors }}
+                        {% elif field.field.widget.input_type == 'select' %}
+                            <div class="col-8">
+                                {{ field|attr:"hidden"|as_crispy_field }}
+                                {% with field.name as nom %}
+                                <select id="{{field.id_for_label}}" disabled class="form-control">
+                                    <option value="{{field.value}}">{% get_verbose_field_name Files nom %}</option>
+                                </select>
+                                {% endwith %}
+                                {{ field.errors }}
+                            </div>
+                        {% else %}
+                        <div class="col-8">
+                            {{ field|attr:"readonly"|as_crispy_field }}
+                            {{ field.errors }}
                         </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="col-8">{{ Files.document_avis }}</div>
+                    <div class="col-12" id="nek_resp">
+                        <label for="commentaire_nek">Commentaire Demeya</label>
+                        <div class="row">
+                            <div class="col-8">
+                                <textarea class="form-control" name="commentaire_nek" required></textarea>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-primary add"> + </button>
+                                <button type="button" class="btn btn-danger remove"> - </button>
+                            </div>
+                        </div>
+                        <input type="hidden" value="1" id="total_chq">
+                    </div>
+                    <div class="col-8">
+                        <input type="radio" value="0" id="ok" name="rdv" class="myRadio form-check-input">
+                        <label for="ok">Demande OK</label>
+                    </div>
+                    <div class="col-8">
+                    <input type="radio" value="1" id="rdv" name="rdv" class="myRadio form-check-input">
+                        <label for="ok">Demande de réunion</label>
+                        <input type="datetime-local" min="2021-01-21T00:00" name="date_rdv" class="hidden form-control">
                     </div>
                 </div>
+
+                <input type="submit" name="Envoyer" class="btn btn-primary mt-3 mb-5">
+            </div>
+
         </div>
+    {{ form.non_field_errors }}
     </form>
+<script>
+    window.addEventListener('load', (event) => {
+        $('input[type=radio][name=rdv]').change(function() {
+            if (this.value == '1') {
+                $('input[type=datetime-local][name=date_rdv]').removeClass('hidden');
+            }
+            else if (this.value == '0') {
+                $('input[type=datetime-local][name=date_rdv]').addClass('hidden');
+            }
+        });
+
+    $('.add').on('click', add);
+    $('.remove').on('click', remove);
+        function add(){
+          var new_resp = parseInt($('#total_chq').val())+1;
+          var new_input="<textarea name='commentaire_nek' id='new_" + new_resp +  "' class='form-control mb-1 mt-1'></textarea>";
+          $('#nek_resp').append(new_input);
+          $('#total_chq').val(new_resp)
+        }
+        function remove(){
+          var resp = $('#total_chq').val();
+          if(resp>1){
+            $('#new_'+resp).remove();
+            $('#total_chq').val(resp-1);
+          }
+          }
+     })
+    </script>
 </body>
+
 </html>
+
+

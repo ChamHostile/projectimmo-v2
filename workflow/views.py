@@ -89,33 +89,31 @@ def workrep(request, pk):
     if request.method == 'POST':
         form = UpdateFile(request.POST or None, instance=Files)
         commentaire_value = request.POST.getlist('commentaire_nek')
-
-        if form.is_valid():
-            for my_com in commentaire_value:
-                com = Commentaire_nek.objects.create(commentaire=my_com)
-                com.save()
-                com_save = Commentaire_nek.objects.latest('id')
-                Files.commentaire_nek.add(com_save)
-                Files.save()
+        length = len(commentaire_value)
+        for i in range(length):
+            com = Commentaire_nek.objects.create(commentaire=commentaire_value[i])
+            com.save()
+            com_save = Commentaire_nek.objects.latest('id')
+            Files.commentaire_nek.add(com_save)
+            Files.save()
+            if form.is_valid():
                 form.save()
+        verdict = request.POST.get('verdict')
+        data1 = {
+                'verdict': verdict,
+                'id': pk,
+            }
 
-                verdict = request.POST.get('verdict')
-                data1 = {
-                    'verdict': verdict,
-                }
+        message = '''
+            Hello,
+            Here the answer about the folder of our customer.
+            His verdict : {}
+            click the link to see or make comments and to return on site :
+            http://127.0.0.1:8000/workflow/final/{}
+                Have nice day
+            '''.format(data1['verdict'], data1['id'])
 
-                message = '''
-
-                        Hello,
-                        Here the answer about the folder of our customer.
-                        His verdict : {}
-                        if you want to return on site :
-                        http://127.0.0.1:8000/workflow/final
-
-                        Have nice day
-
-                        '''.format(data1['verdict'])
-                send_mail(data1['verdict'], message, '', [settings.EMAIL_HOST_USER])
+        send_mail(data1['verdict'], message, '', [settings.EMAIL_HOST_USER])
 
 
     context = {'Files': Files, 'form': form}
@@ -123,14 +121,43 @@ def workrep(request, pk):
 
 
 def workfinal(request, pk):
-    Files = File.objects.get(id=pk)
-    context = {'Files': Files}
-
+    Files=File.objects.get(id=pk)
+    form = FinalFile(request.POST or None, instance=Files)
+    comment = ""
+    decision = ""
     if request.method == 'POST':
-        comment = request.POST.get('comment')
+        form = UpdateFile(request.POST or None, instance=Files)
+        commentaire_value = request.POST.getlist('commentaire_nek')
+        rdv_value = request.POST.get('rdv')
+        rdv = request.POST.get('date_rdv')
+
+        if rdv_value == '1':
+            Files.date_reunion = rdv
+            Files.verdict = 'attn'
+            decision = "Prise de rendez vous le :" + Files.date_reunion
+            Files.save()
+        elif rdv == '0':
+            Files.verdict = 'acct'
+            decision = "Dossier pris en charge"
+            Files.save()
+
+        Files.date_reunion = rdv
+        Files.save()
+        length = len(commentaire_value)
+        for i in range(length):
+            com = Commentaire_demeya.objects.create(commentaire=commentaire_value[i])
+            com.save()
+            com_save = Commentaire_demeya.objects.latest('id')
+            Files.commentaire_demaya.add(com_save)
+            Files.save()
+            comment = comment + '\{}'.format(commentaire_value[i])
+            if form.is_valid():
+                form.save()
 
         data2 = {
             'comment': comment,
+            'verdict': Files.verdict,
+            'decision': decision,
         }
 
         message = '''
@@ -138,15 +165,17 @@ def workfinal(request, pk):
         Hello,
         Here the comment to the folder of our customer : 
         My comment : {}
-        if you want to return on site :
+        Décision : {} 
+        {}
+        if you want to return on site and see details of the offer :
         http://127.0.0.1:8000/
         
         Have nice day
         
-        '''.format(data2['comment'])
+        '''.format(data2['comment'], data2['verdict'], data2['decision'])
         send_mail(data2['comment'], message, '', [settings.EMAIL_HOST_USER])
-
-    return render(request, 'workflow/final.html', contextt)
+    context = {'Files': Files, 'form': form}
+    return render(request, 'workflow/final.html', context)
 
 
 
