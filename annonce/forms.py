@@ -56,14 +56,30 @@ class EquipmentForm(ModelForm):
             self.helper = FormHelper()
             self.helper.form_method = 'POST'
 
-class EquipmentForm(ModelForm):
+class ServicesForm(forms.ModelForm):
     class Meta:
         model = Annonce
-        fields = ['equipements']
-        def __init__(self, *args, **kwargs):
-            super(EquipmentForm, self).__init__(*args,**kwargs)
-            self.helper = FormHelper()
-            self.helper.form_method = 'POST'
+        fields = ['services']
+
+    services = forms.ModelMultipleChoiceField(
+        queryset=Services.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    def __init__(self, *args, **kwargs):
+        super(ServicesForm, self).__init__(*args,**kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+
+class CategorieServicesForm(forms.ModelForm):
+    class Meta:
+        model = Services
+        fields = ['categorie']
+
+    def __init__(self, *args, **kwargs):
+        super(CategorieServicesForm, self).__init__(*args,**kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+
 
 class FormLoyer(ModelForm):
     class Meta:

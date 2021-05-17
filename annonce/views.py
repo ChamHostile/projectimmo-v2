@@ -228,6 +228,7 @@ def equipment_view(request, pk):
     form = EquipmentForm()
     requete = request.user
     myObject = Annonce.objects.get(id=pk)
+    services = CategorieServicesForm()
     if request.method =='POST':
         form = EquipmentForm(request.POST, instance=myObject)
         if form.is_valid():
@@ -235,7 +236,7 @@ def equipment_view(request, pk):
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         form = EquipmentForm(instance=myObject)
-    context = {'form': form, 'requete': requete, 'obj': myObject}
+    context = {'form': form, 'requete': requete, 'obj': myObject, 'services': services}
     return render(request,'annonce/dashboard/equipements.html',context)
 
 @login_required

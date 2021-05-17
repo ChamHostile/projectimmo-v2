@@ -2,6 +2,8 @@ from django.utils.translation import gettext_lazy as _
 
 from django.db import models
 from django.conf import settings
+from django.forms.models import ModelForm
+from django.forms.widgets import CheckboxSelectMultiple
 from django.db.models import IntegerField, Model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms import CheckboxSelectMultiple
@@ -22,6 +24,28 @@ class Equipements(models.Model):
 
     def __str__(self):
         return self.nom
+
+class Services(models.Model):
+    nom = models.CharField(max_length=200, null=True)
+    price = models.FloatField(max_length=50, blank=True, null=True)
+
+    class Categorie(models.TextChoices):
+        Lifestyle = 'life', _('Lifestyle')
+        Bien_etre = 'bien', _('Bien être')
+        Services_quotidien = 'quot', _('Services quotidiens')
+        Loisirs = 'lois', _('Loisirs')
+        Transport = 'trsp', _('Transports')
+        Installation = 'inst', _('Installation')
+
+    categorie = models.CharField(
+        max_length=4,
+        choices=Categorie.choices,
+        default=Categorie.Lifestyle,
+        verbose_name="Categorie Service"
+    )
+    def __str__(self):
+        return self.nom
+
 
 class Charges(models.Model):
     nom = models.CharField(max_length=200, null=True, unique=True)
@@ -82,6 +106,7 @@ class Annonce(models.Model):
         blank=True
     )
     equipements = models.ManyToManyField(Equipements, blank=True)
+    services = models.ManyToManyField(Services, blank=True)
     charges = models.ManyToManyField(Charges, blank=True)
     dureeLocationMini = models.CharField(blank=True,null=True, max_length=50)
     dureeLocationMaxi = models.CharField(blank=True,null=True, max_length=50)
@@ -228,5 +253,3 @@ class Diagnostic(models.Model):
     interieurElecGaz = models.FileField(blank=True)
     amianteDoc = models.FileField(blank=True)
     copopriete = models.FileField(blank=True)
-
-
