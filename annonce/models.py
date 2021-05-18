@@ -25,6 +25,9 @@ class Equipements(models.Model):
     def __str__(self):
         return self.nom
 
+class CategorieService(models.Model):
+    nom = models.CharField(max_length=200, null=True)
+
 class Services(models.Model):
     nom = models.CharField(max_length=200, null=True)
     price = models.FloatField(max_length=50, blank=True, null=True)
@@ -107,6 +110,7 @@ class Annonce(models.Model):
     )
     equipements = models.ManyToManyField(Equipements, blank=True)
     services = models.ManyToManyField(Services, blank=True)
+    categorie_service = models.ManyToManyField(CategorieService, blank=True)
     charges = models.ManyToManyField(Charges, blank=True)
     dureeLocationMini = models.CharField(blank=True,null=True, max_length=50)
     dureeLocationMaxi = models.CharField(blank=True,null=True, max_length=50)

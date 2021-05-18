@@ -229,10 +229,19 @@ def equipment_view(request, pk):
     requete = request.user
     myObject = Annonce.objects.get(id=pk)
     services = CategorieServicesForm()
+    categories = CategorieService.objects.all()
     if request.method =='POST':
         form = EquipmentForm(request.POST, instance=myObject)
-        if form.is_valid():
-            form.save()
+        categorie_service = request.POST.getlist('categorie_service')
+        length = len(categorie_service)
+        for i in range(length):
+            for thisCategorie in categories:
+                if thisCategorie.nom == categorie_service[i]:
+                    myObject.categorie_service.add(thisCategorie)
+                else:
+                    myObject.categorie_service.remove(thisCategorie)
+            if form.is_valid():
+                form.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         form = EquipmentForm(instance=myObject)
