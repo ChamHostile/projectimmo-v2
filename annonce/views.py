@@ -234,14 +234,13 @@ def equipment_view(request, pk):
         form = EquipmentForm(request.POST, instance=myObject)
         categorie_service = request.POST.getlist('categorie_service')
         length = len(categorie_service)
-        for i in range(length):
-            for thisCategorie in categories:
-                if thisCategorie.nom == categorie_service[i]:
-                    myObject.categorie_service.add(thisCategorie)
-                else:
-                    myObject.categorie_service.remove(thisCategorie)
-            if form.is_valid():
-                form.save()
+        for thisCategorie in categories:
+            if thisCategorie.nom in categorie_service:
+                myObject.categorie_service.add(thisCategorie)
+            elif thisCategorie.nom not in categorie_service:
+                myObject.categorie_service.remove(thisCategorie)
+        if form.is_valid():
+            form.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         form = EquipmentForm(instance=myObject)

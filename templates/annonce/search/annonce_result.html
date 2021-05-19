@@ -70,6 +70,31 @@
                             <p>Equipments du loyer : {{annonce.equipements.all|join:" - " }}</p>
                         </div>
                       </div>
+                          <div class="card">
+                        <div class="card-header" id="headingfour">
+                          <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseTwo">
+                              Services
+                            </button>
+                          </h5>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                          <div class="card-body">
+
+                            {% for service in services %}
+                              {% for categorie in categorie_service %}
+                                  {% if service.categorie in categorie %}
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" name="service" value="{{ service.nom }}" id="defaultCheck{{ service.id }}">
+                                      <label class="form-check-label" for="defaultCheck{{ service.id }}">
+                                          {{ service.nom }}
+                                      </label>
+                                    </div>
+                                  {% endif %}
+                              {% endfor %}
+                            {% endfor %}
+                        </div>
+                      </div>
                       <div class="card">
                         <div class="card-header" id="headingThree">
                           <h5 class="mb-0">

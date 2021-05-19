@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from .models import *
 from annonce.models import *
+from annonce.forms import *
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 
@@ -56,5 +57,7 @@ def searchPage(request):
 def detail_annonce(request, pk):
     myObject = Annonce.objects.get(id=pk)
     image = ImageLogement.objects.all()
-    context = {'annonce': myObject, 'myImages': image}
+    categorie_service = myObject.categorie_service.all()
+    services = Services.objects.all()
+    context = {'annonce': myObject, 'myImages': image, 'categorie_service': categorie_service, 'services':services}
     return render(request, 'annonce/search/annonce_result.html', context)
