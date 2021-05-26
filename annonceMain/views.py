@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from annonce.models import *
 from annonce.forms import *
+from django.views import View
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 
@@ -15,7 +16,11 @@ from annonce.models import *
 from annonce.filters import OrderFilter
 from django.contrib.auth.decorators import login_required
 from itertools import chain
+import stripe
+from django.conf import settings
+from django.http import JsonResponse
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 def annonceHome(request):
@@ -59,5 +64,35 @@ def detail_annonce(request, pk):
     image = ImageLogement.objects.all()
     categorie_service = myObject.categorie_service.all()
     services = Services.objects.all()
-    context = {'annonce': myObject, 'myImages': image, 'categorie_service': categorie_service, 'services':services}
+    context = {'annonce': myObject, 'myImages': image, 'categorie_service': categorie_service, 'services':services,
+               'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY}
     return render(request, 'annonce/search/annonce_result.html', context)
+
+class CreateCheckoutSessionView(View):
+    def post(self, request, *args, **kwargs):
+        product_id = self.kwargs["pk"]
+        product = Annonce.objects.get(id=product_id)
+        print(product)
+        YOUR_DOMAIN = 'http://127.0.0.1:8000/'
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[
+                    {
+                        'price_data': {
+                            'currency': 'usd',
+                            'unit_amount': product.price,
+                            'product_data': {
+                                'name': product.name,
+                            },
+                        },
+                        'quantity': 1,
+                    },
+                ],
+                mode='payment',
+                success_url=YOUR_DOMAIN + '/success/',
+                cancel_url=YOUR_DOMAIN + '/cancel/',
+            )
+            return JsonResponse({
+                'id': checkout_session.id
+            })

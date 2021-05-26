@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'annonceMain',
     'datapackage',
     'multiselectfield',
+    'stripe',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -76,7 +77,8 @@ EMAIL_HOST_USER = 'hamza.aboudou@gmail.com'
 EMAIL_HOST_PASSWORD = 'Lulumonlapin23'
 CLIENT_AUTH_ID = '589f0450-92fa-467a-8215-608f808bb114'
 CLIENT_SECRET_KEY = 'c44217a9-247a-4ca3-9611-81d6e208a03b'
-
+STRIPE_SECRET_KEY = 'sk_test_51IvMHVEdIN3Y8UWsFM2nj0EiMamYqblY8bTlUDJ5xufHplnMXPUj2FAqJGaRqwYFpjdkHG06BnbnlRiN5yWpygGF00NhBQ1Zjx'
+STRIPE_PUBLIC_KEY = 'pk_test_51IvMHVEdIN3Y8UWsWDpM9Ts0d8Q2JkN5Qynoqr5EwWWccryIbDAfDAe7l8m4IZr2CggENbYg9e1s5ypq2n4b3zWu004VTPrL85'
 
 DEFAULT_FROM_EMAIL = 'noreply<no_reply@domain.com>'
 

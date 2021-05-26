@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 
 from django.conf.urls import url
 from compte import views
+from annonceMain.views import CreateCheckoutSessionView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,6 +50,7 @@ urlpatterns = [
     # url('^soumission/request-meeting/<int:id>/', include('soumission.urls')),
     url('^soumission/client/', include('soumission.urls')),
     url(r'fp/', include('django_drf_filepond.urls')),
+    path('create-checkout-session/<pk>/', CreateCheckoutSessionView.as_view(), name='create-checkout-session')
  #   path('reset_password/', auth_views.PasswordResetView.as_view(),name="reset_password"),
   #  path('reset_password_sent/', auth_views.PasswordResetDone.as_view(),name="password_reset_done"),
   #  path('reset/<uidb64>/<token>/', auth_views.PasswordConfirmView.as_view(),name="password_reset_confirm"),
