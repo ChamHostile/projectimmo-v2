@@ -26,7 +26,7 @@
           </ul>
             <li class="list-group-item d-flex justify-content-between">
                 <span>Total (€)</span>
-                <strong><span id="total">{{annonce.loyer_tc}}</span> €</strong>
+                    <strong><span id="total" name="total">{{annonce.loyer_tc}}</span> €</strong>
             </li>
 
               <button type="button" id="checkout-button" class="btn btn-primary mt-3">Commander</button>
@@ -177,12 +177,15 @@
 </div>
 {% csrf_token %}
   <script type="text/javascript">
-    const = csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    total = parseInt($("#total").text());
     // Create an instance of the Stripe object with your publishable API key
     var stripe = Stripe("{{STRIPE_PUBLIC_KEY}}");
     var checkoutButton = document.getElementById("checkout-button");
+    url = '{% url 'create-checkout-session' annonce.id "total" %}';
+    url = url.replace('total', total.toString());
     checkoutButton.addEventListener("click", function () {
-      fetch("{% url 'create-checkout-session' product.id %}", {
+      fetch(url, {
         method: "POST",
         headers: {
             'X-CSRFToken': csrftoken
@@ -204,5 +207,7 @@
         })
         .catch(function (error) {
           console.error("Error:", error);
+        });
+      });
     </script>
 {% endblock %}

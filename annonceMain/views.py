@@ -3,6 +3,8 @@ from django.shortcuts import render
 # Create your views here.
 
 from django.shortcuts import render, redirect
+from django.views.generic import TemplateView
+
 from .models import *
 from annonce.models import *
 from annonce.forms import *
@@ -68,31 +70,39 @@ def detail_annonce(request, pk):
                'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY}
     return render(request, 'annonce/search/annonce_result.html', context)
 
+class SuccessView(TemplateView):
+    template_name = "annonce/search/success.html"
+
+class CancelView(TemplateView):
+    template_name = "annonce/search/cancel.html"
+
 class CreateCheckoutSessionView(View):
     def post(self, request, *args, **kwargs):
         product_id = self.kwargs["pk"]
         product = Annonce.objects.get(id=product_id)
         print(product)
+
         YOUR_DOMAIN = 'http://127.0.0.1:8000/'
-        try:
-            checkout_session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
-                line_items=[
-                    {
-                        'price_data': {
-                            'currency': 'usd',
-                            'unit_amount': product.price,
-                            'product_data': {
-                                'name': product.name,
-                            },
+        price = self.kwargs["price"]
+        print(price)
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'eur',
+                        'unit_amount': round(price * 100),
+                        'product_data': {
+                            'name': product.titre_logement,
                         },
-                        'quantity': 1,
                     },
+                        'quantity': 1,
+                },
                 ],
                 mode='payment',
-                success_url=YOUR_DOMAIN + '/success/',
-                cancel_url=YOUR_DOMAIN + '/cancel/',
+                success_url=YOUR_DOMAIN + 'success/',
+                cancel_url=YOUR_DOMAIN + 'cancel/',
             )
-            return JsonResponse({
-                'id': checkout_session.id
-            })
+        return JsonResponse({
+            'id': checkout_session.id
+        })
