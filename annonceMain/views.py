@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
 from .models import *
@@ -21,6 +22,7 @@ from itertools import chain
 import stripe
 from django.conf import settings
 from django.http import JsonResponse
+from django.http import HttpResponse
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -99,6 +101,9 @@ class CreateCheckoutSessionView(View):
                         'quantity': 1,
                 },
                 ],
+                metadata={
+                    "product_id": product.id
+                },
                 mode='payment',
                 success_url=YOUR_DOMAIN + 'success/',
                 cancel_url=YOUR_DOMAIN + 'cancel/',
@@ -106,3 +111,30 @@ class CreateCheckoutSessionView(View):
         return JsonResponse({
             'id': checkout_session.id
         })
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
+
+        # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        # Fulfill the purchase...
+        print(session)
+
+    # Passed signature verification
+    return HttpResponse(status=200)
