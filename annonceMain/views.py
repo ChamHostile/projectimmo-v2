@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
+from account.models import *
 
 from .models import *
 from annonce.models import *
@@ -107,6 +108,7 @@ class CreateCheckoutSessionView(View):
                 mode='payment',
                 success_url=YOUR_DOMAIN + 'success/',
                 cancel_url=YOUR_DOMAIN + 'cancel/',
+                customer_email=request.user.email,
             )
         return JsonResponse({
             'id': checkout_session.id
@@ -134,7 +136,12 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         # Fulfill the purchase...
-        print(session)
+        customer_email = session["customer_details"]["email"]
+        product_id = session["metadata"]["product_id"]
+        myAnnonce = Annonce.objects.get(id=product_id)
+        user = Account.objects.get(email=customer_email)
+        myAnnonce.reservation = user
+        myAnnonce.save()
 
     # Passed signature verification
     return HttpResponse(status=200)

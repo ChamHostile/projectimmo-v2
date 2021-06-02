@@ -183,10 +183,11 @@
     var total;
     total = parseInt($("#total").text());
     $('body').on('DOMSubtreeModified', '#total', function(){
-      total = parseInt($('#total').text());
+      total = parseInt($("#total").text());
       console.log(total);
+      console.log("le total");
+      total = parseInt($("#total").text());
     });
-    console.log(total);
     // Create an instance of the Stripe object with your publishable API key
     var stripe = Stripe("{{STRIPE_PUBLIC_KEY}}");
     var checkoutButton = document.getElementById("checkout-button");

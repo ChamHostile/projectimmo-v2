@@ -482,3 +482,9 @@ def auth_login(request):
 def embeded_signing_ceremony(request):
     signer_email = 'hamza.aboudou@gmail.com'
     signer_name = 'Aboudou Hamza'
+
+def profile_annonce(request):
+    reservations = Annonce.objects.get(reservation=request.user)
+    context = {'reservation': reservations}
+
+    return render(request, 'compte/profile_annonce.html', context)

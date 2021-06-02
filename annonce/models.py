@@ -116,6 +116,14 @@ class Annonce(models.Model):
     dureeLocationMaxi = models.CharField(blank=True,null=True, max_length=50)
     loyer_tc = models.FloatField(max_length=50, blank=True, null=True)
     charges_loyer = models.FloatField(max_length=50, blank=True, null=True)
+    reservation = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        on_delete=models.CASCADE,
+        unique=False,
+        related_name = 'user_reserved'
+    )
+    reserved = models.BooleanField(default=False)
     address = models.OneToOneField(
         AdressAnnonce,
         on_delete=models.CASCADE,

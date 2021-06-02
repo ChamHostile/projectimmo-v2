@@ -9,6 +9,7 @@ urlpatterns = [
     path('login-annonce', views.login_user, name='login-annonce'),
     path('logout-annonce', views.logout_annonce, name='logout-annonce'),
     path('logged-annonce', views.logged_annonce, name='logged-annonce'),
+    path('annonce-profil', views.profile_annonce, name='annonce-profil'),
     path('activate/<uidb64>/<token>', VerificationView.as_view(), name='activate'),
     path('annonce/gerer-annonce', views.gerer_annonce, name='gerer-annonce'),
     path('annonce/dashboard/<str:pk>', views.dashboard_view, name='dashboard-annonce'),
