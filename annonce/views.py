@@ -13,6 +13,8 @@ from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import EmailMessage
+from workflow.models import *
+from workflow.forms import *
 
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -485,6 +487,10 @@ def embeded_signing_ceremony(request):
 
 def profile_annonce(request):
     reservations = Annonce.objects.get(reservation=request.user)
-    context = {'reservation': reservations}
+    workflow = File.objects.get(user=request.user)
+    form = NewFile(instance=workflow)
+    annonce = Annonce.objects.filter(user=request.user)
+    myAdress = Address.objects.get(account=request.user)
+    context = {'reservation': reservations, 'form': form, 'workflow': workflow, 'annonce': annonce, 'address': myAdress}
 
     return render(request, 'compte/profile_annonce.html', context)

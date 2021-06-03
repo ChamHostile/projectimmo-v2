@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy as _
 from multiselectfield import MultiSelectField
 
 # Create your models here.
+from django.conf import settings
+
+
 class AdressWorkflow(models.Model):
 
     rue = models.CharField(blank=True, max_length=20)
@@ -99,6 +102,12 @@ class File(models.Model):
     commentaire_demaya = models.ManyToManyField(
         Commentaire_demeya,
         null=True,
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        on_delete=models.CASCADE,
+        unique=False
     )
     class Verdict_choice(models.TextChoices):
         accepte = 'acct', _('Accepté')

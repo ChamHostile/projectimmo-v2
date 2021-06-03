@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from .forms import *
 from .models import File
 from django import template
+from account.models import *
 register = template.Library()
 
 
@@ -42,8 +43,11 @@ def workflow(request):
             form.save()
             myId = File.objects.latest('id')
             myId.address = lastAdress
+            user = Account.objects.get(email=mail)
+            myId.user = user
             myId.save()
             myId = myId.id
+            myAnnonce.save()
             data = {
                 'id': myId,
                 'f_name': f_name,
@@ -69,9 +73,7 @@ def workflow(request):
                 From: {}
                 '''.format(data['f_name'],data['s_name'],data['id'], data['my_file_avis'],data['my_file_quittance'],data['my_file_paye'], data['mail'])
             send_mail(data['f_name'], message, '', [mail])
-
     context = {'form': form}
-
     return render(request, 'workflow/workflow.html', context)
 
 @register.simple_tag

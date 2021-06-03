@@ -1,9 +1,10 @@
 {% extends 'main.html' %}
 {% block content %}
+
 <hr>
 <div class="container bootstrap snippet">
     <div class="row">
-  		<div class="col-sm-10"><h1>User name</h1></div>
+  		<div class="col-sm-10"><h1>{{request.user.first_name}} {{request.user.last_name}}</h1></div>
     	<div class="col-sm-2"><a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive" src="http://www.gravatar.com/avatar/28fd20ccec6865e2d5f0e1f4446eb7bf?s=100"></a></div>
     </div>
     <div class="row">
@@ -11,20 +12,27 @@
 
 
       <div class="text-center">
-        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+        <img src="{{request.user.photo_profil.url}}" class="avatar img-circle img-thumbnail" alt="avatar">
       </div></hr><br>
 
 
           <div class="panel panel-default">
-            <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
-            <div class="panel-body"><a href="http://bootnipets.com">bootnipets.com</a></div>
+            <div class="panel-heading">Coordonnées <i class="fa fa-link fa-1x"></i></div>
+            <div class="panel-body"><span><small id="emailHelp" class="form-text text-muted">Votre adresse actuelle : {{ address.rue }} {{address.voie}}, {{address.ville}} - {{address.zipCode}}</small></span>
+            <hr>
+                <small class="form-text text-muted">téléphone - {{request.user.telephone}}</small>
+                <hr>
+                <small class="form-text text-muted">Email - {{request.user.email}}</small>
+            </div>
           </div>
 
 
           <ul class="list-group">
             <li class="list-group-item text-muted">Activité <i class="fa fa-dashboard fa-1x"></i></li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Annonces</strong></span> 125</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Location</strong></span> 13</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Annonces</strong></span> {{annonce|length}}</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Location</strong></span>
+                {% if reservation.reserved %} <span class="bg-success text-white p-3">En cours</span>
+                {% else %} <span class="bg-secondary text-white p-3">Aucune location</span></li> {% endif %}
           </ul>
 
 
@@ -40,74 +48,17 @@
           <div class="tab-content">
             <div class="tab-pane active" id="home">
                 <hr>
-                  <form class="form" action="##" method="post" id="registrationForm">
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="first_name"><h4>First name</h4></label>
-                              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
-                          </div>
+                      <div class="col-6">
+                          <h2>Nom : {{request.user.last_name}}</h2>
                       </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                            <label for="last_name"><h4>Last name</h4></label>
-                              <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                          </div>
-                      </div>
-
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="phone"><h4>Phone</h4></label>
-                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
-                          </div>
-                      </div>
-
-                      <div class="form-group">
-                          <div class="col-xs-6">
-                             <label for="mobile"><h4>Mobile</h4></label>
-                              <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="email"><h4>Email</h4></label>
-                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="email"><h4>Location</h4></label>
-                              <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
-                          </div>
-                      </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="password"><h4>Password</h4></label>
-                              <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                            <label for="password2"><h4>Verify</h4></label>
-                              <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                           <div class="col-xs-12">
-                                <br>
-                              	<button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                               	<button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
-                            </div>
-                      </div>
-              	</form>
-
               <hr>
+                <div class="col-6">
+                          <h2>Prenom : {{request.user.first_name}}</h2>
+                      </div>
+              <hr>
+                <div class="col-6">
+                          <h3>Type locataire :{{request.user.get_typelocataire_display}}</h3>
+                      </div>
 
              </div><!--/tab-pane-->
              <div class="tab-pane" id="messages">
@@ -115,79 +66,54 @@
                <h2></h2>
 
                <hr>
-                <ul class="list-group">
-                    <li> {{reservation.titre_logement}} </li>
-                </ul>
+                <div class="col-md-4 col-sm-6 mb-4 pb-2">
+                    <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+                        <div class="list-card-image">
+                            <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
+                            <div class="favourite-heart text-danger position-absolute"><a href="#"><i class="icofont-heart"></i></a></div>
+                            <div class="member-plan position-absolute"><span class="badge badge-dark">{{reservation.categorie_logement}}</span></div>
+                                <a href="#">
+                                            <img src="img/list/5.png" class="img-fluid item-img">
+                                        </a>
+                                    </div>
+                                    <div class="p-3 position-relative">
+                                        <div class="list-card-body">
+                                            <h6 class="mb-1"><a href="#" class="text-black">{{reservation.titre_logement}}</a></h6>
+                                            <p class="text-gray mb-3">Services :{% for categorie in reservation.categorie_service.all %} {{categorie.nom}},  {% endfor %}</p>
+                                            <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> {{reservation.loyer_tc}} €</span> <span class="float-right text-black-50"> {{reservation.nombre_personne}} personne(s)</span></p>
+                                        </div>
+                                        <div class="list-card-badge">
+                                            <span class="badge badge-success">{{reservation.get_hebergement_choice_display}}</span>                 <small id="emailHelp" class="form-text text-muted"> {{ reservation.address.rue }} {{reservation.address.voie}}, {{reservation.address.ville}} - {{reservation.address.zipCode}}</small>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
              </div><!--/tab-pane-->
              <div class="tab-pane" id="settings">
-
-
                   <hr>
+                 {% load crispy_forms_tags %}
+                 {% load widget_tweaks %}
+
                   <form class="form" action="##" method="post" id="registrationForm">
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="first_name"><h4>First name</h4></label>
-                              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                            <label for="last_name"><h4>Last name</h4></label>
-                              <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                          </div>
-                      </div>
-
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="phone"><h4>Phone</h4></label>
-                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
-                          </div>
-                      </div>
-
-                      <div class="form-group">
-                          <div class="col-xs-6">
-                             <label for="mobile"><h4>Mobile</h4></label>
-                              <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="email"><h4>Email</h4></label>
-                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="email"><h4>Location</h4></label>
-                              <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
-                          </div>
-                      </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                              <label for="password"><h4>Password</h4></label>
-                              <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-
-                          <div class="col-xs-6">
-                            <label for="password2"><h4>Verify</h4></label>
-                              <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                           <div class="col-xs-12">
-                                <br>
-                              	<button class="btn btn-lg btn-success pull-right" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                               	<!--<button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>-->
+                    {% for field in form %}
+                      {% if field == form.planificateur_visite %}
+                            <div class="col-12">
+                                <p>Jours de visite : {{ workflow.planificateur_visite }}</p>
                             </div>
-                      </div>
+                      {% elif field == form.type_visite %}
+                            <div class="col-12">
+                                <p>Type de visite : {{ workflow.get_type_visite_display}}</p>
+                            </div>
+                      {% elif field == form.document_paye or field == form.document_avis or field == form.document_quittance %}
+                            <div class="col-12">
+                                <p class="bg-dark text-white">Fichiers</p>
+                            </div>
+
+                      {% else %}
+                      {{ field|attr:"readonly"|as_crispy_field }}
+                      {% endif %}
+                      {% endfor %}
               	</form>
               </div>
 

@@ -7,7 +7,7 @@
           {% csrf_token %}
           {{ form|crispy }}
             <h2>Vos équipements :</h2>
-                 {{obj.equipements.all|join:", " }}
+                 {{obj.equipements.all|join:", "}}
             <h2>Vos services</h2>
             {% for x,y in services.fields.categorie.choices %}
                 <div class="form-check">

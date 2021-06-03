@@ -141,6 +141,7 @@ def stripe_webhook(request):
         myAnnonce = Annonce.objects.get(id=product_id)
         user = Account.objects.get(email=customer_email)
         myAnnonce.reservation = user
+        myAnnonce.reserved = True
         myAnnonce.save()
 
     # Passed signature verification
