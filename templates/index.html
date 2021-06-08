@@ -62,7 +62,7 @@
 <div class="row mainbar-row align-items-lg-stretch px-4">
 <div class="col-auto pr-5">
 <div class="navbar-header">
-<a class="navbar-brand" href="http://expresslocation.fr/" rel="home">
+<a class="navbar-brand" href="{% url 'acceuil' %}" rel="home">
 <span class="navbar-brand-inner">
 <img class="logo-dark" src="{% static 'assets/img/logo/logo-1.png' %}" alt="Ave HTML Template">
 <img class="logo-sticky" src="{% static 'assets/img/logo/logo-1.png' %}" alt="Ave HTML Template">
@@ -120,7 +120,7 @@
 </a>
 </li>
 <li>
-<a href="http://nek-services.com/">
+<a href="{% url 'conciergerie' %}">
 <span class="link-icon"></span>
 <span class="link-txt">
 <span class="link-ext"></span>
@@ -138,7 +138,11 @@
 </a>
 </li>
 <li>
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'logged-annonce' %}">
+        {% else %}
 <a href="{% url 'creer-annonce' %}">
+    {% endif %}
 <span class="link-icon"></span>
 <span class="link-txt">
 <span class="link-ext"></span>
@@ -210,7 +214,7 @@
 </div>
 <div class="row">
 <div class="lqd-column col-sm-6 mb-3 mb-md-0">
-<a href="https://eu.jotform.com/form/201412793421346" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold">
+<a href="{% url 'workflow' %}" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold">
 <span>
 <span class="btn-txt">Déposez votre dossier</span>
 </span>
@@ -336,7 +340,7 @@
 </div>
 </div>
 <div class="lqd-column col-sm-6 mb-3 mb-md-0">
-<a href="https://eu.jotform.com/form/201412793421346" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold">
+<a href="{% url 'workflow' %}" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold">
 <span>
 <span class="btn-txt">Déposez votre dossier</span>
 </span>
@@ -415,7 +419,7 @@
 </div>
 </div>
 <div class="lqd-column col-sm-6 mb-3 mb-md-0">
-<a href="https://eu.jotform.com/form/201412793421346" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold" data-localscroll="true" data-localscroll-options='{"scrollBelowSection":true}'>
+<a href="{% url 'workflow' %}" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold" data-localscroll="true" data-localscroll-options='{"scrollBelowSection":true}'>
 <span>
 <span class="btn-txt">Déposez votre dossier</span>
 </span>
@@ -435,7 +439,7 @@
 <h2 class="mt-4 mb-4">Etape 1 : Plus de refus sans explication</h2>
 <p>Nous restructurons votre profil et ce, même si celui-ci est hors critères classiques. Nous l'optimisons pour qu'il soit sécurisant pour les propriétaires.</p>
 </header>
-<a href="https://eu.jotform.com/form/201412793421346" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold">
+<a href="{% url 'workflow' %}" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold">
 <span>
 <span class="btn-txt">Déposez votre dossier</span>
 </span>
@@ -464,7 +468,7 @@
 <h2 class="mt-4 mb-4">Etape 2 : Plus de queues interminables ou de visites inutiles</h2>
 <p>Nous effectuons les visites à votre place grâce à notre concept de visites substituées jusqu’à trouver le bien qui vous convient.</p>
 </header>
-<a href="https://eu.jotform.com/form/201412793421346" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold">
+<a href="{% url 'workflow' %}" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold">
 <span>
 <span class="btn-txt">Déposez votre dossier</span>
 </span>
@@ -493,7 +497,7 @@
 <h2 class="mt-4 mb-4">Etape 3 : Votre signature de bail en express et à distance</h2>
 <p>Vous avez choisis un appartement , nous avons négocié votre signature, le propriétaire a validé votre dossier , vous n'avez plus qu'à signer depuis votre canapé !</p>
 </header>
-<a href="https://eu.jotform.com/form/201412793421346" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold" data-localscroll="true" data-localscroll-options='{"scrollBelowSection":true}'>
+<a href="{% url 'workflow' %}" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-12 font-weight-semibold" data-localscroll="true" data-localscroll-options='{"scrollBelowSection":true}'>
 <span>
 <span class="btn-txt">Déposez votre dossier</span>
 </span>
@@ -593,7 +597,7 @@
 <section class="vc_row pt-100 pb-70" id="news">
 <div class="container">
 <div class="lqd-column col-sm-6 mb-3 mb-md-0">
-<a href="https://eu.jotform.com/form/201412793421346" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-20 font-weight-semibold align-items-center">
+<a href="{% url 'workflow' %}" class="btn btn-solid text-uppercase circle btn-bordered border-thin font-size-20 font-weight-semibold align-items-center">
 <span>
 <span class="btn-txt">Déposez votre dossier</span>
 </span>

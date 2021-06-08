@@ -170,7 +170,7 @@ def workfinal(request, pk):
         Décision : {} 
         {}
         if you want to return on site and see details of the offer :
-        http://127.0.0.1:8000/
+        http://127.0.0.1:8000/annonce-profil
         
         Have nice day
         

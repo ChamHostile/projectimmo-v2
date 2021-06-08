@@ -31,7 +31,7 @@ def home(request):
              'commande_livre':commande_livre,
              'commande_en_cours':commande_en_cours
             }
-    return render(request,'produit/acceuil.html',context)
+    return render(request,'index.html',context)
 #    return render(request, 'dashboard.html', context)
 
 @login_required(login_url='acces')
