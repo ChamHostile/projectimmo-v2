@@ -154,13 +154,15 @@
               </div>
         <div class="tab-pane" id="diagnostic">
                 <hr>
+            <form method="post" action="">
+                {% csrf_token %}
                       <div class="col-12" id="nek_resp">
-                        <label for="commentaire_nek">Commentaire Nek</label>
+                        <label for="commentaire_nek">Bilan semaine</label>
                         <div class="row">
                             <div class="col-8">
-                                <textarea class="form-control" name="commentaire_nek" required></textarea>
+                                <textarea class="form-control" name="commentaire_bilan" required></textarea>
                                 <input type="datetime-local" id="bilan-semaine"
-                                   name="bilan-semaine" value="2020-06-12T19:30"
+                                   name="bilan_semaine" value="2020-06-12T19:30"
                                    min="2020-06-07T00:00">
                             </div>
                             <div class="col-4">
@@ -170,8 +172,24 @@
                         </div>
                         <input type="hidden" value="1" id="total_chq">
                     </div>
-
+                <input type="submit" name="Envoyer" class="btn btn-primary mt-3 mb-5">
+            </form>
+            <h2>Bilan actuels : </h2>
+                    {% for nek in workflow.bilan_semaine.all %}
+                       <div class="col-6 mt-2">
+                        <div class="list-group">
+                          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                              <small class="text-danger">{{nek.date}}</small>
+                            </div>
+                            <p class="mb-1">{{nek.commentaire}}</p>
+                            <small>{{forloop.counter}}</small>
+                          </a>
+                        </div>
+                           </div>
+                    {% endfor %}
              </div><!--/tab-pane-->
+
               </div><!--/tab-pane-->
 
           </div><!--/tab-content-->
@@ -185,7 +203,12 @@
     $('.remove').on('click', remove);
         function add(){
           var new_resp = parseInt($('#total_chq').val())+1;
-          var new_input="<textarea name='commentaire_nek' id='new_" + new_resp +  "' class='form-control mb-1 mt-1'></textarea>"
+          var new_input="<div id='new_" + new_resp +  "' class='col-8 mb-1 mt-1'> \
+            <textarea class='form-control' name='commentaire_bilan' required></textarea> \
+                                <input type='datetime-local' id='bilan-semaine' \
+                                   name='bilan_semaine' value='2020-06-12T19:30' \
+                                   min='2020-06-07T00:00'> \
+          </div>"
 
           $('#nek_resp').append(new_input);
           $('#total_chq').val(new_resp)

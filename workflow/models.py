@@ -21,6 +21,10 @@ class Commentaire_nek(models.Model):
 class Commentaire_demeya(models.Model):
     commentaire = models.TextField()
 
+class Bilan(models.Model):
+    date = models.DateTimeField(null=True)
+    commentaire = models.TextField()
+
 class File(models.Model):
     nom = models.CharField(max_length=200, null=True)
     prenom = models.CharField(max_length=200, null=True)
@@ -101,6 +105,10 @@ class File(models.Model):
     )
     commentaire_demaya = models.ManyToManyField(
         Commentaire_demeya,
+        null=True,
+    )
+    bilan_semaine = models.ManyToManyField(
+        Bilan,
         null=True,
     )
     user = models.ForeignKey(

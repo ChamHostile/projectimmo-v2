@@ -491,6 +491,17 @@ def profile_annonce(request):
     form = NewFile(instance=workflow)
     annonce = Annonce.objects.filter(user=request.user)
     myAdress = Address.objects.get(account=request.user)
+    if request.method == 'POST':
+        bilan_semaine = request.POST.getlist('commentaire_bilan')
+        date_bilan = request.POST.getlist('bilan_semaine')
+        length = len(bilan_semaine)
+        for i in range(length):
+            bilan = Bilan.objects.create(commentaire=bilan_semaine[i], date=date_bilan[i])
+            bilan.save()
+            bilan_save = Bilan.objects.latest('id')
+            workflow.bilan_semaine.add(bilan_save)
+            workflow.save()
+
     context = {'reservation': reservations, 'form': form, 'workflow': workflow, 'annonce': annonce, 'address': myAdress}
 
     return render(request, 'compte/profile_annonce.html', context)
