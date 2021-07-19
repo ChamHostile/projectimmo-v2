@@ -133,7 +133,7 @@ def workfinal(request, pk):
         rdv_value = request.POST.get('rdv')
         rdv = request.POST.get('date_rdv')
 
-        if rdv_value == '1':
+        if   rdv_value == '1':
             Files.date_reunion = rdv
             Files.verdict = 'attn'
             decision = "Prise de rendez vous le :" + Files.date_reunion
