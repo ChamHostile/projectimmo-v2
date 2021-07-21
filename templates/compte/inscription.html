@@ -119,6 +119,9 @@
 							</div>
 							{{form.password2}}
 						</div>
+						<div class="alert alert-info " id="code_pro" hidden role="alert">
+						  Votre code : <span id="nombre"></span>
+						</div>
                         {{form.errors}}
 				   		<div class="d-flex justify-content-center mt-3 login_container">
 				 			<input class="btn login_btn" type="submit" value="S'inscrire">
@@ -147,6 +150,37 @@
 		form_fields[4].placeholder='Telephone...';
 		form_fields[5].placeholder='Mot de passe...';
 		form_fields[6].placeholder='Confirmer Mot de passe...';
+		let number = "";
+		code_pro = document.getElementById("code_pro");
+		function randomString(length, chars) {
+			var result = '';
+			for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+			return result;
+		}
+		var groupe = document.getElementsByClassName('input-group');
+
+		$("#id_typelocataire").change(function() {
+			if ($(this).val() == 'PART'){
+				groupe[5].hidden = false;
+				groupe[6].hidden = false;
+				form_fields[5].value = "";
+				form_fields[6].value = "";
+				code_pro.hidden = true;
+			}else{
+				groupe[5].hidden = true;
+				groupe[6].hidden = true;
+				var rString = randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+				form_fields[5].value = rString;
+				form_fields[6].value = rString;
+				code_pro.hidden = false;
+				document.getElementById("nombre").innerHTML = rString;
+				console.log(form_fields[5].value);
+				console.log(form_fields[6].value);
+
+			}
+
+		});
+
 
 
 		for (var field in form_fields){

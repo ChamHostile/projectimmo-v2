@@ -117,6 +117,7 @@ def inscriptionPage(request):
         form=CreateUserForm(request.POST)
         if form.is_valid():
                 user=form.save()
+
                 return redirect('acces')
     context={'form':form}
     return render(request,'compte/inscription.html',context)

@@ -11,7 +11,7 @@ register = template.Library()
 
 
 # Create your views here.
-@login_required(login_url='login')
+@login_required(login_url='login-annonce', redirect_field_name='workflow')
 
 def workflow(request):
     global contentFile

@@ -179,6 +179,12 @@
 {% csrf_token %}
   <script type="text/javascript">
   $(document).ready(function() {
+   var inputs = document.getElementsByTagName('input');
+     for (var i=0; i<inputs.length; i++)  {
+       if (inputs[i].type == 'checkbox')   {
+          inputs[i].checked = false;
+        }
+     }
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     var total;
     total = parseInt($("#total").text());
@@ -186,14 +192,16 @@
       total = parseInt($("#total").text());
       console.log(total);
       console.log("le total");
-      total = parseInt($("#total").text());
+
     });
     // Create an instance of the Stripe object with your publishable API key
     var stripe = Stripe("{{STRIPE_PUBLIC_KEY}}");
     var checkoutButton = document.getElementById("checkout-button");
+
+    checkoutButton.addEventListener("click", function () {
+    total = parseInt($("#total").text());
     url = "{% url 'create-checkout-session' annonce.id 1234 %}";
     url = url.replace(/1234/, total.toString());
-    checkoutButton.addEventListener("click", function () {
       fetch(url, {
         method: "POST",
         headers: {
