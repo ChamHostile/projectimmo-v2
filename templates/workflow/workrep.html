@@ -102,7 +102,9 @@
                             <div class="col-8">{{ field|as_crispy_field }}</div>
                             {{ field.errors }}
                         {% elif field.field.widget.input_type == 'select' %}
-                            {% if field != form.bilan_semaine or field != form.user %}
+                            {% if field == form.bilan_semaine or field == form.user %}
+                                <div></div>
+                            {% else %}
                             <div class="col-8">
                                 {{ field|attr:"hidden"|as_crispy_field }}
                                 {% with field.name as nom %}
@@ -120,6 +122,10 @@
                         </div>
                         {% endif %}
                     {% endfor %}
+                    <div class="col-md-8">
+                        <label>Mail de redirection (optionnel)</label>
+                        <input class="form-control"  type="text" placeholder="Entrez un mail de redirection" name="redirect_adress">
+                    </div>
                     <div class="col-8">{{ Files.document_avis }}</div>
                     <div class="col-12" id="nek_resp">
                         <label for="commentaire_nek">Commentaire Nek</label>
@@ -134,9 +140,6 @@
                         </div>
                         <input type="hidden" value="1" id="total_chq">
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <input class="form-control" name="redirect_adress">
                 </div>
                 <input type="submit" name="Envoyer" class="btn btn-primary mt-3 mb-5">
             </div>

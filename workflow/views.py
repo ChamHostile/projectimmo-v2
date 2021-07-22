@@ -9,7 +9,6 @@ from django import template
 from account.models import *
 register = template.Library()
 
-
 # Create your views here.
 @login_required(login_url='login-annonce', redirect_field_name='workflow')
 
@@ -30,7 +29,12 @@ def workflow(request):
         form = NewFile(request.POST)
         f_name = request.POST.get('nom')
         s_name = request.POST.get('prenom')
-        mail = request.POST.get('email')
+        mail = ''
+        redirect_adress = request.POST.get('redirect_adress')
+        if redirect_adress == '':
+            mail = request.POST.get('email')
+        else:
+            mail = redirect_adress
         my_file_avis = request.POST.get('document_avis', False)
         my_file_quittance = request.POST.get('document_quittance', False)
         my_file_paye = request.POST.get('document_paye', False)
@@ -90,6 +94,12 @@ def workrep(request, pk):
     form = UpdateFile(request.POST or None, instance=Files)
     if request.method == 'POST':
         form = UpdateFile(request.POST or None, instance=Files)
+        mail = ''
+        redirect_adress = request.POST.get('redirect_adress')
+        if redirect_adress == '':
+            mail = request.POST.get('email')
+        else:
+            mail = redirect_adress
         commentaire_value = request.POST.getlist('commentaire_nek')
         length = len(commentaire_value)
         for i in range(length):
@@ -115,7 +125,7 @@ def workrep(request, pk):
                 Have nice day
             '''.format(data1['verdict'], data1['id'])
 
-        send_mail(data1['verdict'], message, '', [settings.EMAIL_HOST_USER])
+        send_mail(data1['verdict'], message, '', [mail])
 
 
     context = {'Files': Files, 'form': form}
@@ -129,6 +139,12 @@ def workfinal(request, pk):
     decision = ""
     if request.method == 'POST':
         form = UpdateFile(request.POST or None, instance=Files)
+        mail = ''
+        redirect_adress = request.POST.get('redirect_adress')
+        if redirect_adress == '':
+            mail = request.POST.get('email')
+        else:
+            mail = redirect_adress
         commentaire_value = request.POST.getlist('commentaire_nek')
         rdv_value = request.POST.get('rdv')
         rdv = request.POST.get('date_rdv')
@@ -175,7 +191,7 @@ def workfinal(request, pk):
         Have nice day
         
         '''.format(data2['comment'], data2['verdict'], data2['decision'])
-        send_mail(data2['comment'], message, '', [settings.EMAIL_HOST_USER])
+        send_mail(data2['comment'], message, '', [mail])
     context = {'Files': Files, 'form': form}
     return render(request, 'workflow/final.html', context)
 
