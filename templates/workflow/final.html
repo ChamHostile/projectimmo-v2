@@ -105,6 +105,9 @@
                             <div class="col-8">{{ field|as_crispy_field }}</div>
                             {{ field.errors }}
                         {% elif field.field.widget.input_type == 'select' %}
+                            {% if field == form.bilan_semaine or field == form.user %}
+                                <div></div>
+                            {% else %}
                             <div class="col-8">
                                 {{ field|attr:"hidden"|as_crispy_field }}
                                 {% with field.name as nom %}
@@ -114,6 +117,7 @@
                                 {% endwith %}
                                 {{ field.errors }}
                             </div>
+                            {% endif %}
                         {% else %}
                         <div class="col-8">
                             {{ field|attr:"readonly"|as_crispy_field }}

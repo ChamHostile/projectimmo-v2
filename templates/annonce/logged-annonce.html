@@ -15,7 +15,9 @@
                 </div>
             </div>
             <div class="col-md-8 py-5 border bg-white">
+                <form action="" method="post">
                 <h4 class="pb-4">Entrez les coordonnées</h4>
+                                 {% csrf_token %}
                                     {{ annonceForm|crispy }}
                 <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -64,6 +66,7 @@
               <input type="submit" name="Envoyer">
 
             </div>
+            </form>
         </div>
     </div>
 </section>
