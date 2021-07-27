@@ -8,100 +8,52 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '/vendors/liquid-icon/liquid-icon.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendors/font-awesome/css/font-awesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/theme-vendors.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/theme.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/themes/creative.css' %}" />
 	<style>
-        body{
-            background-color: #69948A;
-            color : white;
+        h1{
+            color : #fe688b;
         }
-        .contenue{
-            margin-top: 10vh;
-            height: 85vh;
-            width: 50%;
+        .form-check-label{
+            margin-left : 20px
         }
-        .contenue h1{
-            text-align: center;
-            padding-top: 25px;
-            padding-bottom: 25px;
-            color: white;
-            text-transform: uppercase;
-        }
-        #form{
-            width: 50%;
-            display: flex;
-            justify-content: center;
-            align-content: center;
-            text-align: center;
-            margin: 10px;
-            margin-left: 155px;
-            border-radius: 7px;
-        }
-        .formulaire{
-            background-color: orange;
-            width: 70%;
-            padding-bottom: 5vh;
-        }
-        .text{
-            display: flex;
-            float: right;
-            font-family: 'Roboto Slab', serif;
-            font-size: 1.3em;
-            margin: 20px 0px 0px 150px;
-            font-weight: 700;
-        }
-        .submit{
-            display: flex;
-            justify-content: center;
-            align-content: center;
-            margin: 20px;
-            width: 50%;
-            margin-left: 160px;
-            border-radius: 15px;
-            padding: 5px;
-        }
-        #file{
-            display: flex;
-            justify-content: center;
-            font-family: 'Roboto Slab', serif;
-            font-size: 1.3em;
-            margin: 20px 0px 0px 230px;
-        }
-        #form1{
-            display: flex;
-            justify-content: center;
-            align-content: center;
-            padding-left: 150px;
-            text-align: center;
-            margin: 30px;
-        }
-
     </style>
 
-    <form enctype="multipart/form-data" action="/" method="POST">
 
         {% csrf_token %}
         {{files}}
         <div class="container contenue">
-            <div class="row">
-            <h1>Send Your Folder</h1>
-                <div class="row">
+            <div class="row ">
+                <form enctype="multipart/form-data" action="/" method="POST" class=" bg-light text-center mt-4 mb-4 rounded">
+
+            <h1 class="mt-5 main_title">Send Your Folder</h1>
+                <div class="row justify-content-center">
                     {% load crispy_forms_tags %}
                     {% for field in form %}
                         {% if field == form.heure_debut %}
-                            <div class="col-8">
+                            <div class="col-5">
                                 <label for="heure_debut">Heure de début - Créneau horaire des visites *</label>
                                 <p><input name="heure_debut" type="time" required></p></div>
                         {% elif field == form.heure_fin %}
-                            <div class="col-8">
+                            <div class="col-5">
                                 <label for="heure_fin">Heure de fin - Créneau horaire des visites *</label>
                                 <p><input name="heure_fin" type="time" required></p></div>
                         {% elif field == form.address or field == form.user%}
                             <div></div>
-                        {% else %}
+                        {% elif field == form.motifDemenag %}
                             <div class="col-8">{{ field|as_crispy_field }}</div>
+                        {% elif field == form.precisRecherche %}
+                            <div class="col-8">{{ field|as_crispy_field }}</div>
+                        {% else %}
+                            <div class="col-5">{{ field|as_crispy_field }}</div>
                         {% endif %}
                     {% endfor %}
-                    <div class="panel panel-primary mb-4">
+                    <div class="panel panel-primary col-8 mb-4">
                 <div class="panel-heading">
                   <h4 class="panel-title">Ajoutez votre adresse</h4>
                 </div>
@@ -147,13 +99,15 @@
                     </div>
                 </div>
 
-                <input type="submit" name="Envoyer" class="btn btn-primary mb-5">
+                <input type="submit" name="Envoyer" class="btn pt-2 pb-2 pl-5 pr-5 mt-3 mb-3 rounded text-white btn-primary border-light">
             </div>
 
         </div>
 
     </form>
 </body>
+        {% load static %}
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1lHVWM1UP-2-F2RPwgBCcRKjYjXAqm5A&libraries=places&callback=initAutocomplete" async defer></script>
     <script src="{% static 'js/autocomplete.js' %}"></script>
 </html>
