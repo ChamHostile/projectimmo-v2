@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'datapackage',
     'multiselectfield',
     'stripe',
+    'streaming_app',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -74,7 +75,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'hamza.aboudou@gmail.com'
-EMAIL_HOST_PASSWORD = 'Hahajonathanurbanginmydaughter47789!$?'
+EMAIL_HOST_PASSWORD = 'Hahajonathanurbanginmydaughter47789!$?   '
 CLIENT_AUTH_ID = '589f0450-92fa-467a-8215-608f808bb114'
 CLIENT_SECRET_KEY = 'c44217a9-247a-4ca3-9611-81d6e208a03b'
 STRIPE_SECRET_KEY = 'sk_test_51IvMHVEdIN3Y8UWsFM2nj0EiMamYqblY8bTlUDJ5xufHplnMXPUj2FAqJGaRqwYFpjdkHG06BnbnlRiN5yWpygGF00NhBQ1Zjx'
@@ -158,6 +159,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)

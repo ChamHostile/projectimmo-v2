@@ -1,0 +1,643 @@
+/*
+	---------------------------------------------------
+	
+	           Styles for Mobile Devices
+
+	---------------------------------------------------
+*/
+
+
+
+/* Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: 1004px) and (max-width: 1350px) {
+/*-----------------------------------------------------------------------------
+----------------------------- 1 - Layout --------------------------------------
+-----------------------------------------------------------------------------*/
+/* - Header - */
+header div.wrap            { width: 980px; }
+
+/* - Layout content - */
+.wrap-fullwidth            { width: 980px; }
+.wrap-fullwidth-bg         { width: 980px; }
+
+/* - page-content - */
+.wrap-middle               { width: 980px; }
+.home-middle               { width: 980px; }
+.wrap-content              { width: 980px; }
+
+/* - single-content - */
+.wrap-left-content         { width: 628px; /* 630-2px(bolders) */ }
+.articles-content          { width: 628px; }
+.single-content            { width: 578px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 2 - Header --------------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Top articles by views (slider) -- */
+#top-slider ul.modern-articles  { width: 100%; }
+
+/* -- Top Header Menu --
+##################### */
+.jquerycssmenu             { margin: 30px 0 0 20px; }
+
+/*Top level menu link items style*/
+.jquerycssmenu ul li a     { padding: 6px 2px 5px 2px !important; margin-right: 12px; }
+
+/* The Modal (for search) */
+.modal-content             { width: 980px; }
+ 
+
+/*-----------------------------------------------------------------------------
+----------------------------- 3 - Home Content --------------------------------
+-----------------------------------------------------------------------------*/
+/* ##### Modern Articles ############# 
+################################### */
+ul.modern-articles       { width: 605px; }
+ul.modern-articles li    { width: 276px; }          
+ul.modern-articles li img, div.noimg { width: 276px; height: 181px;}
+
+/* -- Pagination -- */
+.wp-pagenavi                      { width: 578px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 4 - Entry Content -------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Entry content style -- */
+.entry                     { margin: 0 0 40px 80px;}
+body.page .entry           { margin: 0 40px 40px 40px;}
+
+/* - featured img / videos / gallery - 578px */
+.single-gallery img        { width: 192.6px; height: 192.6px; margin-bottom: -7px; }
+
+/*-----------------------------------------------------------------------------
+----------------------------- 5 - Sidebar & Widgets ---------------------------
+-----------------------------------------------------------------------------*/
+ 
+
+/*-----------------------------------------------------------------------------
+----------------------------- 6 - Comments Form -------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Comments -- */
+#comments                         { width: 578px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 8 - Custom Pages --------------------------------
+-----------------------------------------------------------------------------*/
+/* -- 404 page -- */
+#anthemes-404 .middle-404      { max-width: 600px; margin: 0 auto !important;}
+#anthemes-404 h1               { margin-top: -35px; font-size: 65px; line-height: 60px; padding: 0 0 20px 0;}
+
+
+/*-----------------------------------------------------------------------------
+------------------------------ 9 - Footer -------------------------------------
+-----------------------------------------------------------------------------*/
+footer div.wrap               { width: 980px; }
+footer .one_fourth.ndmargin   { width:30%; margin-right: 3% !important;} 
+footer .one_fourth, footer .one_fourth_last     { float:left; width:30%; margin-bottom:10px; margin-right:4%; }
+footer .one_fourth_last                  { float: left; width: 100%; margin-right:0;} 
+footer .one_fourth_last .widget          { width: 300px; float: left; margin-bottom: 25px; margin-right:3.5%;}
+
+}
+
+
+
+
+
+
+
+/* Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: 760px) and (max-width: 1000px) {
+/*-----------------------------------------------------------------------------
+----------------------------- 1 - Layout --------------------------------------
+-----------------------------------------------------------------------------*/
+/* - Header - */
+header div.wrap            { width: 750px; }
+ 
+/* - Layout content - */
+.wrap-fullwidth            { width: 750px; }
+.wrap-fullwidth-bg         { width: 750px; }
+
+/* - page-content - */
+.wrap-middle               { width: 750px; }
+.home-middle               { width: 750px; }
+.wrap-content              { width: 750px; }
+
+/* - single-content - */
+.wrap-left-content         { width: 750px; }
+.articles-content          { width: 750px; }
+.single-content            { width: 700px; }
+
+       
+/* - sidebar - */
+.sidebar           		   { width: 750px; float: left;  margin-top: 30px; padding-left: 0px; }
+.sidebar .widget           { width: 300px; margin: 0 auto 25px auto;}
+.line_widget_col           { width: 700px; margin: 0 0 25px 25px;}
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 2 - Header --------------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Top articles by views (slider) -- */
+#top-slider ul.modern-articles  { width: 100%; }
+
+/* -- Banner Header -- */
+.responsive-area            { max-width: 700px; }
+
+/* -- Top Header Menu --
+##################### */
+.jquerycssmenu             { display: none;} 
+
+ /* -- Top social icons -- */
+ul.top-social              { width: auto; float: right; margin: 24px 70px 0 0; }
+
+/* The Modal (for search) */
+.modal-content             { width: 750px; }
+/* The Close Button */
+.close                     {  margin: -57px 67px 0 0; }
+
+ 
+/*-----------------------------------------------------------------------------
+----------------------------- 3 - Home Content --------------------------------
+-----------------------------------------------------------------------------*/
+/* ##### Modern Articles ############# 
+################################### */
+ul.modern-articles       { width: 750px; }
+ul.modern-articles li    { width: 337px; }          
+ul.modern-articles li img, div.noimg { width: 337px; height: 222px;}
+
+/* -- Pagination -- */
+.wp-pagenavi                      { width: 700px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 4 - Entry Content -------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Entry content style -- */
+.entry                     { margin: 0 0 40px 80px;}
+body.page .entry           { margin: 0 40px 40px 40px;}
+
+/* - featured img / videos / gallery - 578px */
+.single-gallery img        { width: 175px; height: 175px; margin-bottom: -7px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 5 - Sidebar & Widgets ---------------------------
+-----------------------------------------------------------------------------*/
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 6 - Comments Form -------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Comments -- */
+#comments                         { width: 700px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 8 - Custom Pages --------------------------------
+-----------------------------------------------------------------------------*/
+ /* -- 404 page -- */
+#anthemes-404 .middle-404      { max-width: 600px; margin: 0 auto !important;}
+#anthemes-404 h1               { margin-top: -35px; font-size: 65px; line-height: 60px; padding: 0 0 20px 0;}
+
+
+/*-----------------------------------------------------------------------------
+------------------------------ 9 - Footer -------------------------------------
+-----------------------------------------------------------------------------*/
+footer div.wrap               { width: 750px; }
+footer .one_fourth.ndmargin   { width:48%; margin-right: 2% !important;} 
+footer .one_fourth, footer .one_fourth_last     { float:left; width:48%; margin-bottom:10px; margin-right:2%; }
+footer .one_fourth_last                  { float: left; width: 100%; margin-right:0;} 
+footer .one_fourth_last .widget          { width: 48%; float: left; margin-bottom: 25px; margin-right:2%;}
+
+}
+
+
+
+
+
+
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+@media only screen and (min-width: 580px) and (max-width: 760px) {
+/*-----------------------------------------------------------------------------
+----------------------------- 1 - Layout --------------------------------------
+-----------------------------------------------------------------------------*/
+/* - Header - */
+header div.wrap            { width: 570px; }
+ 
+/* - Layout content - */
+.wrap-fullwidth            { width: 570px; }
+.wrap-fullwidth-bg         { width: 570px; }
+
+/* - page-content - */
+.wrap-middle               { width: 570px; }
+.home-middle               { width: 570px; }
+.wrap-content              { width: 570px; }
+
+/* - single-content - */
+.wrap-left-content         { width: 570px; }
+.articles-content          { width: 570px; }
+.single-content            { width: 520px; }
+
+       
+/* - sidebar - */
+.sidebar           		   { width: 570px; float: left;  margin-top: 30px; padding-left: 0px; }
+.sidebar .widget           { width: 300px; margin: 0 auto 25px auto;}
+.line_widget_col           { width: 520px; margin: 0 0 25px 25px;}
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 2 - Header --------------------------------------
+-----------------------------------------------------------------------------*/
+
+/* -- Top articles by views (slider) -- */
+#top-slider ul.modern-articles  { width: 100%; }
+
+/* -- Banner Header -- */
+.responsive-area            { max-width: 520px; }
+
+/* -- Top Header Menu --
+##################### */
+.jquerycssmenu             { display: none;} 
+
+ /* -- Top social icons -- */
+ul.top-social              { width: auto; float: right; margin: 24px 70px 0 0; }
+
+/* The Modal (for search) */
+.modal-content             { width: 570px; }
+#searchform #search        { width: 400px; }
+/* The Close Button */
+.close                     {  margin: -57px 67px 0 0; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 3 - Home Content --------------------------------
+-----------------------------------------------------------------------------*/
+
+/* ##### Modern Articles ############# 
+################################### */
+ul.modern-articles       { width: 570px; }
+ul.modern-articles li    { width: 248px; }          
+ul.modern-articles li img, div.noimg { width: 248px; height: 163px;}
+.content-list .time-article { display: none;}
+.content-list i.timeshome { display: none;}
+
+/* -- Pagination -- */
+.wp-pagenavi                      { width: 520px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 4 - Entry Content -------------------------------
+-----------------------------------------------------------------------------*/
+/* - Top entry - */
+iframe.single_iframe       { width: 100%; height: 300px;}
+
+/* -- Entry content style -- */
+.entry                     { margin: 0 0 40px 80px;}
+body.page .entry           { margin: 0 40px 40px 40px;}
+
+/* - featured img / videos / gallery - 578px */
+.single-gallery img        { width: 173.3px; height: 173.3px; margin-bottom: -7px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 5 - Sidebar & Widgets ---------------------------
+-----------------------------------------------------------------------------*/
+
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 6 - Comments Form -------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Comments -- */
+#comments                         { width: 520px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 8 - Custom Pages --------------------------------
+-----------------------------------------------------------------------------*/
+ /* -- 404 page -- */
+#anthemes-404 .middle-404      { max-width: 500px; margin: 0 auto !important;}
+#anthemes-404 h1               { margin-top: -35px; font-size: 45px; line-height: 60px; padding: 0 0 20px 0;}
+#anthemes-404                  { width: 100%; min-height: 280px; height: auto; padding: 100px 0 0 0; }
+
+
+/*-----------------------------------------------------------------------------
+------------------------------ 9 - Footer -------------------------------------
+-----------------------------------------------------------------------------*/
+footer div.wrap               { width: 570px; }
+footer .one_fourth.ndmargin   { width: 300px; margin: 0 auto 25px auto !important;} 
+footer .one_fourth, footer .one_fourth_last     { float: none; width:300px; margin: 0 auto 25px auto; }
+footer .one_fourth_last                  { margin: 0 auto 25px auto;} 
+footer .one_fourth_last .widget          { width: 300px; margin: 0 auto 25px auto;}
+
+/* -- Copyright -- */
+.footer-copyright             { width: 570px; }
+
+}
+
+
+
+
+
+
+
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+@media only screen and (min-width: 480px) and (max-width: 580px) {
+/*-----------------------------------------------------------------------------
+----------------------------- 1 - Layout --------------------------------------
+-----------------------------------------------------------------------------*/
+/* - Header - */
+header div.wrap            { width: 460px; }
+ 
+/* - Layout content - */
+.wrap-fullwidth            { width: 460px; }
+.wrap-fullwidth-bg         { width: 460px; }
+
+/* - page-content - */
+.wrap-middle               { width: 460px; }
+.home-middle               { width: 460px; }
+.wrap-content              { width: 460px; }
+
+/* - single-content - */
+.wrap-left-content         { width: 460px; }
+.articles-content          { width: 460px; }
+.single-content            { width: 410px; }
+
+       
+/* - sidebar - */
+.sidebar           		   { width: 460px; float: left;  margin-top: 30px; padding-left: 0px; }
+.sidebar .widget           { width: 300px; margin: 0 auto 25px auto;}
+.line_widget_col           { width: 410px; margin: 0 0 25px 25px;}
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 2 - Header --------------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Top articles by views (slider) -- */
+#top-slider ul.modern-articles  { width: 100%; }
+
+/* -- Banner Header -- */
+.responsive-area            { max-width: 460px; padding-left: 0px; padding-right: 0px; }
+
+/* -- Top Header Menu --
+##################### */
+.jquerycssmenu             { display: none;} 
+
+ /* -- Top social icons -- */
+ul.top-social              { width: auto; float: right; margin: 24px 55px 0 0; }
+
+/* The Modal (for search) */
+.modal-content             { width: 460px; }
+#searchform #search        { width: 360px; }
+
+/* The Close Button */
+.close                     {  margin: -57px 52px 0 0; }
+
+ 
+/*-----------------------------------------------------------------------------
+----------------------------- 3 - Home Content --------------------------------
+-----------------------------------------------------------------------------*/
+/* ##### Modern Articles ############# 
+################################### */
+ul.modern-articles       { width: 460px; }
+ul.modern-articles li    { width: 193px; }  
+ul.modern-articles li h2 { font-size: 15px; line-height: 20px; padding: 10px 10px 5px 10px;}        
+ul.modern-articles li img, div.noimg { width: 193px; height: 127px;}
+.content-list .time-article { display: none;}
+.content-list i.timeshome { display: none;}
+ul.modern-articles li .post-data div.post-views { margin: -3px 0 0 10px; }
+
+/* -- Pagination -- */
+.wp-pagenavi                      { width: 410px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 4 - Entry Content -------------------------------
+-----------------------------------------------------------------------------*/
+
+/* -- Entry Top / Featured Image / Videos -- */
+.entry-top                 { margin: 0 25px }
+.entry-top .post-data div.link-author { display: none;}
+.entry-top .post-data i.authorfirst { display: none !important;}
+
+/* - Top entry - */
+iframe.single_iframe       { width: 100%; height: 260px;}
+
+/* - title - */
+h1.article-title           { text-align: center; font-size: 30px; font-weight: 700; line-height: 36px; margin: 10px 0 5px 0; }
+h1.page-title              { font-size: 24px; font-weight: 700; }
+
+/* -- Entry content style -- */
+.entry                     { margin: 0 0 40px 80px;}
+body.page .entry           { margin: 0 40px 40px 40px;}
+
+/* - featured img / videos / gallery - 578px */
+.single-gallery img        { width: 136.6px; height: 136.6px; margin-bottom: -7px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 5 - Sidebar & Widgets ---------------------------
+-----------------------------------------------------------------------------*/
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 6 - Comments Form -------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Comments -- */
+#comments                         { width: 410px; } 
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 8 - Custom Pages --------------------------------
+-----------------------------------------------------------------------------*/
+/* -- 404 page -- */
+#anthemes-404              { padding: 100px 0 100px 0;}
+#anthemes-404 .middle-404  { width: 80%; margin: 0 auto;}
+#anthemes-404 .widget_recent_entries  { margin: 20px auto 0 auto;}
+#anthemes-404 h1               { font-size: 60px; padding: 0 0 40px 0;}
+#anthemes-404 p                { font-size: 20px; line-height: 32px;}
+#anthemes-404 .one_half, #anthemes-404 .one_half_last { float:left; width:100%; margin-bottom:10px; margin-right:0; }
+#anthemes-404 .one_half_last                    { margin-right:0;}
+
+
+/*-----------------------------------------------------------------------------
+------------------------------ 9 - Footer -------------------------------------
+-----------------------------------------------------------------------------*/
+footer div.wrap               { width: 460px; }
+footer .one_fourth.ndmargin   { width: 300px; margin: 0 auto 25px auto !important;} 
+footer .one_fourth, footer .one_fourth_last     { float: none; width:300px; margin: 0 auto 25px auto; }
+footer .one_fourth_last                  { margin: 0 auto 25px auto;} 
+footer .one_fourth_last .widget          { width: 300px; margin: 0 auto 25px auto;}
+
+/* -- Copyright -- */
+.footer-copyright             { width: 400px; }
+
+}
+
+
+
+
+
+
+
+
+
+/* All Mobile Size (devices) */
+@media only screen and (max-width: 479px) { 
+/*-----------------------------------------------------------------------------
+----------------------------- 1 - Layout --------------------------------------
+-----------------------------------------------------------------------------*/
+/* - Header - */
+header div.wrap            { width: 305px; }
+ 
+/* - Layout content - */
+.wrap-fullwidth            { width: 305px; }
+.wrap-fullwidth-bg         { width: 305px; }
+
+/* - page-content - */
+.wrap-middle               { width: 305px; }
+.home-middle               { width: 305px; }
+.wrap-content              { width: 305px; }
+
+/* - single-content - */
+.wrap-left-content         { width: 305px; }
+.articles-content          { width: 305px; }
+.single-content            { width: 255px; }
+
+       
+/* - sidebar - */
+.sidebar           		   { width: 305px; float: left;  margin-top: 30px; margin-left: -25px; background-color: #fafafa; }
+.sidebar .widget           { width: 300px; margin: 25px auto 0 auto;}
+.line_widget_col           { width: 305px; margin: 0 0 25px 0px;}
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 2 - Header --------------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Top articles by views (slider) -- */
+#top-slider ul.modern-articles  { width: 100%; }
+
+/* -- Banner Header -- */
+.responsive-area            { max-width: 300px; padding-left: 0px; padding-right: 0px; }
+.responsive-area span       { font-size: 15px; }
+
+/* -- Top Header Menu --
+##################### */
+.jquerycssmenu             { display: none;} 
+
+/* -- Top social icons -- */
+ul.top-social              { display: none;}
+
+/* The Close Button */
+.close                     {  margin: -57px 52px 0 0; }
+
+ 
+/*-----------------------------------------------------------------------------
+----------------------------- 3 - Home Content --------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Modules -- */
+.module-section .article-btn { margin-left: 15px;}
+
+/* ##### Modern Articles ############# 
+################################### */
+ul.modern-articles       { width: 305px; }
+ul.modern-articles li    { width: 275px; margin: 0 0 25px 15px; }  
+ul.modern-articles li h2 { font-size: 16px; line-height: 24px; padding: 10px 20px 5px 20px;}        
+ul.modern-articles li img, div.noimg { width: 275px; height: 181px;}
+.content-list .time-article { display: none;}
+.content-list i.timeshome { display: none;}
+/* -- Sticky Posts style -- */ 
+ul.modern-articles li.sticky      { margin-left: 11px; }
+
+/* -- Pagination -- */
+.wp-pagenavi                      { width: 275px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 4 - Entry Content -------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Entry Top / Featured Image / Videos -- */
+.entry-top                 { margin: 0 10px }
+.entry-top .post-data div.link-author { display: none;}
+.entry-top .post-data i.authorfirst { display: none !important;}
+.entry-top .post-data div.time-article { display: none;}
+.entry-top .post-data i.timearticle { display: none !important;}
+
+/* - Top entry - */
+iframe.single_iframe       { width: 100%; height: 180px;}
+
+/* - title - */
+h1.article-title           { text-align: center; font-size: 24px; font-weight: 700; line-height: 36px; margin: 10px 0 5px 0; }
+h1.page-title              { font-size: 24px; font-weight: 700; }
+
+/* -- Entry content style -- */
+.entry                     { margin: 0 0 0 40px;}
+body.page .entry           { margin: 0 0 0 0;}
+body.page-template-template-full-width .entry { padding: 0 20px;}
+
+/* - featured img / videos / gallery - 578px */
+.single-gallery img        { width: 127.5px; height: 127.5px; margin-bottom: -7px; }
+
+/* -- Single Share -- */
+#single-share  { width:45px; height: auto; margin: 15px 0 0 -15px; }
+
+/* -- Typography First Content Letter -- */
+div.p-first-letter p:first-child:first-letter { font-size:26px; padding: 30px 15px; } 
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 5 - Sidebar & Widgets ---------------------------
+-----------------------------------------------------------------------------*/
+
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 6 - Comments Form -------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Comments -- */
+#comments                         { width: 255px; }
+
+/* -- Comment Form -- */
+.comment-notes                { display: none;}
+#commentform                  { padding: 35px 25px 35px 20px; font-size:11px; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 8 - Custom Pages --------------------------------
+-----------------------------------------------------------------------------*/
+/* -- 404 page -- */
+#anthemes-404              { padding: 100px 0 100px 0;}
+#anthemes-404 .middle-404  { width: 80%; margin: 0 auto;}
+#anthemes-404 .widget_recent_entries  { margin: 20px auto 0 auto;}
+#anthemes-404 h1               { font-size: 60px; padding: 0 0 40px 0;}
+#anthemes-404 p                { font-size: 20px; line-height: 32px;}
+#anthemes-404 .one_half, #anthemes-404 .one_half_last { float:left; width:100%; margin-bottom:10px; margin-right:0; }
+#anthemes-404 .one_half_last                    { margin-right:0;}
+
+
+
+/*-----------------------------------------------------------------------------
+------------------------------ 9 - Footer -------------------------------------
+-----------------------------------------------------------------------------*/
+footer div.wrap               { width: 305px; }
+footer .one_fourth.ndmargin   { width: 300px; margin: 0 auto 25px auto !important;} 
+footer .one_fourth, footer .one_fourth_last     { float: none; width:300px; margin: 0 auto 25px auto; }
+footer .one_fourth_last                  { margin: 0 auto 25px auto;} 
+footer .one_fourth_last .widget          { width: 300px; margin: 0 auto 25px auto;}
+
+/* -- Copyright -- */
+.footer-copyright             { float: none; width: auto; text-align: center; display: inline-block; min-height: 30px; max-height: auto; }
+
+/* -- Columns -- */
+.one_half, .one_half_last         { float:left;width:100%; margin-bottom:10px; margin-right:0; }
+.one_half_last                    { margin-right:0;}
+
+.one_third, .one_third_last       { float:left; width:100%; margin-bottom:10px; margin-right:0; }
+.one_third_last                   { margin-right:0;}
+
+.one_fourth, .one_fourth_last     { float:left; width:100%; margin-bottom:10px; margin-right:0; }
+.one_fourth_last                  { margin-right:0;}
+}

@@ -37,6 +37,7 @@ urlpatterns = [
     path('compte/acces/', views.accesPage, name='acces'),
     path('compte/quitter/', views.logoutUser, name='quitter'),
     path('', include('annonceMain.urls')),
+    path('', include('streaming_app.urls')),
     path('user/', views.userPage, name='user-page'),
     path('account/', views.accountSettings, name='account_settings'),
     path('', include('produit.urls')),

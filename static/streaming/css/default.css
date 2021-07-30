@@ -1,0 +1,258 @@
+/* Theme Style ( default color ) ----------------------------------------------
+-----------------------------------------------------------------------------*/
+h1,h2,h3,h4,h5,h6          { color: #000;} 
+code, pre                  { border: 1px solid #eae9e9; background-color: #FFF; -moz-box-shadow: 0 1px 10px rgba(0,0,0,0.1); -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1); box-shadow: 0 1px 10px rgba(0,0,0,0.1);}
+input[type="email"],
+input[type="number"],
+input[type="search"],
+textarea,
+input[type="text"],
+input[type="tel"],
+input[type="url"],
+input[type="password"]     { border: 1px solid #f1f1f1; background-color: #f1f1f1; color:#333;  }
+
+/*-----------------------------------------------------------------------------
+----------------------------- 1 - Layout --------------------------------------
+-----------------------------------------------------------------------------*/
+a:link, a:visited          { color: #000; text-decoration: none; }
+a:hover                    { color: #e22428; /* red color */  }
+::-moz-selection           { background:#000; color: #fff; text-shadow: none; }
+::selection                { background:#000; color: #fff; text-shadow: none; }
+/* -- Header -- */
+html body                  { color: #414141; background-color: #fafafa; }
+header                     { background-color: #FFF; }
+
+/* - Layout content - */
+.wrap-fullwidth            { background-color: #FFF; }
+.wrap-fullwidth-bg         { background-color: #FFF; }
+
+/* - page-content - */
+.wrap-middle               { background-color: #FFF;}
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 2 - Header --------------------------------------
+-----------------------------------------------------------------------------*/
+
+/* -- Category ribbon -- */
+.artbtn-category a         { color: #FFF;}
+.artbtn-category a:hover   { color: #FFF !important;}
+
+/* -- Top Header Menu -- */
+.jquerycssmenu ul li.current_page_item > a, 
+.jquerycssmenu ul li.current-menu-ancestor > a, 
+.jquerycssmenu ul li.current-menu-item > a, 
+.jquerycssmenu ul li.current-menu-parent > a { color: #000; }
+.jquerycssmenu ul li ul li.current_page_item > a, 
+.jquerycssmenu ul li ul li.current-menu-ancestor > a, 
+.jquerycssmenu ul li ul li.current-menu-item > a, 
+.jquerycssmenu ul li ul li.current-menu-parent > a { color: #000; }
+/*Top level menu link items style*/
+.jquerycssmenu ul li i       { color: #e22428; }
+.jquerycssmenu ul li a       { color: #000; }
+.jquerycssmenu ul li a:hover { color: #e22428 !important; }
+.jquerycssmenu ul li:hover a { background: #FFF; text-decoration: none !important;}
+/*1st sub level menu*/
+.jquerycssmenu ul li ul { background: #FFF;}
+/* Sub level menu links style */
+.jquerycssmenu ul li ul li a { color:#000; border: none; }
+.jquerycssmenu ul li ul li:hover { color: #000 !important;}
+.jquerycssmenu ul li ul li:hover a { background-color: #FFF; color: #000 !important;}
+.jquerycssmenu ul li ul li:hover a:hover { background-color: #f5f5f5; color: #000 !important;}
+
+/* -- Top social icons -- */
+.top-social li a          { color: #e22428;}
+.top-social li:hover      { -moz-transform: scale(1.2); -webkit-transform: scale(1.2); transform: scale(1.2); }
+.top-social li a i.fa-facebook { color: #3b5998 !important;}
+.top-social li i.fa-twitter { color: #00aced !important;}
+.top-social li i.fa-google-plus { color: #eb4026 !important;}
+.top-social li i.fa-pinterest  { color: #ca212a !important;}
+.top-social li i.fa-instagram  { color: #3B6B94 !important;}
+
+/* -- Search Header (menu) -- */
+#searchform input          { color: #DDD; background-color: #FFF !important; }  
+#searchform ::-webkit-input-placeholder { color: #DDD; }
+#searchform :-moz-placeholder { /* Firefox 18- */ color: #DDD; }
+#searchform ::-moz-placeholder {  /* Firefox 19+ */ color: #DDD; }
+#searchform :-ms-input-placeholder { color: #DDD; }
+
+/* The Modal (for search) */
+.modal-content             { border-top: 1px solid #fafafa; background-color: #FFF; }
+/* The Close Button */
+.close                     { background-color: #FFF; color: #000; }
+.close:hover, .close:focus { -moz-transform: scale(1.2); -webkit-transform: scale(1.2); transform: scale(1.2);}
+.modal-header              { color: white; }
+
+/* -- Top articles by views (slider) -- */
+#content-top-slider        { background-color: #FFF;} 
+
+/* -- Banner Header -- */
+.responsive-area            { background-color: #FFF; }
+.responsive-area span       { color: #DDD; }
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 3 - Home Content --------------------------------
+-----------------------------------------------------------------------------*/
+/* -- Modules -- */
+.module-section .article-btn        { background-color: #192B33; color: #FFF;}
+.module-section .article-btn h3     { color: #FFF;}
+.module-section .article-btn-more        { background-color: #f0ca00; color: #FFF;}
+.module-section .article-btn-more h3 a   { color: #FFF !important;}
+
+/* ##### Modern Articles ############# 
+################################### */
+ul.modern-articles li div.content-list { background-color: #FFF; }
+ul.modern-articles li a h2 { color: #000;}
+ul.modern-articles li .artbtn-category   { background-color: rgba(000, 0, 0, 0.5);}
+ul.modern-articles li .artbtn-category a { color: #FFF;}
+ul.modern-articles li .artbtn-category a:hover { color: #FFF !important;}
+ul.modern-articles li .author-il div.link-author a { color: #000 !important; }
+ul.modern-articles li .author-il div.time-article a { color: #000 !important; }
+ul.modern-articles li .author-il p { color: #222; }
+.time-article a i {  }
+div.noimg                 { background-color: #fafafa;  }
+
+/* -- Sticky Posts style -- */ 
+ul.modern-articles li.sticky { border: dotted 4px #192B33; }
+ 
+/* -- Pagination -- */
+.wp-pagenavi a, .wp-pagenavi span { background-color: #FFF; color: #000;}
+.wp-pagenavi a:hover { color: #fff !important; background-color: #e22428;}
+.wp-pagenavi span.current { background-color: #e22428; color: #fff !important; }
+
+/* -- Index file Title -- */
+h3.index-title span     { background-color: #192B33; color: #FFF;}
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 4 - Entry Content -------------------------------
+-----------------------------------------------------------------------------*/
+
+/* -- ribbons middle categories - */
+.single-category a { background-color: #f0ca00; }
+.entry-top .single-category a { color: #FFFFFF !important;}
+
+/* - title - */
+h1.article-title           { color: #000; }
+h1.page-title              { color: #000; }
+/* - featured img / videos - */
+.media-single-content      { background-color: #f9f9f9; }
+ 
+/* -- Entry content style -- */
+.entry p a        { color: #e22428; }
+.entry p a:hover  { border-color: #e22428; }
+.entry .um-profile-body a { color: #e22428;}
+.entry .um-profile-body a:hover { color: #192B33 !important;}
+
+/* -- blockquote -- */
+blockquote { background-color: #fafafa; border-left: 5px solid #192B33; }
+
+/* -- Responsive Images -- */
+.wp-caption-text           { color: #888;}
+.entry .wp-caption-text a         { color: #000 !important; }
+.wp-caption-text a:hover   { color: #000 !important; }
+
+/* -- Pagination entry articles -- */
+.my-paginated-posts span { background-color: #e22428; color: #FFF !important;}
+.my-paginated-posts p a  { background-color: #000; color: #FFF !important;}
+.my-paginated-posts p span a  { color: #FFF !important;}
+
+/* -- Typography First Content Letter -- */
+div.p-first-letter p:first-child:first-letter { color: #000; border: 7px solid #e22428; } 
+
+/* -- Tags Articles -- */
+div.tags-btns a       { background: #fff !important; color: #222; }
+
+/* -- Line for Related Articles -- */
+.line_bottom_related  { border-bottom: 1px solid #ddd; m}
+
+/*-----------------------------------------------------------------------------
+----------------------------- 5 - Sidebar & Widgets ---------------------------
+-----------------------------------------------------------------------------*/
+
+/* -- Sidebar -- */
+.sidebar { background-color: #FFF; border-left: 1px solid #fafafa;}
+.widget-title        { background-color: #192B33; color: #FFF;}
+.widget-title h3     { color: #FFF;}
+.line_widget_col { border-bottom: 1px solid #fafafa;} 
+
+/* -- Article widget -- */
+.article_list li         { border-bottom: 1px solid #fafafa; } 
+ 
+/* -- Widget RSS -- */
+.widget_rss h3 a         { color: #222;}
+
+/* -- Default Tags -- */
+div.tagcloud a:hover  { }
+div.tagcloud a        { background: #f5f5f5 !important; }
+div.tagcloud span     { color: #e22428; }
+
+div.widget_archive select, div.widget_categories select { border-radius: 3px; border:1px solid #d5d6d8; color:#999; }
+
+/* -- Default Search -- */
+div.widget_search #searchform2 #s { background-color: #fafafa; }
+
+/* -- Calendar -- */ 
+#wp-calendar tbody td#today { background-color: #000; color: #FFF;}
+#wp-calendar tbody td#today a { color: #FFF !important;}
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 6 - Comments Form -------------------------------
+-----------------------------------------------------------------------------*/
+
+ul.comment li                 { border-bottom: 1px solid #f5f4f4; background-color: #fafafa;}
+ul.comment li ul.children li  { -moz-box-shadow: none; box-shadow: none; -webkit-box-shadow: none;}
+
+/* -- Comments -- */
+.comments .article-btn        { background-color: #192B33; color: #FFF;}
+.comments .article-btn h3     { color: #FFF;}
+.comments h3.comment-reply-title  { color: #FFF !important; background-color: #192B33; }
+.comments h3.comment-reply-title a { color: #FFF; }
+
+/* -- comment Form -- */
+#commentform                  { background-color: #f0ca00;}
+#commentform #sendemail       { background-color: #192B33; border-color: #192B33; color: #FFF; }
+#commentform #sendemail:hover { opacity: 0.9;}
+#commentform label span       { color:#F00;}
+#commentform span             { color:#F00;} 
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 7 - Contact Form --------------------------------
+-----------------------------------------------------------------------------*/
+ 
+/* -- Contact Form 7 Plugin -- */
+form.wpcf7-form input         { border:2px solid #d5d6d8; color:#333; }
+form.wpcf7-form textarea      { border:2px solid #d5d6d8; color:#333; }
+form.wpcf7-form input.wpcf7-submit    { background-color: #000; color: #FFF; border: none; }
+form.wpcf7-form .wpcf7-validation-errors { color: red;}
+
+
+/*-----------------------------------------------------------------------------
+----------------------------- 8 - Custom Pages --------------------------------
+-----------------------------------------------------------------------------*/
+/* -- 404 page -- */
+#anthemes-404 h2        { background-color: #192B33; color: #FFF;}
+ 
+
+/*-----------------------------------------------------------------------------
+------------------------------ 9 - Footer -------------------------------------
+-----------------------------------------------------------------------------*/
+
+/* -- Footer section -- */
+footer                        { background-color: #FFF; border-bottom: 5px solid #e22428; }
+
+
+/* -- Copyright -- */
+.footer-copyright             { color: #000;}
+.footer-copyright a           { color: #e22428;}
+
+/* -- Footer Social Icons -- */
+ul.footer-social li a         { color: #FFF; }
+ul.footer-social li a:hover   { color: #FFF !important; }
+
+/* -- Back to Top -- */
+#back-top span                { background-color: #e22428;}
+#back-top a:hover             { opacity: 0.7; } 
