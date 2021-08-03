@@ -1,26 +1,38 @@
 from django.shortcuts import render
 import requests
-
+from django.templatetags.static import static
 # Create your views here.
 from django.conf import settings
+from .forms import VideoForm
 
-def streaming_index(request):
+def streaming_page(request):
+    form = VideoForm()
+    if request.method == 'POST':
+        form = VideoForm(request.POST)
+        video = form.save()
+        videoid = video.id
+    else:
+        form = VideoForm()
+    context = {'form':form, 'id': videoid}
+    return render(request, 'blog.html', context)
+
+def streaming_index(request, pk):
     auth_url = "https://ws.api.video/auth/api-key"
     create_url = "https://ws.api.video/videos"
     headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+            "Accept": "application/json",
+            "Content-Type": "application/json"
     }
 
     payload = {
-        "apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"
-    }
+            "apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"
+        }
     response = requests.request("POST", auth_url, json=payload, headers=headers)
     response = response.json()
     token = response.get("access_token")
 
     auth_string = "Bearer " + token
-    # Set up headers for authentication
+        # Set up headers for authentication
     headers_bearer = {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -41,8 +53,8 @@ def streaming_index(request):
     upload_url = create_url + "/" + videoId + "/source"
 
     headers_upload = {
-        "Accept": "application/vnd.api.video+json",
-        "Authorization": auth_string
+            "Accept": "application/vnd.api.video+json",
+            "Authorization": auth_string
     }
     file = {"file": open("/home/zaza/Téléchargements/pexels-rodnae-productions-6691597.mp4", "rb")}
 

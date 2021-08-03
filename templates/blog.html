@@ -4,8 +4,9 @@
 <div class="row row-cols-1 row-cols-md-2">
     <div class="col mb-4">
         {% load static %}
-        <p>{{response}}</p>
-        <img src="{% static 'streaming/images/1-100x73.jpg' %}" width="500" height="300" class="mt-5 ml-5">
+        <form action="{% url 'streaming_index' id %}" method="POST">
+            {{form}}
+        </form>
     </div>
     {% for post in posts %}
     <div class="col mb-4">
