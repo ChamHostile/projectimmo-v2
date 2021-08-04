@@ -7,7 +7,7 @@ from django import forms
 
 from .models import *
 
-class VideoForm(ModelForm):
+class VideoForm(forms.ModelForm):
 	class Meta:
 		model = Video
-		fields = '__all__'
+		fields = ["name"]
