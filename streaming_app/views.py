@@ -16,6 +16,32 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 def streaming_page(request):
+    auth_url = "https://ws.api.video/auth/api-key"
+    create_url = "https://ws.api.video/videos"
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"
+    }
+    response = requests.request("POST", auth_url, json=payload, headers=headers)
+    response = response.json()
+    token = response.get("access_token")
+
+    auth_string = "Bearer " + token
+    # Set up headers for authentication
+    headers_bearer = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": auth_string
+    }
+    querystring = {"currentPage": "1", "pageSize": "25"}
+
+    response2 = requests.get(create_url, headers=headers_bearer, params=querystring)
+    response2 = response2.json()
+    data = response2["data"]
     form = VideoForm()
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES or None)
@@ -24,7 +50,7 @@ def streaming_page(request):
             return redirect("streaming_index")
     else:
         form = VideoForm()
-    context = {'form':form}
+    context = {'form':form, 'response':data}
     return render(request, 'blog.html', context)
 
 def streaming_index(request):
