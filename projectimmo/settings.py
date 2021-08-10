@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'multiselectfield',
     'stripe',
     'streaming_app',
+    'mathfilters',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

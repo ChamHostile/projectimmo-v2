@@ -45,60 +45,69 @@ def streaming_page(request):
     form = VideoForm()
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES or None)
+        files = request.FILES.getlist('name')
+        length = int(len(files))
         if form.is_valid():
             form.save()
-            return redirect("streaming_index")
+            return redirect("streaming_index", pk=length)
     else:
         form = VideoForm()
     context = {'form':form, 'response':data}
     return render(request, 'blog.html', context)
 
-def streaming_index(request):
-    video = Video.objects.latest('id')
-    auth_url = "https://ws.api.video/auth/api-key"
-    create_url = "https://ws.api.video/videos"
-    headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-    }
-
-    payload = {
-            "apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"
+def streaming_index(request, pk):
+    video = Video.objects.all().order_by('-id')[:pk]
+    mypath = 0
+    i = 0
+    for paths in video.iterator():
+        i = i + 1
+        print(i)
+        mypath = str(paths.name.size) + " ,"
+    for myupload in video:
+        auth_url = "https://ws.api.video/auth/api-key"
+        create_url = "https://ws.api.video/videos"
+        headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
         }
-    response = requests.request("POST", auth_url, json=payload, headers=headers)
-    response = response.json()
-    token = response.get("access_token")
 
-    auth_string = "Bearer " + token
-        # Set up headers for authentication
-    headers_bearer = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": auth_string
-    }
-    titre = video.name.name
-    # Create a video container
-    payload2 = {
-        "title": "Video_test",
-        "description": "Video upload of Big Buck Bunny to demo how to do an upload from a folder on your computer."
-    }
+        payload = {
+                "apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"
+            }
+        response = requests.request("POST", auth_url, json=payload, headers=headers)
+        response = response.json()
+        token = response.get("access_token")
 
-    response = requests.request("POST", create_url, json=payload2, headers=headers_bearer)
-    response = response.json()
-    response2 = response
-    videoId = response["videoId"]
-
-    upload_url = create_url + "/" + videoId + "/source"
-
-    headers_upload = {
-            "Accept": "application/vnd.api.video+json",
+        auth_string = "Bearer " + token
+            # Set up headers for authentication
+        headers_bearer = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
             "Authorization": auth_string
-    }
-    video_url = video.name.path
-    file = {"file": open(video_url, "rb")}
+        }
+        titre = myupload.name.name
+        # Create a video container
+        payload2 = {
+            "title": titre,
+            "description": "Video upload of Big Buck Bunny to demo how to do an upload from a folder on your computer."
+        }
 
-    response = requests.request("POST", upload_url, files=file, headers=headers_upload)
-    json_response = response.json()
-    print(json_response)
+        response = requests.request("POST", create_url, json=payload2, headers=headers_bearer)
+        response = response.json()
+        response2 = response
+        videoId = response["videoId"]
 
-    return HttpResponse(response)
+        upload_url = create_url + "/" + videoId + "/source"
+
+        headers_upload = {
+                "Accept": "application/vnd.api.video+json",
+                "Authorization": auth_string
+        }
+        video_url = myupload.name.path
+        file = {"file": open(video_url, "rb")}
+
+        response = requests.request("POST", upload_url, files=file, headers=headers_upload)
+        json_response = response.json()
+        print(json_response)
+
+    return HttpResponse(mypath)
