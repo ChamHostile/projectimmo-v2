@@ -1,5 +1,7 @@
 import os
 
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 import requests
@@ -13,8 +15,29 @@ from .models import Video
 from django.conf import settings
 from pathlib import Path
 
+from django.contrib.auth import authenticate, login
+from .decorators import unauthenticated_user
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+@unauthenticated_user
+def login_user(request):
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('streaming_page')
+
+    context = {}
+    return render(request, 'compte/login-annonce.html')
+
+@login_required(login_url='login-stream')
 def streaming_page(request):
     auth_url = "https://ws.api.video/auth/api-key"
     create_url = "https://ws.api.video/videos"
@@ -42,27 +65,30 @@ def streaming_page(request):
     response2 = requests.get(create_url, headers=headers_bearer, params=querystring)
     response2 = response2.json()
     data = response2["data"]
-    form = VideoForm()
+    user_video = Video.objects.filter(user=request.user)
+    video_length = 0
+    for video in data:
+        video_length += 1
+    length_loop = video_length - 6
+    print(length_loop)
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES or None)
-        files = request.FILES.getlist('name')
+        files = request.FILES.getlist('video_upload')
+        title = request.POST.get('file_name')
         length = int(len(files))
         if form.is_valid():
-            form.save()
+            for f in files:
+                video = Video.objects.create(name=f, file_name=title, user=request.user)
+                video.save()
             return redirect("streaming_index", pk=length)
     else:
-        form = VideoForm()
-    context = {'form':form, 'response':data}
-    return render(request, 'blog.html', context)
+        print("no post")
+    context = {'response':data, 'length': length_loop, 'user_video':user_video}
+    return render(request, 'streaming/index.html', context)
 
 def streaming_index(request, pk):
     video = Video.objects.all().order_by('-id')[:pk]
-    mypath = 0
     i = 0
-    for paths in video.iterator():
-        i = i + 1
-        print(i)
-        mypath = str(paths.name.size) + " ,"
     for myupload in video:
         auth_url = "https://ws.api.video/auth/api-key"
         create_url = "https://ws.api.video/videos"
@@ -85,7 +111,7 @@ def streaming_index(request, pk):
             "Content-Type": "application/json",
             "Authorization": auth_string
         }
-        titre = myupload.name.name
+        titre = myupload.file_name
         # Create a video container
         payload2 = {
             "title": titre,
@@ -110,4 +136,4 @@ def streaming_index(request, pk):
         json_response = response.json()
         print(json_response)
 
-    return HttpResponse(mypath)
+    return HttpResponse("envoyé")

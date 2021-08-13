@@ -5,17 +5,39 @@
     <div class="col mb-4">
         {% load static %}
         {% load mathfilters %}
+        <h3 class="mt-4 ml-5">Vos videos : </h3>
         {% for video in response %}
-            {% if forloop.revcounter > 4 %}
-                <h1>{{video.title}}</h1>
-                <iframe src="{{video.assets.player}}"></iframe>
+            {% if forloop.counter > length %}
+                {% for myvid in video_upload %}
+                    {% if video.title == myvid.file_name %}
+                    <div class="card">
+                    <div class="view overlay">
+                    <iframe src="{{video.assets.player}}"></iframe>
+                      <a href="#!">
+                        <div class="mask rgba-white-slight"></div>
+                      </a>
+                    </div>
+                    <div class="card-body">
+                      <h4 class="card-title">{{video.title}}</h4>
+                      <p class="card-text">{{video.description}}</p>
+                      <a href="" class="btn btn-primary btn-md">Read more</a>
+                        <a href="" class="btn btn-outline-info">Modifier</a>
+                        <a href="" class="btn btn-outline-danger">Supprimer</a>
+                    </div>
+                        {% endif %}
+                        {% endfor %}
             {% endif %}
         {% endfor %}
+                        <div class="col-6 mt-5">
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{form}}
-            <button type="submit" name="Envoyer">Envoyer</button>
+            <label>Upload video(s)</label>
+            <input type="file" name="video_upload" multiple class="form-control">
+            <label>Titre de la video</label>
+            <input type="text" name="file_name" class="form-control">
+            <button type="submit" class="btn btn-primary mt-2" name="Envoyer">Envoyer</button>
         </form>
+                        </div>
     </div>
     {% for post in posts %}
     <div class="col mb-4">
