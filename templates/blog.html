@@ -8,7 +8,7 @@
         <h3 class="mt-4 ml-5">Vos videos : </h3>
         {% for video in response %}
             {% if forloop.counter > length %}
-                {% for myvid in video_upload %}
+                {% for myvid in user_video %}
                     {% if video.title == myvid.file_name %}
                     <div class="card">
                     <div class="view overlay">

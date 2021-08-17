@@ -14,6 +14,7 @@ from .forms import VideoForm
 from .models import Video
 from django.conf import settings
 from pathlib import Path
+import ffmpeg
 
 from django.contrib.auth import authenticate, login
 from .decorators import unauthenticated_user
@@ -84,7 +85,48 @@ def streaming_page(request):
     else:
         print("no post")
     context = {'response':data, 'length': length_loop, 'user_video':user_video}
-    return render(request, 'streaming/index.html', context)
+    return render(request, 'blog.html', context)
+
+def streaming_plateform(request):
+    url = "https://ws.api.video/auth/api-key"
+
+    payload = {"apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"}
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.request("POST", url, json=payload, headers=headers)
+    response = response.json()
+    token = response.get("access_token")
+
+    url = "https://ws.api.video/live-streams"
+
+    payload = {
+        "record": False,
+        "name": "Bob"
+    }
+    headers = {
+        "Accept": "application/vnd.api.video+json",
+        "Content-Type": "application/json",
+        "Authorization": token
+    }
+
+    response = requests.request("POST", url, json=payload, headers=headers)
+    response = response.json()
+
+    stream_key = response.get("streamKey")
+    iframe = response["assets"]["iframe"]
+    player = response["assets"]["player"]
+    print("iFrame :", iframe)
+    print("player :", player)
+    #//rtmp_url = "rtmp://broadcast.api.video/s/" + stream_key
+    #ffmpeg.input('0:0', format='avfoundation', framerate=25)
+    #ffmpeg.output(rtmp_url, format='flv', flvflags='no_duration_filesize')
+    #ffmpeg.run()
+
+    context = {'iframe': iframe, 'player': player}
+    return render(request, 'annonce.html', context)
 
 def streaming_index(request, pk):
     video = Video.objects.all().order_by('-id')[:pk]

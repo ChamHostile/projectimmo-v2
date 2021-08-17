@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'streaming_app',
     'mathfilters',
     'sslserver',
+    'ffmpeg',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
