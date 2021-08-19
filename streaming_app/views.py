@@ -19,12 +19,11 @@ import ffmpeg
 from django.contrib.auth import authenticate, login
 from .decorators import unauthenticated_user
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 @unauthenticated_user
 def login_user(request):
-
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -37,6 +36,7 @@ def login_user(request):
 
     context = {}
     return render(request, 'compte/login-annonce.html')
+
 
 @login_required(login_url='login-stream')
 def streaming_page(request):
@@ -84,13 +84,17 @@ def streaming_page(request):
             return redirect("streaming_index", pk=length)
     else:
         print("no post")
-    context = {'response':data, 'length': length_loop, 'user_video':user_video}
+    context = {'response': data, 'length': length_loop, 'user_video': user_video}
     return render(request, 'blog.html', context)
+
+def stream_main(request):
+    context = {}
+    return render(request, 'stream_main.html', context)
 
 def streaming_plateform(request):
     url = "https://ws.api.video/auth/api-key"
 
-    payload = {"apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"}
+    payload = {"apiKey": "WdPYsqTeTFnUe1MqklfqsOOwDZdyFAzJl5FAt6RDd9h"}
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json"
@@ -120,13 +124,15 @@ def streaming_plateform(request):
     player = response["assets"]["player"]
     print("iFrame :", iframe)
     print("player :", player)
-    #//rtmp_url = "rtmp://broadcast.api.video/s/" + stream_key
-    #ffmpeg.input('0:0', format='avfoundation', framerate=25)
-    #ffmpeg.output(rtmp_url, format='flv', flvflags='no_duration_filesize')
-    #ffmpeg.run()
+    rtmp_url = "rtmp://broadcast.api.video/s/" + stream_key
+    (
+        ffmpeg
+            .input('/dev/video0', format='video4linux2', framerate=25)
+            .output(rtmp_url, format='flv', flvflags='no_duration_filesize')
+            .run()
+    )
+    return render(request, 'annonce.html')
 
-    context = {'iframe': iframe, 'player': player}
-    return render(request, 'annonce.html', context)
 
 def streaming_index(request, pk):
     video = Video.objects.all().order_by('-id')[:pk]
@@ -135,19 +141,19 @@ def streaming_index(request, pk):
         auth_url = "https://ws.api.video/auth/api-key"
         create_url = "https://ws.api.video/videos"
         headers = {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
+            "Accept": "application/json",
+            "Content-Type": "application/json"
         }
 
         payload = {
-                "apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"
-            }
+            "apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"
+        }
         response = requests.request("POST", auth_url, json=payload, headers=headers)
         response = response.json()
         token = response.get("access_token")
 
         auth_string = "Bearer " + token
-            # Set up headers for authentication
+        # Set up headers for authentication
         headers_bearer = {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -168,8 +174,8 @@ def streaming_index(request, pk):
         upload_url = create_url + "/" + videoId + "/source"
 
         headers_upload = {
-                "Accept": "application/vnd.api.video+json",
-                "Authorization": auth_string
+            "Accept": "application/vnd.api.video+json",
+            "Authorization": auth_string
         }
         video_url = myupload.name.path
         file = {"file": open(video_url, "rb")}
@@ -178,4 +184,4 @@ def streaming_index(request, pk):
         json_response = response.json()
         print(json_response)
 
-    return HttpResponse("envoyé")
+    return HttpResponse("Vous êtes en live")

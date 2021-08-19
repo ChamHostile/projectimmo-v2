@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^streaming/$', TemplateView.as_view(template_name="streaming/bc-v3.min.html"), name="bc-v3"),
     path('login_stream', views.login_user, name="login-stream"),
     path('streaming_plateform', views.streaming_plateform, name='streaming_plateform'),
+    path('stream_main', views.stream_main, name="stream_main")
 ]
