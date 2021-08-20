@@ -1,6 +1,6 @@
 import os
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
@@ -36,6 +36,11 @@ def login_user(request):
 
     context = {}
     return render(request, 'compte/login-annonce.html')
+
+@login_required
+def logout_streaming(request):
+    logout(request)
+    return redirect('stream_main')
 
 
 @login_required(login_url='login-stream')
@@ -85,11 +90,11 @@ def streaming_page(request):
     else:
         print("no post")
     context = {'response': data, 'length': length_loop, 'user_video': user_video}
-    return render(request, 'blog.html', context)
+    return render(request, 'streaming/tmart/product-details.html', context)
 
 def stream_main(request):
     context = {}
-    return render(request, 'stream_main.html', context)
+    return render(request, 'streaming/tmart/shop.html', context)
 
 def streaming_plateform(request):
     url = "https://ws.api.video/auth/api-key"
@@ -124,15 +129,9 @@ def streaming_plateform(request):
     player = response["assets"]["player"]
     print("iFrame :", iframe)
     print("player :", player)
+    print("streamkey: ", stream_key)
     rtmp_url = "rtmp://broadcast.api.video/s/" + stream_key
-    (
-        ffmpeg
-            .input('/dev/video0', format='video4linux2', framerate=25)
-            .output(rtmp_url, format='flv', flvflags='no_duration_filesize')
-            .run()
-    )
-    return render(request, 'annonce.html')
-
+    return redirect('live_stream', rtmp_url=str(rtmp_url), player=str(player))
 
 def streaming_index(request, pk):
     video = Video.objects.all().order_by('-id')[:pk]
@@ -184,4 +183,16 @@ def streaming_index(request, pk):
         json_response = response.json()
         print(json_response)
 
-    return HttpResponse("Vous êtes en live")
+        return redirect(streaming_page)
+
+
+def live_stream(request, rtmp_url, player):
+    (
+        ffmpeg
+            .input('/dev/video0', format='video4linux2', framerate=25)
+            .output(rtmp_url, format='flv', flvflags='no_duration_filesize')
+            .run_async()
+    )
+    context = {'player':player}
+    return render(request, 'annonce.html', context)
+
