@@ -53,7 +53,7 @@ def streaming_page(request):
     }
 
     payload = {
-        "apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"
+        "apiKey": "WdPYsqTeTFnUe1MqklfqsOOwDZdyFAzJl5FAt6RDd9h"
     }
     response = requests.request("POST", auth_url, json=payload, headers=headers)
     response = response.json()
@@ -93,7 +93,61 @@ def streaming_page(request):
     return render(request, 'streaming/tmart/product-details.html', context)
 
 def stream_main(request):
-    context = {}
+    url = "https://ws.api.video/auth/api-key"
+
+    payload = {"apiKey": "WdPYsqTeTFnUe1MqklfqsOOwDZdyFAzJl5FAt6RDd9h"}
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.request("POST", url, json=payload, headers=headers)
+    response = response.json()
+    token = response.get("access_token")
+
+    auth_string = "Bearer " + token
+    # Set up headers for authentication
+    headers_bearer = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": auth_string
+    }
+    url = "https://ws.api.video/videos"
+
+    response = requests.request("GET", url, headers=headers_bearer)
+    response = response.json()
+    data = response["data"]
+    this_url = 'videos'
+    context = {'response': data, 'url': this_url}
+    return render(request, 'streaming/tmart/shop.html', context)
+
+def live_main(request):
+    url = "https://ws.api.video/auth/api-key"
+
+    payload = {"apiKey": "WdPYsqTeTFnUe1MqklfqsOOwDZdyFAzJl5FAt6RDd9h"}
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.request("POST", url, json=payload, headers=headers)
+    response = response.json()
+    token = response.get("access_token")
+
+    auth_string = "Bearer " + token
+    # Set up headers for authentication
+    headers_bearer = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": auth_string
+    }
+    url = "https://ws.api.video/live-streams"
+
+    response = requests.request("GET", url, headers=headers_bearer)
+    response = response.json()
+    data = response["data"]
+    this_url = 'live-streams'
+    context = {'response': data, 'url': this_url}
     return render(request, 'streaming/tmart/shop.html', context)
 
 def streaming_plateform(request):
@@ -121,17 +175,17 @@ def streaming_plateform(request):
         "Authorization": token
     }
 
+    url = "https://ws.api.video/videos"
+
+    headers = {"Accept": "application/json"}
+
+    response = requests.request("GET", url, headers=headers)
+
     response = requests.request("POST", url, json=payload, headers=headers)
     response = response.json()
+    id = response.get("liveStreamId")
 
-    stream_key = response.get("streamKey")
-    iframe = response["assets"]["iframe"]
-    player = response["assets"]["player"]
-    print("iFrame :", iframe)
-    print("player :", player)
-    print("streamkey: ", stream_key)
-    rtmp_url = "rtmp://broadcast.api.video/s/" + stream_key
-    return redirect('live_stream', rtmp_url=str(rtmp_url), player=str(player))
+    return redirect('live_stream', id=id)
 
 def streaming_index(request, pk):
     video = Video.objects.all().order_by('-id')[:pk]
@@ -145,7 +199,7 @@ def streaming_index(request, pk):
         }
 
         payload = {
-            "apiKey": "w2tWDSCvelfM16lqyPVyAxMs5uAY2G7oAbxPud656qO"
+            "apiKey": "WdPYsqTeTFnUe1MqklfqsOOwDZdyFAzJl5FAt6RDd9h"
         }
         response = requests.request("POST", auth_url, json=payload, headers=headers)
         response = response.json()
@@ -162,7 +216,8 @@ def streaming_index(request, pk):
         # Create a video container
         payload2 = {
             "title": titre,
-            "description": "Video upload of Big Buck Bunny to demo how to do an upload from a folder on your computer."
+            "description": "Video upload of Big Buck Bunny to demo how to do an upload from a folder on your computer.",
+
         }
 
         response = requests.request("POST", create_url, json=payload2, headers=headers_bearer)
@@ -183,16 +238,46 @@ def streaming_index(request, pk):
         json_response = response.json()
         print(json_response)
 
-        return redirect(streaming_page)
+    return redirect(streaming_page)
 
 
-def live_stream(request, rtmp_url, player):
+def live_stream(request, id):
+    url = "https://ws.api.video/auth/api-key"
+
+    payload = {"apiKey": "WdPYsqTeTFnUe1MqklfqsOOwDZdyFAzJl5FAt6RDd9h"}
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.request("POST", url, json=payload, headers=headers)
+    response = response.json()
+    token = response.get("access_token")
+
+    url = "https://ws.api.video/live-streams/{}".format(id)
+
+    headers = {
+        "Accept": "application/json",
+        "Authorization": token
+    }
+
+    response = requests.request("GET", url, json=payload, headers=headers)
+    response = response.json()
+
+    stream_key = response.get("streamKey")
+    iframe = response["assets"]["iframe"]
+    player = response["assets"]["player"]
+    print("iFrame :", iframe)
+    print("player :", player)
+    print("streamkey: ", stream_key)
+    rtmp_url = "rtmp://broadcast.api.video/s/" + stream_key
     (
         ffmpeg
             .input('/dev/video0', format='video4linux2', framerate=25)
             .output(rtmp_url, format='flv', flvflags='no_duration_filesize')
             .run_async()
     )
+
     context = {'player':player}
     return render(request, 'annonce.html', context)
 

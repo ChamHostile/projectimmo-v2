@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="{% static 'streaming/tmart/css/responsive.css' %}">
     <!-- User style -->
     <link rel="stylesheet" href="{% static 'streaming/tmartcss/custom.css' %}">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
 
 
     <!-- Modernizr JS -->
@@ -68,7 +70,7 @@
                                     {% if not user.is_authenticated %}
 
                                     {% else %}
-                                    <li class="drop"><a href="blog.html">Livestreams</a>
+                                    <li class="drop"><a href="{% url 'live_main' %}">Livestreams</a>
 
                                     </li>
                                     {% endif %}
@@ -428,439 +430,154 @@
                     <div class="row">
                         <div class="product__list another-product-style">
                             <!-- Start Single Product -->
+                            {% for video in response %}
                             <div class="col-md-3 single__pro col-lg-3 cat--1 col-sm-4 col-xs-12">
                                 <div class="product foo">
                                     <div class="product__inner">
                                         <div class="pro__thumb">
                                             <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/1.png' %}" alt="product images">
+                                                {% if url == 'videos' %}
+                                                <img src="{{video.assets.thumbnail}}" alt="{{video.title}}">
+                                                {% elif url == 'live-streams' %}
+                                                <img src="{{request.user.photo_stream.url}}" alt="photo_live">
+                                                {% endif %}
                                             </a>
                                         </div>
                                         <div class="product__hover__info">
                                             <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
+                                                {% if url == 'videos' %}
+                                                    <li><a data-toggle="modal" data-target="#{{video.videoId}}" title="{{video.title}}" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
+                                                {% elif url == 'live-streams' %}
+                                                    <li><a data-toggle="modal" data-target="#{{video.liveStreamId}}" title="{{video.title}}" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
+                                                {% endif %}
                                                 <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
                                                 <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="product__details">
-                                        <h2><a href="product-details.html">VOD #1</a></h2>
+                                        {% if url == 'videos' %}
+                                            <h2><a href="product-details.html">{{ video.title }}</a></h2>
+                                        {% elif url == 'live-streams' %}
+                                            <h2><a href="product-details.html">{{ video.name }}</a>
+                                                {% if video.record %}
+                                                    <i class='fas fa-record-vinyl' style='font-size:48px;color:red'></i>
+                                                {% endif %}
+                                            </h2>
+                                        {% endif %}
                                         <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
+                                            {% for item in video.metadata %}
+                                                {% if item.key == "Author" %}
+                                                    <li class="new__price">{{ item.value }}</li>
+                                                {% endif %}
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 cat--1 col-sm-4 col-xs-12">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/2.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">BO&Play Wireless Speaker</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
+
+                             <div id="quickview-wrapper">
+                                <!-- Modal -->
+                                 {% if url == 'videos' %}
+                                    <div class="modal fade" id="{{video.videoId}}" tabindex="-1" role="dialog">
+                                     {% elif url == 'live-streams' %}
+                                        <div class="modal fade" id="{{video.liveStreamId}}" tabindex="-1" role="dialog">
+                                            {% endif %}
+                                    <div class="modal-dialog modal__container" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="modal-product">
+                                                    <!-- Start product images -->
+                                                    <div class="product-images">
+                                                        <div class="main-image images">
+                                                            {% if url == 'videos' %}
+                                                                <iframe alt="big images" width="100%" src="{{video.assets.player}}"></iframe>
+                                                            {% elif url == 'live-streams' %}
+                                                                {% if video.record %}
+                                                                    <h1>Live en cours</h1>
+                                                                {% else %}
+                                                                    <h1>Le live n'est pas encore lancé...</h1>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <!-- end product images -->
+                                                    <div class="product-info">
+                                                        {% if url == 'videos' %}
+                                                            <h1>{{video.title}}</h1>
+                                                        {% elif url == 'live-streams' %}
+                                                            <h1>{{video.name}}</h1>
+                                                        {% endif %}
+                                                        <div class="rating__and__review">
+                                                            <ul class="rating">
+                                                                <li><span class="ti-star"></span></li>
+                                                                <li><span class="ti-star"></span></li>
+                                                                <li><span class="ti-star"></span></li>
+                                                                <li><span class="ti-star"></span></li>
+                                                                <li><span class="ti-star"></span></li>
+                                                            </ul>
+                                                            <div class="review">
+                                                                <a href="#">4 customer reviews</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="price-box-3">
+                                                            <div class="s-price-box">
+                                                               {% if video.metadata.key == "Author" %}
+                                                                <li class="new-price">{{ video.metadata.value }}</li>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="quick-desc">
+                                                            {{video.description}}
+                                                        </div>
+                                                        <div class="price-box-3">
+                                                            <div class="s-price-box">
+                                                                {% if not user.is_authenticated %}
+                                                                <span class="new-price">POUR AVOIR ACCES A L'INTEGRALITE DU SERVICE AINSI QU'AUX LIVESTREAMS, ABONNEZ-VOUS !</span>
+                                                                {% else %}
+                                                                <span> </span>
+                                                                {% endif %}
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="social-sharing">
+                                                            <div class="widget widget_socialsharing_widget">
+                                                                <h3 class="widget-title-modal">Share this product</h3>
+                                                                <ul class="social-icons">
+                                                                    <li><a target="_blank" title="rss" href="#" class="rss social-icon"><i class="zmdi zmdi-rss"></i></a></li>
+                                                                    <li><a target="_blank" title="Linkedin" href="#" class="linkedin social-icon"><i class="zmdi zmdi-linkedin"></i></a></li>
+                                                                    <li><a target="_blank" title="Pinterest" href="#" class="pinterest social-icon"><i class="zmdi zmdi-pinterest"></i></a></li>
+                                                                    <li><a target="_blank" title="Tumblr" href="#" class="tumblr social-icon"><i class="zmdi zmdi-tumblr"></i></a></li>
+                                                                    <li><a target="_blank" title="Pinterest" href="#" class="pinterest social-icon"><i class="zmdi zmdi-pinterest"></i></a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="addtocart-btn">
+                                                            {% if not user.is_authenticated %}
+                                                                <a href="{% url 'login-stream' %}">S'inscrire pour accès complet</a>
+                                                                {% else %}
+                                                                {% if url == 'live-streams' %}
+                                                                    <a href="{% url 'login-stream' %}">Voir le live</a>
+                                                                {% elif url == 'videos'  %}
+                                                                     <a href="{% url 'login-stream' %}">Commander cette VOD</a>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </div>
+                                                    </div><!-- .product-info -->
+                                                </div><!-- .modal-product -->
+                                            </div><!-- .modal-body -->
+                                        </div><!-- .modal-content -->
+                                    </div><!-- .modal-dialog -->
                                 </div>
+                                <!-- END Modal -->
                             </div>
+                            <!-- END QUICKVIEW PRODUCT -->
+                            {% endfor %}
                             <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--2">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/3.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Brone Candle</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--4">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/4.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Brone Lamp Glasses</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 cat--1 col-sm-4 col-xs-12 cat--2">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/5.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Clothes Boxed</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--3">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/6.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Liquid Unero Ginger Lily</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--2">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/7.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Miliraty Backpack</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--2">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/8.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Saved Wines Corkscrew</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--4">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/9.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Simple Fabric Bags</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--3">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streamig/tmart/images/product/10.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Simple Fabric Chair</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--4">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/11.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Unero Round Sunglass</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--3">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/12.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Unero Small Bag</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--3">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/13.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Wood Complex Lamp Box</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--4">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/14.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Wood Long TV Board</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 col-sm-4 col-xs-12 cat--4">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/15.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Wood Simple Chair V2</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                            <!-- Start Single Product -->
-                            <div class="col-md-3 single__pro col-lg-3 hidden-sm col-xs-12 cat--3">
-                                <div class="product foo">
-                                    <div class="product__inner">
-                                        <div class="pro__thumb">
-                                            <a href="#">
-                                                <img src="{% static 'streaming/tmart/images/product/16.png' %}" alt="product images">
-                                            </a>
-                                        </div>
-                                        <div class="product__hover__info">
-                                            <ul class="product__action">
-                                                <li><a data-toggle="modal" data-target="#productModal" title="Quick View" class="quick-view modal-view detail-link" href="#"><span class="ti-plus"></span></a></li>
-                                                <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
-                                                <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product__details">
-                                        <h2><a href="product-details.html">Wood Simple Clock</a></h2>
-                                        <ul class="product__price">
-                                            <li class="old__price">$16.00</li>
-                                            <li class="new__price">$10.00</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                        </div>
-                    </div>
+
                     <!-- Start Load More BTn -->
                     <div class="row mt--60">
                         <div class="col-md-12">
@@ -1005,84 +722,7 @@
     </div>
     <!-- Body main wrapper end -->
     <!-- QUICKVIEW PRODUCT -->
-    <div id="quickview-wrapper">
-        <!-- Modal -->
-        <div class="modal fade" id="productModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal__container" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="modal-product">
-                            <!-- Start product images -->
-                            <div class="product-images">
-                                <div class="main-image images">
-                                    <img alt="big images" src="{% static 'streaming/tmart/images/product/big-img/1.jpg' %}">
-                                </div>
-                            </div>
-                            <!-- end product images -->
-                            <div class="product-info">
-                                <h1>VOD #1</h1>
-                                <div class="rating__and__review">
-                                    <ul class="rating">
-                                        <li><span class="ti-star"></span></li>
-                                        <li><span class="ti-star"></span></li>
-                                        <li><span class="ti-star"></span></li>
-                                        <li><span class="ti-star"></span></li>
-                                        <li><span class="ti-star"></span></li>
-                                    </ul>
-                                    <div class="review">
-                                        <a href="#">4 customer reviews</a>
-                                    </div>
-                                </div>
-                                <div class="price-box-3">
-                                    <div class="s-price-box">
-                                        <span class="new-price">$17.20</span>
-                                        <span class="old-price">$45.00</span>
-                                    </div>
-                                </div>
-                                <div class="quick-desc">
-                                    Designed for simplicity and made from high quality materials. Its sleek geometry and material combinations creates a modern look.
-                                </div>
-                                <div class="price-box-3">
-                                    <div class="s-price-box">
-                                        {% if not user.is_authenticated %}
-                                        <span class="new-price">POUR AVOIR ACCES A L'INTEGRALITE DU SERVICE AINSI QU'AUX LIVESTREAMS, ABONNEZ-VOUS !</span>
-                                        {% else %}
-                                        <span> </span>
-                                        {% endif %}
 
-                                    </div>
-                                </div>
-                                <div class="social-sharing">
-                                    <div class="widget widget_socialsharing_widget">
-                                        <h3 class="widget-title-modal">Share this product</h3>
-                                        <ul class="social-icons">
-                                            <li><a target="_blank" title="rss" href="#" class="rss social-icon"><i class="zmdi zmdi-rss"></i></a></li>
-                                            <li><a target="_blank" title="Linkedin" href="#" class="linkedin social-icon"><i class="zmdi zmdi-linkedin"></i></a></li>
-                                            <li><a target="_blank" title="Pinterest" href="#" class="pinterest social-icon"><i class="zmdi zmdi-pinterest"></i></a></li>
-                                            <li><a target="_blank" title="Tumblr" href="#" class="tumblr social-icon"><i class="zmdi zmdi-tumblr"></i></a></li>
-                                            <li><a target="_blank" title="Pinterest" href="#" class="pinterest social-icon"><i class="zmdi zmdi-pinterest"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="addtocart-btn">
-                                    {% if not user.is_authenticated %}
-                                    <a href="{% url 'login-stream' %}">S'inscrire pour accès complet</a>
-                                    {% else %}
-                                    <a href="{% url 'login-stream' %}">Commander cette VOD</a>
-                                    {% endif %}
-                                </div>
-                            </div><!-- .product-info -->
-                        </div><!-- .modal-product -->
-                    </div><!-- .modal-body -->
-                </div><!-- .modal-content -->
-            </div><!-- .modal-dialog -->
-        </div>
-        <!-- END Modal -->
-    </div>
-    <!-- END QUICKVIEW PRODUCT -->
     <!-- Placed js at the end of the document so the pages load faster -->
 
     <!-- jquery latest version -->

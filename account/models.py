@@ -57,6 +57,7 @@ class Account(AbstractBaseUser):
     telephone = models.CharField(max_length=10)
     photo_profil = models.ImageField(blank=True)
     photo_identite = models.ImageField(blank=True)
+    photo_stream = models.ImageField(blank=True)
     class TypeLocataire(models.TextChoices):
         particulier = 'PART', _('Particulier')
         profesionnel = 'PROF', _('Profesionnel')

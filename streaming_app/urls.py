@@ -14,5 +14,6 @@ urlpatterns = [
     path('logout_stream', views.logout_streaming, name="logout-stream"),
     path('streaming_plateform', views.streaming_plateform, name='streaming_plateform'),
     path('stream_main', views.stream_main, name="stream_main"),
-    path('live_stream/<str:rtmp_url>/<str:player>/', views.live_stream, name="live_stream"),
+    path('live_main', views.live_main, name="live_main"),
+    path('live_stream/<str:id>', views.live_stream, name="live_stream"),
 ]
