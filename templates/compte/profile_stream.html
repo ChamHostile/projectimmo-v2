@@ -1,0 +1,106 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<hr>
+<div class="container bootstrap snippet">
+    <div class="row">
+  		<div class="col-sm-10"><h1>{{request.user.first_name}} {{request.user.last_name}}</h1></div>
+    </div>
+    <div class="row">
+  		<div class="col-sm-3"><!--left col-->
+
+
+      <div class="text-center">
+        {% if request.user.photo_profil %}
+          <img src="{{request.user.photo_profil.url}}" class="avatar img-circle img-thumbnail" alt="avatar">
+          {% endif %}
+      </div></hr><br>
+
+
+          <div class="card mb-3">
+            <div class="card-header">Coordonnées <i class="fa fa-link fa-1x"></i></div>
+            <div class="card-body"><span><small id="emailHelp" class="form-text text-muted">Votre adresse actuelle : {{ address.rue }} {{address.voie}}, {{address.ville}} - {{address.zipCode}}</small></span>
+            <hr>
+                <small class="form-text text-muted">téléphone - {{request.user.telephone}}</small>
+                <hr>
+                <small class="form-text text-muted">Email - {{request.user.email}}</small>
+            </div>
+          </div>
+
+
+          <ul class="list-group">
+            <li class="list-group-item text-muted">Activité <i class="fa fa-dashboard fa-1x"></i></li>
+              <li class="list-group-item "><span class=""><strong>Videos</strong></span> <span class="pull-right">{{annonce|length}}</span></li>
+          </ul>
+
+
+        </div><!--/col-3-->
+    	<div class="col-sm-9">
+            <ul class="nav nav-tabs">
+                <li class="nav-item active"><a data-toggle="tab" href="#home" class="nav-link">Informations utilisateur</a></li>
+                <li class="nav-item"><a data-toggle="tab" href="#messages" class="nav-link">Vos uploads</a></li>
+                <li class="nav-item"><a data-toggle="tab" href="#settings" class="nav-link">Lives</a></li>
+              </ul>
+
+
+          <div class="tab-content">
+            <div class="tab-pane active" id="home">
+                <hr>
+                      <div class="col-6">
+                          <h2>Nom : {{request.user.last_name}}</h2>
+                      </div>
+              <hr>
+                <div class="col-6">
+                          <h2>Prenom : {{request.user.first_name}}</h2>
+                      </div>
+              <hr>
+                <div class="col-6">
+                          <h3>Type Package :{{request.user.get_packages_type_display}}</h3>
+                      </div>
+
+             </div><!--/tab-pane-->
+
+             <div class="tab-pane" id="messages">
+
+               <h2></h2>
+
+               <hr>
+                <div class="col-md-4 col-sm-6 mb-4 pb-2">
+                    <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+                        <div class="list-card-image">
+                            <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
+                            <div class="favourite-heart text-danger position-absolute"><a href="#"><i class="icofont-heart"></i></a></div>
+                                <a href="#">
+                                            <img src="img/list/5.png" class="img-fluid item-img">
+                                        </a>
+                                    </div>
+                                    <div class="p-3 position-relative">
+                                        <div class="list-card-body">
+
+                                        </div>
+                                        <div class="list-card-badge">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+             </div><!--/tab-pane-->
+             <div class="tab-pane" id="settings">
+                  <hr>
+                 {% load crispy_forms_tags %}
+                 {% load widget_tweaks %}
+
+
+              </div>
+        <div class="tab-pane" id="diagnostic">
+                <hr>
+
+             </div><!--/tab-pane-->
+
+              </div><!--/tab-pane-->
+
+          </div><!--/tab-content-->
+
+        </div><!--/col-9-->
+    </div><!--/row-->
+{% endblock %}

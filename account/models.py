@@ -58,6 +58,18 @@ class Account(AbstractBaseUser):
     photo_profil = models.ImageField(blank=True)
     photo_identite = models.ImageField(blank=True)
     photo_stream = models.ImageField(blank=True)
+
+    class TypePackages(models.TextChoices):
+        bronze = 'BRON', _('Bronze')
+        silver = 'SILV', _('Silver')
+        gold = 'GOLD', _('Gold')
+
+    packages_type = models.CharField(
+        max_length=4,
+        choices=TypePackages.choices,
+        default=TypePackages.bronze,
+        verbose_name="Package"
+    )
     class TypeLocataire(models.TextChoices):
         particulier = 'PART', _('Particulier')
         profesionnel = 'PROF', _('Profesionnel')

@@ -11,9 +11,11 @@ from django.conf import settings
 from django.urls import reverse
 
 from .forms import VideoForm
+from .forms import CreateUserForm
 from .models import Video
 from django.conf import settings
 from pathlib import Path
+from account.models import Account
 import ffmpeg
 
 from django.contrib.auth import authenticate, login
@@ -35,7 +37,25 @@ def login_user(request):
             return redirect('streaming_page')
 
     context = {}
-    return render(request, 'compte/login-annonce.html')
+    return render(request, 'compte/login-stream.html')
+
+@unauthenticated_user
+def register_streaming(request, pk):
+    form=CreateUserForm()
+    if request.method=='POST':
+        form=CreateUserForm(request.POST)
+        package = request.POST.get('packages_type')
+        if form.is_valid():
+                user=form.save(commit=False)
+                user.packages_type = package
+                user.is_active = True
+                user.save()
+                new_user = authenticate(request, email=form.cleaned_data['email'], password=form.cleaned_data['password1'],)
+                if user is not None:
+                    login(request, new_user)
+                    return redirect('profil-stream')
+    context={'form':form, 'id': pk}
+    return render(request,'compte/inscription_stream.html',context)
 
 @login_required
 def logout_streaming(request):
@@ -151,41 +171,41 @@ def live_main(request):
     return render(request, 'streaming/tmart/shop.html', context)
 
 def streaming_plateform(request):
-    url = "https://ws.api.video/auth/api-key"
 
-    payload = {"apiKey": "WdPYsqTeTFnUe1MqklfqsOOwDZdyFAzJl5FAt6RDd9h"}
-    headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-    }
+    if request.method == 'POST':
+        titre = request.POST.get('titre')
+        url = "https://ws.api.video/auth/api-key"
 
-    response = requests.request("POST", url, json=payload, headers=headers)
-    response = response.json()
-    token = response.get("access_token")
+        payload = {"apiKey": "WdPYsqTeTFnUe1MqklfqsOOwDZdyFAzJl5FAt6RDd9h"}
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
 
-    url = "https://ws.api.video/live-streams"
+        response = requests.request("POST", url, json=payload, headers=headers)
+        response = response.json()
+        token = response.get("access_token")
 
-    payload = {
-        "record": False,
-        "name": "Bob"
-    }
-    headers = {
-        "Accept": "application/vnd.api.video+json",
-        "Content-Type": "application/json",
-        "Authorization": token
-    }
+        url = "https://ws.api.video/live-streams"
 
-    url = "https://ws.api.video/videos"
+        payload = {
+            "record": False,
+            "name": titre
+        }
+        headers = {
+            "Accept": "application/vnd.api.video+json",
+            "Content-Type": "application/json",
+            "Authorization": token
+        }
 
-    headers = {"Accept": "application/json"}
+        response = requests.request("POST", url, json=payload, headers=headers)
+        response = response.json()
+        id = response.get("liveStreamId")
 
-    response = requests.request("GET", url, headers=headers)
+        return redirect('live_stream', id=id)
 
-    response = requests.request("POST", url, json=payload, headers=headers)
-    response = response.json()
-    id = response.get("liveStreamId")
-
-    return redirect('live_stream', id=id)
+    context = {}
+    return render(request, 'streaming/tmart/checkout.html', context)
 
 def streaming_index(request, pk):
     video = Video.objects.all().order_by('-id')[:pk]
@@ -278,6 +298,9 @@ def live_stream(request, id):
             .run_async()
     )
 
-    context = {'player':player}
-    return render(request, 'annonce.html', context)
+    context = {'player':player, 'response': response}
+    return render(request, 'streaming/tmart/customer-review.html', context)
 
+def profil_stream(request):
+    context = {}
+    return render(request, 'compte/profile_stream.html')

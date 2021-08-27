@@ -54,6 +54,17 @@
                                 </a>
                             </div>
                         </div>
+                         <!-- Start Mainmenu Area -->
+            <div id="sticky-header-with-topbar" class="mainmenu__area sticky__header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2 col-lg-2 col-sm-3 col-xs-3">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="{% static 'streaming/tmart/images/logo/logo.png' %}" alt="logo">
+                                </a>
+                            </div>
+                        </div>
                         <!-- Start MAinmenu Ares -->
                         <div class="col-md-8 col-lg-8 col-sm-6 col-xs-6">
                             <nav class="mainmenu__nav hidden-xs hidden-sm">
@@ -68,24 +79,26 @@
                                     {% if not user.is_authenticated %}
 
                                     {% else %}
-                                    <li class="drop"><a href="{% url 'live_main' %}">Livestreams</a>
-
+                                     <li class="drop"><a href="{% url 'live_main' %}">Livestreams</a>
+                                        <ul class="dropdown">
+                                            <li><a href="about.html">Lancer un livestream</a></li>
+                                        </ul>
                                     </li>
                                     {% endif %}
-                                    <li class="drop"><a href="shop.html">Shop</a>
+                                    <li class="drop"><a href="{% url 'stream_main' %}">Videos</a>
                                         <ul class="dropdown mega_dropdown">
                                             <!-- Start Single Mega MEnu -->
-                                            <li><a class="mega__title" href="shop.html">shop layout</a>
+                                            <li><a class="mega__title" href="#">Vos vidéos</a>
                                                 <ul class="mega__item">
-                                                    <li><a href="shop.html">default shop</a></li>
+                                                    <li><a href="{% url 'streaming_page' %}">Upload une vidéo  </a></li>
+                                                    <li><a href="{% url 'stream_main' %}">Toutes les videos </a></li>
+
+                                                   <!-- <li><a href="shop.html">Vos vidéos : </a></li> -->
                                                 </ul>
                                             </li>
                                             <!-- End Single Mega MEnu -->
                                             <!-- Start Single Mega MEnu -->
-                                            <li><a class="mega__title" href="shop.html">product details layout</a>
-                                                <ul class="mega__item">
-                                                    <li><a href="product-details.html">tab style 1</a></li></li>
-                                                </ul>
+                                            <li><a class="" href="shop.html"></a>
                                             </li>
                                             <!-- End Single Mega MEnu -->
                                             <!-- Start Single Mega MEnu -->
@@ -103,6 +116,7 @@
                                             <!-- End Single Mega MEnu -->
                                         </ul>
                                     </li>
+                                    <!--
                                     <li class="drop"><a href="#">pages</a>
                                         <ul class="dropdown">
                                             <li><a href="about.html">about</a></li>
@@ -121,6 +135,7 @@
                                             <li><a href="login-register.html">login & register</a></li>
                                         </ul>
                                     </li>
+                                     -->
                                     <li><a href="contact.html">contact</a></li>
                                 </ul>
                             </nav>

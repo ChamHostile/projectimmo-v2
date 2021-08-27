@@ -70,24 +70,26 @@
                                     {% if not user.is_authenticated %}
 
                                     {% else %}
-                                    <li class="drop"><a href="{% url 'live_main' %}">Livestreams</a>
-
+                                     <li class="drop"><a href="{% url 'live_main' %}">Livestreams</a>
+                                        <ul class="dropdown">
+                                            <li><a href="{% url 'streaming_plateform' %}">Lancer un livestream</a></li>
+                                        </ul>
                                     </li>
                                     {% endif %}
-                                    <li class="drop"><a href="shop.html">Shop</a>
+                                    <li class="drop"><a href="{% url 'stream_main' %}">Videos</a>
                                         <ul class="dropdown mega_dropdown">
                                             <!-- Start Single Mega MEnu -->
-                                            <li><a class="mega__title" href="shop.html">shop layout</a>
+                                            <li><a class="mega__title" href="#">Vos vidéos</a>
                                                 <ul class="mega__item">
-                                                    <li><a href="shop.html">default shop</a></li>
+                                                    <li><a href="{% url 'streaming_page' %}">Upload une vidéo  </a></li>
+                                                    <li><a href="{% url 'stream_main' %}">Toutes les videos </a></li>
+
+                                                   <!-- <li><a href="shop.html">Vos vidéos : </a></li> -->
                                                 </ul>
                                             </li>
                                             <!-- End Single Mega MEnu -->
                                             <!-- Start Single Mega MEnu -->
-                                            <li><a class="mega__title" href="shop.html">product details layout</a>
-                                                <ul class="mega__item">
-                                                    <li><a href="product-details.html">tab style 1</a></li></li>
-                                                </ul>
+                                            <li><a class="" href="shop.html"></a>
                                             </li>
                                             <!-- End Single Mega MEnu -->
                                             <!-- Start Single Mega MEnu -->
@@ -105,6 +107,7 @@
                                             <!-- End Single Mega MEnu -->
                                         </ul>
                                     </li>
+                                    <!--
                                     <li class="drop"><a href="#">pages</a>
                                         <ul class="dropdown">
                                             <li><a href="about.html">about</a></li>
@@ -123,6 +126,7 @@
                                             <li><a href="login-register.html">login & register</a></li>
                                         </ul>
                                     </li>
+                                     -->
                                     <li><a href="contact.html">contact</a></li>
                                 </ul>
                             </nav>
@@ -321,12 +325,21 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="bradcaump__inner text-center">
-                                <h2 class="bradcaump-title">Shop Page</h2>
-                                <nav class="bradcaump-inner">
-                                  <a class="breadcrumb-item" href="index.html">Home</a>
-                                  <span class="brd-separetor">/</span>
-                                  <span class="breadcrumb-item active">Shop Page</span>
-                                </nav>
+                                {% if url == 'videos' %}
+                                    <h2 class="bradcaump-title">Toutes les vidéos</h2>
+                                    <nav class="bradcaump-inner">
+                                      <a class="breadcrumb-item" href="index.html">Home</a>
+                                      <span class="brd-separetor">/</span>
+                                      <span class="breadcrumb-item active">Videos</span>
+                                    </nav>
+                                {% elif url == 'live-streams' %}
+                                <h2 class="bradcaump-title">Tous les lives</h2>
+                                    <nav class="bradcaump-inner">
+                                      <a class="breadcrumb-item" href="#">Home</a>
+                                      <span class="brd-separetor">/</span>
+                                      <span class="breadcrumb-item active">Lives</span>
+                                    </nav>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -344,10 +357,10 @@
                             <div class="filter__menu__container">
                                 <div class="product__menu">
                                     <button data-filter="*"  class="is-checked">All</button>
-                                    <button data-filter=".cat--1">Furnitures</button>
-                                    <button data-filter=".cat--2">Bags</button>
-                                    <button data-filter=".cat--3">Decoration</button>
-                                    <button data-filter=".cat--4">Accessories</button>
+                                    <button data-filter=".cat--1">Catégorie 1</button>
+                                    <button data-filter=".cat--2">Catégorie 2</button>
+                                    <button data-filter=".cat--3">Catégorie 3</button>
+                                    <button data-filter=".cat--4">Catégorie 4</button>
                                 </div>
                                 <div class="filter__box">
                                     <a class="filter__menu" href="#">filter</a>
@@ -557,7 +570,7 @@
                                                         </div>
                                                         <div class="addtocart-btn">
                                                             {% if not user.is_authenticated %}
-                                                                <a href="{% url 'login-stream' %}">S'inscrire pour accès complet</a>
+                                                                <a href="{% url 'user_packages' %}">S'inscrire pour accès complet</a>
                                                                 {% else %}
                                                                 {% if url == 'live-streams' %}
                                                                     <a href="{% url 'login-stream' %}">Voir le live</a>
