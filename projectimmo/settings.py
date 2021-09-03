@@ -60,7 +60,6 @@ INSTALLED_APPS = [
     'datapackage',
     'multiselectfield',
     'stripe',
-    'streaming_app',
     'mathfilters',
     'sslserver',
     'ffmpeg',
